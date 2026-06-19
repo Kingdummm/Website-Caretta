@@ -1,0 +1,1315 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bộ Sưu Tập — CARÉTTA</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Newsreader:opsz,wght@6..72,300;6..72,400;6..72,500;6..72,600&display=swap" rel="stylesheet" />
+  <style>
+    /* ══ RESET & ROOT ══════════════════════════════════ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --green:   #34C39A;
+      --teal:    #1FA8A0;
+      --ocean:   #1E7FB8;
+      --navy:    #13315F;
+      --ink:     #1B2A33;
+      --mist:    #ECF3F2;
+      --sand:    #F3EEE4;
+      --pebble:  #8A99A0;
+      --coral:   #FF9256;
+      --gold:    #FFCD68;
+      --white:   #FFFFFF;
+      --font-display: 'Newsreader', Georgia, serif;
+      --font-serif:   'Newsreader', Georgia, serif;
+      --font-sans:    'Inter', system-ui, sans-serif;
+      --ease:    cubic-bezier(0.22, 1, 0.36, 1);
+      --radius:  10px;
+    }
+    html { font-size: 62.5%; scroll-behavior: smooth; }
+    body {
+      font-family: var(--font-sans);
+      font-size: 1.5rem;
+      color: var(--ink);
+      background: #fff;
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+    img { display: block; max-width: 100%; object-fit: cover; }
+    a   { text-decoration: none; color: inherit; }
+
+    .page-width {
+      max-width: 1600px;
+      margin-inline: auto;
+      padding-inline: 2.4rem;
+    }
+
+    /* ══ NAVBAR ════════════════════════════════════════ */
+    .nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+      padding: 4px 0;
+      transition: background .4s, padding .4s, box-shadow .4s;
+    }
+    .nav.scrolled {
+      background: rgba(19,49,95,.97);
+      backdrop-filter: blur(16px);
+      padding: 2px 0;
+      box-shadow: 0 2px 30px rgba(0,0,0,.2);
+    }
+    .nav__inner {
+      max-width: 1400px; margin-inline: auto; padding-inline: 32px;
+      display: flex; align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+    .nav__logo { display: flex; align-items: center; margin-left: -1.6rem; }
+    .nav__logo img { height: 72px; width: auto; }
+    .nav__links {
+      display: flex; gap: 36px; list-style: none;
+    }
+    .nav__links a {
+      font: 500 12px/1 var(--font-sans);
+      letter-spacing: .14em; text-transform: uppercase;
+      color: rgba(255,255,255,.8);
+      transition: color .2s;
+      position: relative;
+    }
+    .nav__links a::after {
+      content: ''; position: absolute; bottom: -.4rem; left: 0;
+      width: 0; height: 1.5px; background: var(--green);
+      transition: width .3s var(--ease);
+    }
+    .nav__links a:hover { color: #fff; }
+    .nav__links a:hover::after, .nav__links a.active::after { width: 100%; }
+    .nav__links a.active { color: #fff; }
+    .nav__actions { display: flex; align-items: center; gap: 6px; }
+    .nav__icon-btn { width: 38px; height: 38px; border-radius: 50%; border: 1px solid rgba(255,255,255,.2); background: transparent; cursor: pointer; display: grid; place-items: center; color: rgba(255,255,255,.8); transition: background .2s, border-color .2s; position: relative; flex-shrink: 0; }
+    .nav__icon-btn:hover { background: rgba(255,255,255,.1); color: #fff; border-color: rgba(255,255,255,.4); }
+    .nav__icon-btn svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    .nav__icon-btn.logged-in { border-color: rgba(52,195,154,.6); background: rgba(52,195,154,.1); }
+    .cart-badge { position: absolute; top: -3px; right: -3px; min-width: 16px; height: 16px; background: var(--green); color: var(--navy); font: 700 9px/16px var(--font-sans); text-align: center; border-radius: 8px; padding: 0 3px; display: none; border: 1.5px solid rgba(19,49,95,.97); }
+    .cart-badge.show { display: block; }
+    /* ── NAV INLINE SEARCH */
+    .nav__isearch { display: none; flex: 1; align-items: center; gap: 1rem; background: #fff; border: 1.5px solid #d8d8d8; border-radius: 4px; padding: .7rem 1.2rem; margin: 0 2.4rem; }
+    .nav__isearch.open { display: flex; }
+    .nav__isearch svg { width: 1.6rem; height: 1.6rem; color: #bbb; flex-shrink: 0; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    .nav__isearch input { flex: 1; border: none; outline: none; font: 400 1.4rem/1 var(--font-sans); color: #222; background: transparent; }
+    .nav__isearch input::placeholder { color: #bbb; }
+    .nav__isearch-close { background: none; border: 1px solid #d8d8d8; border-radius: 3px; cursor: pointer; color: #888; font-size: 1.2rem; padding: .3rem .7rem; line-height: 1.4; transition: all .2s; flex-shrink: 0; }
+    .nav__isearch-close:hover { color: #111; border-color: #999; }
+    .nav__links.search-hidden { display: none; }
+    .nav__links li.has-mega { position: static; }
+    .mega-drop { position: absolute; top: 100%; left: 0; right: 0; background: #fff; border-top: 2px solid rgba(31,168,160,.12); box-shadow: 0 16px 48px rgba(19,49,95,.13); padding: 36px 80px; display: grid; grid-template-columns: repeat(3,1fr); gap: 48px; opacity: 0; pointer-events: none; transform: translateY(-8px); transition: opacity .22s ease, transform .22s ease; z-index: 99; }
+    .nav__links li.has-mega.open .mega-drop { opacity: 1; pointer-events: all; transform: none; }
+    .mega-drop__title { font: 700 14px/1 var(--font-sans); letter-spacing: .16em; text-transform: uppercase; color: #13315F; margin-bottom: 16px; padding-bottom: 10px; border-bottom: 1.5px solid rgba(19,49,95,.18); }
+    .mega-drop__list { list-style: none; display: flex; flex-direction: column; gap: 9px; }
+    .mega-drop__list a { font: 400 14px/1.4 var(--font-sans); color: rgba(19,49,95,.72); text-transform: none; letter-spacing: 0; transition: color .18s; }
+    .mega-drop__list a::after { display: none !important; }
+    .mega-drop__list a:hover { color: var(--teal); }
+    .nav__search-drop { position: fixed; top: 8rem; left: 0; right: 0; background: #fff; box-shadow: 0 4px 20px rgba(0,0,0,.08); border-top: 1px solid #f0f0f0; display: none; max-height: 34rem; overflow-y: auto; z-index: 499; }
+    .nav__search-drop.open { display: block; }
+    .search-result-item { display: flex; align-items: center; gap: 1.4rem; padding: 1rem 4.8rem; text-decoration: none; color: #1a1a1a; transition: background .15s; }
+    .search-result-item:hover { background: #f6f6f6; }
+    .search-result-thumb { width: 4.4rem; height: 4.4rem; object-fit: cover; border-radius: 6px; background: #f0f0f0; flex-shrink: 0; }
+    .search-result-name { font: 500 1.3rem/1.3 var(--font-sans); margin-bottom: 3px; }
+    .search-result-cat { font: 400 1rem/1 var(--font-sans); color: #999; text-transform: uppercase; letter-spacing: .12em; }
+    .search-result-price { margin-left: auto; font: 700 1.3rem/1 var(--font-sans); color: var(--navy); white-space: nowrap; padding-left: 1.2rem; }
+    .search-no-result { color: #bbb; font: 400 1.4rem/1 var(--font-sans); padding: 2rem; text-align: center; }
+    .modal-bg { position: fixed; inset: 0; z-index: 600; background: rgba(0,0,0,.55); backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity .3s; }
+    .modal-bg.open { opacity: 1; pointer-events: all; }
+    .auth-modal { background: #fff; border-radius: 16px; width: min(42rem, 92vw); padding: 3.6rem; position: relative; transform: translateY(16px); transition: transform .3s; }
+    .modal-bg.open .auth-modal { transform: none; }
+    .modal-x { position: absolute; top: 1.4rem; right: 1.4rem; width: 3rem; height: 3rem; border: none; background: rgba(19,49,95,.06); border-radius: 50%; cursor: pointer; font-size: 1.5rem; color: var(--navy); display: grid; place-items: center; transition: background .2s; }
+    .modal-x:hover { background: rgba(19,49,95,.12); }
+    .auth-brand { height: 4.4rem; width: auto; display: block; margin-bottom: 2rem; }
+    .auth-tabs { display: flex; border-bottom: 2px solid rgba(19,49,95,.08); margin-bottom: 2.2rem; }
+    .auth-tab { flex: 1; padding: 1rem 6px; border: none; background: none; cursor: pointer; font: 600 1.1rem/1 var(--font-sans); letter-spacing: .1em; text-transform: uppercase; color: rgba(19,49,95,.35); border-bottom: 2px solid transparent; margin-bottom: -2px; transition: color .2s, border-color .2s; }
+    .auth-tab.active { color: var(--navy); border-bottom-color: var(--navy); }
+    .auth-form { display: flex; flex-direction: column; gap: 1.2rem; }
+    .auth-form.hidden { display: none; }
+    .f-group label { display: block; font: 500 1rem/1 var(--font-sans); letter-spacing: .1em; text-transform: uppercase; color: rgba(19,49,95,.45); margin-bottom: .5rem; }
+    .f-group input { width: 100%; height: 4.2rem; border: 1.5px solid rgba(19,49,95,.12); border-radius: 8px; padding: 0 1.2rem; font: 400 1.3rem/1 var(--font-sans); color: var(--navy); outline: none; transition: border-color .2s; box-sizing: border-box; }
+    .f-group input:focus { border-color: var(--teal); }
+    .f-msg { font: 400 1.1rem/1.4 var(--font-sans); padding: .8rem 1rem; border-radius: 6px; display: none; }
+    .f-msg.err { background: #fef2f2; color: #dc2626; display: block; }
+    .f-msg.ok { background: #f0fdf4; color: #16a34a; display: block; }
+    .auth-btn { height: 4.4rem; background: linear-gradient(135deg, var(--navy), var(--ocean)); color: #fff; border: none; border-radius: 8px; font: 700 1.1rem/1 var(--font-sans); letter-spacing: .12em; text-transform: uppercase; cursor: pointer; transition: box-shadow .2s, transform .15s; margin-top: .4rem; }
+    .auth-btn:hover { box-shadow: 0 8px 24px rgba(19,49,95,.2); transform: translateY(-1px); }
+    .auth-user-panel { background: rgba(19,49,95,.04); border-radius: 1rem; padding: 1.4rem; display: flex; align-items: center; gap: 1.2rem; margin-bottom: 1.6rem; }
+    .auth-avatar { width: 4rem; height: 4rem; border-radius: 50%; background: linear-gradient(135deg, var(--teal), var(--ocean)); display: grid; place-items: center; color: #fff; font: 700 1.5rem/1 var(--font-sans); flex-shrink: 0; }
+    .auth-user-name { font: 600 1.3rem/1.2 var(--font-sans); color: var(--navy); }
+    .auth-user-email { font: 400 1.1rem/1 var(--font-sans); color: rgba(19,49,95,.4); margin-top: 2px; }
+    .auth-signout { margin-left: auto; padding: .6rem 1.2rem; border: 1px solid rgba(19,49,95,.15); border-radius: 2rem; background: none; cursor: pointer; font: 500 1rem/1 var(--font-sans); color: rgba(19,49,95,.45); letter-spacing: .06em; text-transform: uppercase; transition: all .2s; white-space: nowrap; }
+    .auth-signout:hover { background: var(--navy); color: #fff; border-color: var(--navy); }
+    .cart-bg { position: fixed; inset: 0; z-index: 700; background: rgba(0,0,0,.45); opacity: 0; pointer-events: none; transition: opacity .3s; }
+    .cart-bg.open { opacity: 1; pointer-events: all; }
+    .cart-panel { position: fixed; top: 0; right: 0; bottom: 0; z-index: 701; width: min(40rem, 95vw); background: #fff; transform: translateX(100%); transition: transform .35s cubic-bezier(.4,0,.2,1); display: flex; flex-direction: column; box-shadow: -8px 0 40px rgba(0,0,0,.15); }
+    .cart-panel.open { transform: none; }
+    .cart-panel-head { display: flex; align-items: center; justify-content: space-between; padding: 2rem 2.2rem; border-bottom: 1px solid rgba(19,49,95,.08); flex-shrink: 0; }
+    .cart-panel-head h3 { font: 600 1.7rem/1 var(--font-sans); color: var(--navy); letter-spacing: .02em; }
+    .cart-panel-close { width: 3.2rem; height: 3.2rem; border-radius: 50%; border: none; background: rgba(19,49,95,.06); cursor: pointer; font-size: 1.6rem; color: var(--navy); display: grid; place-items: center; transition: background .2s; }
+    .cart-panel-close:hover { background: rgba(19,49,95,.12); }
+    .cart-list { flex: 1; overflow-y: auto; padding: 1.6rem 2.2rem; display: flex; flex-direction: column; gap: 1.6rem; }
+    .cart-gate { display: flex; flex-direction: column; align-items: center; text-align: center; padding: 5.6rem 2.4rem 4rem; gap: 1.6rem; }
+    .cart-gate svg { width: 4.4rem; height: 4.4rem; stroke: currentColor; fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; color: rgba(19,49,95,.2); }
+    .cart-gate p { font: 400 1.4rem/1.6 var(--font-sans); color: rgba(19,49,95,.5); }
+    .cart-gate-btn { height: 4.4rem; padding: 0 2.8rem; background: var(--navy); color: #fff; border: none; border-radius: 8px; font: 600 1.1rem/1 var(--font-sans); letter-spacing: .12em; text-transform: uppercase; cursor: pointer; transition: background .2s; }
+    .cart-gate-btn:hover { background: var(--ocean); }
+    .cart-empty-state { text-align: center; padding: 4.8rem 2rem; display: flex; flex-direction: column; align-items: center; gap: 1.6rem; }
+    .cart-empty-state p { font: 400 1.4rem/1.5 var(--font-sans); color: rgba(19,49,95,.35); }
+    .cart-empty-state a { display: inline-block; padding: 1.1rem 2.6rem; background: var(--navy); color: #fff; border-radius: 6px; font: 600 1.1rem/1 var(--font-sans); letter-spacing: .1em; text-transform: uppercase; text-decoration: none; transition: background .2s; }
+    .cart-empty-state a:hover { background: var(--ocean); }
+    .c-item { display: flex; gap: 1.2rem; align-items: flex-start; }
+    .c-item img { width: 7.6rem; height: 7.6rem; object-fit: cover; border-radius: 8px; background: var(--mist); flex-shrink: 0; }
+    .c-item-info { flex: 1; min-width: 0; }
+    .c-item-name { font: 500 1.2rem/1.35 var(--font-sans); color: var(--navy); margin-bottom: .3rem; }
+    .c-item-meta { font: 400 1rem/1 var(--font-sans); color: rgba(19,49,95,.4); text-transform: uppercase; letter-spacing: .07em; margin-bottom: .8rem; }
+    .c-item-price { font: 700 1.3rem/1 var(--font-sans); color: var(--navy); }
+    .c-item-row { display: flex; align-items: center; gap: .6rem; margin-top: .7rem; }
+    .c-qty-btn { width: 2.4rem; height: 2.4rem; border: 1px solid rgba(19,49,95,.18); border-radius: 4px; background: none; cursor: pointer; font-size: 1.3rem; color: var(--navy); display: grid; place-items: center; transition: background .15s; }
+    .c-qty-btn:hover { background: rgba(19,49,95,.06); }
+    .c-qty-num { font: 600 1.2rem/1 var(--font-sans); color: var(--navy); min-width: 1.8rem; text-align: center; }
+    .c-remove { margin-left: auto; background: none; border: none; cursor: pointer; color: rgba(19,49,95,.25); font-size: 1.5rem; line-height: 1; padding: 3px; transition: color .2s; }
+    .c-remove:hover { color: #dc2626; }
+    .cart-foot { padding: 1.4rem 2.2rem 2rem; border-top: 1px solid rgba(19,49,95,.08); flex-shrink: 0; }
+    .cart-total-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.4rem; }
+    .cart-total-row span { font: 400 1.2rem/1 var(--font-sans); color: rgba(19,49,95,.45); }
+    .cart-total-row strong { font: 700 2rem/1 var(--font-sans); color: var(--navy); }
+    .cart-checkout-btn { display: flex; align-items: center; justify-content: center; width: 100%; height: 5.2rem; background: linear-gradient(135deg, var(--navy), var(--ocean)); color: #fff; border: none; border-radius: 8px; font: 700 1.1rem/1 var(--font-sans); letter-spacing: .14em; text-transform: uppercase; cursor: pointer; transition: box-shadow .2s, transform .15s; margin-bottom: 1rem; }
+    .cart-checkout-btn:hover { box-shadow: 0 8px 28px rgba(19,49,95,.28); transform: translateY(-1px); }
+    .cart-continue-link { display: block; text-align: center; font: 400 1.2rem/1 var(--font-sans); color: rgba(19,49,95,.4); text-decoration: none; padding: .4rem 0 .2rem; transition: color .2s; }
+    .cart-continue-link:hover { color: var(--navy); }
+    .cart-success { display: flex; flex-direction: column; align-items: center; text-align: center; padding: 5.6rem 2.4rem 4rem; gap: 1.4rem; }
+    .cart-success svg { width: 4.8rem; height: 4.8rem; stroke: var(--green); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    .cart-success strong { font: 600 1.5rem/1 var(--font-sans); color: var(--navy); }
+    .cart-success p { font: 400 1.3rem/1.5 var(--font-sans); color: rgba(19,49,95,.5); }
+    @media (max-width: 900px) {
+      .nav__links { display: none; }
+    }
+
+    /* ══ HERO BANNER ═══════════════════════════════════ */
+    .hero-banner {
+      position: relative; overflow: hidden;
+      height: 100vh;
+      margin-top: 0;
+    }
+    .hero-banner__bg {
+      width: 100%; height: 100%;
+      object-fit: cover; object-position: center 30%;
+      transition: transform 8s ease;
+    }
+    .hero-banner:hover .hero-banner__bg { transform: scale(1.03); }
+    .hero-banner__overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(90deg, rgba(19,49,95,.75) 0%, rgba(19,49,95,.2) 60%, transparent 100%);
+    }
+    .hero-banner__content {
+      position: absolute; top: 50%; left: 8%;
+      transform: translateY(-50%);
+    }
+    .hero-banner__tag {
+      font: 700 1.1rem/1 var(--font-sans);
+      letter-spacing: .2em; text-transform: uppercase;
+      color: var(--green); margin-bottom: 1.4rem; display: block;
+    }
+    .hero-banner__title {
+      font: 500 7rem/1 var(--font-serif);
+      color: #fff; letter-spacing: .02em;
+      margin-bottom: .8rem;
+    }
+    .hero-banner__sub {
+      font: 400 2.2rem/1.3 var(--font-serif);
+      color: rgba(255,255,255,.8);
+      font-style: italic; margin-bottom: 3.2rem;
+    }
+    .hero-banner__off {
+      font: 500 5rem/1 var(--font-display);
+      color: var(--gold); letter-spacing: .06em;
+      margin-bottom: 3.2rem; display: block;
+    }
+    .btn {
+      display: inline-flex; align-items: center; gap: 1rem;
+      padding: 1.4rem 3.2rem; border-radius: 0;
+      font: 600 1.2rem/1 var(--font-sans);
+      letter-spacing: .14em; text-transform: uppercase;
+      cursor: pointer; border: none;
+      transition: transform .25s, box-shadow .25s, background .25s;
+    }
+    .btn:hover { transform: translateY(-2px); }
+    .btn-primary {
+      background: #fff; color: var(--navy);
+    }
+    .btn-primary:hover { background: var(--mist); }
+    .btn-teal {
+      background: linear-gradient(135deg, var(--teal), var(--ocean));
+      color: #fff; box-shadow: 0 6px 24px rgba(30,127,184,.3);
+    }
+    .btn-teal:hover { box-shadow: 0 10px 32px rgba(30,127,184,.5); }
+    .btn-outline {
+      background: transparent; color: #fff;
+      border: 1.5px solid rgba(255,255,255,.6);
+    }
+    .btn-outline:hover { background: rgba(255,255,255,.1); }
+    .btn-dark {
+      background: var(--navy); color: #fff;
+    }
+    .btn-dark:hover { background: var(--ink); }
+
+    /* ══ SECTION HEADER ════════════════════════════════ */
+    .sec-header {
+      display: flex; align-items: flex-end;
+      justify-content: space-between;
+      margin-bottom: 2.4rem;
+    }
+    .sec-title {
+      font: 500 2.8rem/1.1 var(--font-serif);
+      color: var(--navy); letter-spacing: .02em;
+    }
+    .sec-title span { color: var(--teal); }
+    .sec-kicker {
+      font: 600 1.0rem/1 var(--font-sans);
+      letter-spacing: .3em; text-transform: uppercase;
+      color: var(--teal); display: block; margin-bottom: .8rem;
+    }
+    .sec-link {
+      font: 600 1.1rem/1 var(--font-sans);
+      letter-spacing: .14em; text-transform: uppercase;
+      color: var(--navy); border-bottom: 1.5px solid var(--navy);
+      padding-bottom: .2rem;
+      transition: color .2s, border-color .2s;
+      white-space: nowrap;
+    }
+    .sec-link:hover { color: var(--teal); border-color: var(--teal); }
+
+    /* ══ LATEST COLLECTIONS ════════════════════════════ */
+    .latest-collections { padding: 5.6rem 0; }
+    .collections-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.2rem;
+    }
+    .collection-card {
+      position: relative; overflow: hidden;
+      border-radius: var(--radius);
+      aspect-ratio: 16/10;
+      cursor: pointer;
+    }
+    .collection-card img {
+      width: 100%; height: 100%;
+      transition: transform .7s var(--ease);
+    }
+    .collection-card:hover img { transform: scale(1.06); }
+    .collection-card__overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(19,49,95,.7) 0%, transparent 55%);
+    }
+    .collection-card__body {
+      position: absolute; bottom: 2.8rem; left: 2.8rem;
+    }
+    .collection-card__name {
+      font: 500 2.4rem/1 var(--font-serif);
+      color: #fff; letter-spacing: .04em;
+      text-transform: uppercase; margin-bottom: 1.2rem;
+    }
+    .collection-card__btn {
+      display: inline-flex; align-items: center; gap: .8rem;
+      font: 600 1.1rem/1 var(--font-sans);
+      letter-spacing: .14em; text-transform: uppercase;
+      color: #fff;
+      border-bottom: 1.5px solid rgba(255,255,255,.6);
+      padding-bottom: .3rem;
+      transition: border-color .2s;
+    }
+    .collection-card:hover .collection-card__btn { border-color: var(--green); color: var(--green); }
+
+    /* ══ MOVE YOUR WAY ═════════════════════════════════ */
+    .move-your-way { padding: 5.6rem 0; background: var(--mist); }
+    .activity-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 1.2rem;
+    }
+    .activity-card {
+      position: relative; overflow: hidden;
+      border-radius: var(--radius);
+      aspect-ratio: 2/3; cursor: pointer;
+    }
+    .activity-card img {
+      width: 100%; height: 100%;
+      transition: transform .6s var(--ease);
+    }
+    .activity-card:hover img { transform: scale(1.08); }
+    .activity-card__overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(19,49,95,.75) 0%, rgba(19,49,95,.1) 50%, transparent 100%);
+    }
+    .activity-card__label {
+      position: absolute; bottom: 2rem; left: 0; right: 0;
+      text-align: center;
+      font: 500 1.3rem/1 var(--font-display);
+      color: #fff; letter-spacing: .12em; text-transform: uppercase;
+    }
+    .activity-card__sub {
+      display: block; margin-top: .6rem;
+      font: 400 1.0rem/1 var(--font-sans);
+      color: rgba(255,255,255,.65);
+      letter-spacing: .08em; text-transform: uppercase;
+    }
+
+    /* ══ IN THE POOL ═══════════════════════════════════ */
+    .in-the-pool {
+      padding: 7.2rem 0;
+      background: var(--navy);
+      position: relative; overflow: hidden;
+    }
+    .in-the-pool::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.02'%3E%3Ccircle cx='40' cy='40' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    }
+    .pool-header {
+      text-align: center; margin-bottom: 5.6rem;
+    }
+    .pool-header .sec-title { color: #fff; }
+    .pool-header p {
+      font: 400 1.6rem/1.6 var(--font-serif);
+      color: rgba(255,255,255,.55);
+      font-style: italic; margin-top: 1.2rem;
+    }
+    .pool-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      gap: 1.2rem;
+    }
+    .pool-card {
+      border-radius: var(--radius);
+      overflow: hidden; position: relative; cursor: pointer;
+    }
+    .pool-card:first-child { grid-row: span 2; }
+    .pool-card img {
+      width: 100%; height: 100%;
+      transition: transform .6s var(--ease);
+    }
+    .pool-card:hover img { transform: scale(1.06); }
+    .pool-card:first-child { aspect-ratio: unset; min-height: 55rem; }
+    .pool-card:not(:first-child) { aspect-ratio: 4/3; }
+    .pool-card__body {
+      position: absolute; bottom: 2.4rem; left: 2.4rem; right: 2.4rem;
+    }
+    .pool-card__overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(19,49,95,.8) 0%, transparent 55%);
+    }
+    .pool-card__tag {
+      font: 600 1.0rem/1 var(--font-sans);
+      letter-spacing: .2em; text-transform: uppercase;
+      color: var(--green); margin-bottom: .8rem; display: block;
+    }
+    .pool-card__name {
+      font: 500 2rem/1.2 var(--font-serif);
+      color: #fff; letter-spacing: .02em; margin-bottom: 1.2rem;
+    }
+    .pool-card:not(:first-child) .pool-card__name { font-size: 1.6rem; }
+
+    /* ══ SHOP BY CATEGORY ══════════════════════════════ */
+    .shop-category { padding: 5.6rem 0; }
+    .category-pills {
+      display: flex; gap: 1.2rem; flex-wrap: wrap;
+      margin-bottom: 3.2rem;
+    }
+    .category-pill {
+      display: flex; align-items: center; gap: 1rem;
+      padding: 1rem 2rem; border-radius: 5rem;
+      border: 1.5px solid rgba(19,49,95,.15);
+      font: 500 1.2rem/1 var(--font-sans);
+      color: var(--ink); cursor: pointer;
+      transition: background .2s, border-color .2s, color .2s;
+      background: #fff;
+    }
+    .category-pill:hover, .category-pill.active {
+      background: var(--navy); color: #fff; border-color: var(--navy);
+    }
+    .category-pill img {
+      width: 3.2rem; height: 3.2rem;
+      border-radius: 50%; object-fit: cover;
+    }
+    .products-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.2rem;
+    }
+    .product-card {
+      cursor: pointer;
+      text-decoration: none;
+      color: inherit;
+      display: block;
+    }
+    .product-card__img {
+      position: relative; overflow: hidden;
+      border-radius: var(--radius);
+      aspect-ratio: 3/4;
+      background: var(--mist);
+      margin-bottom: 1.4rem;
+    }
+    .product-card__img img {
+      width: 100%; height: 100%;
+      transition: transform .6s var(--ease);
+    }
+    .product-card:hover .product-card__img img { transform: scale(1.06); }
+    .product-card__badge {
+      position: absolute; top: 1.2rem; left: 1.2rem;
+      background: var(--coral); color: #fff;
+      font: 700 1.0rem/1 var(--font-sans);
+      letter-spacing: .08em; text-transform: uppercase;
+      padding: .4rem 1rem; border-radius: 5rem;
+    }
+    .product-card__badge.new { background: var(--green); }
+    .product-card__badge.sale { background: var(--coral); }
+    .product-card__quick {
+      position: absolute; bottom: 1.2rem; left: 1.2rem; right: 1.2rem;
+      background: rgba(255,255,255,.95); backdrop-filter: blur(8px);
+      border-radius: .6rem; padding: 1rem 1.6rem;
+      font: 600 1.1rem/1 var(--font-sans);
+      letter-spacing: .1em; text-transform: uppercase;
+      color: var(--navy); text-align: center;
+      opacity: 0; transform: translateY(.8rem);
+      transition: opacity .3s, transform .3s;
+    }
+    .product-card:hover .product-card__quick { opacity: 1; transform: none; }
+    .product-card__name {
+      font: 600 1.4rem/1.3 var(--font-sans);
+      color: var(--navy); margin-bottom: .4rem;
+    }
+    .product-card__sub {
+      font: 400 1.2rem/1.3 var(--font-sans);
+      color: var(--pebble); margin-bottom: 1rem;
+    }
+    .product-card__footer {
+      display: flex; align-items: center;
+      justify-content: space-between;
+    }
+    .product-card__price {
+      font: 700 1.5rem/1 var(--font-sans);
+      color: var(--navy);
+    }
+    .product-card__price-old {
+      font: 400 1.2rem/1 var(--font-sans);
+      color: var(--pebble); text-decoration: line-through;
+      margin-left: .6rem;
+    }
+    .swatches { display: flex; gap: .5rem; }
+    .swatch {
+      width: 1.4rem; height: 1.4rem; border-radius: 50%;
+      border: 1.5px solid rgba(255,255,255,.7);
+      cursor: pointer; transition: transform .2s;
+    }
+    .swatch:hover { transform: scale(1.2); }
+
+    /* ══ STYLIST TOP PICKS ══════════════════════════════ */
+    .top-picks { padding: 5.6rem 0; background: var(--sand); }
+    .picks-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.6rem;
+    }
+    .pick-card {
+      background: #fff; border-radius: var(--radius);
+      overflow: hidden; cursor: pointer;
+      transition: transform .4s var(--ease), box-shadow .4s;
+    }
+    .pick-card:hover {
+      transform: translateY(-.6rem);
+      box-shadow: 0 2rem 4rem rgba(19,49,95,.1);
+    }
+    .pick-card__img {
+      aspect-ratio: 4/3; overflow: hidden;
+    }
+    .pick-card__img img {
+      width: 100%; height: 100%;
+      transition: transform .6s var(--ease);
+    }
+    .pick-card:hover .pick-card__img img { transform: scale(1.05); }
+    .pick-card__body { padding: 2rem; }
+    .pick-card__label {
+      font: 600 1.0rem/1 var(--font-sans);
+      letter-spacing: .2em; text-transform: uppercase;
+      color: var(--teal); margin-bottom: .8rem;
+    }
+    .pick-card__name {
+      font: 600 1.6rem/1.3 var(--font-sans);
+      color: var(--navy); margin-bottom: .4rem;
+    }
+    .pick-card__price {
+      font: 700 1.6rem/1 var(--font-sans);
+      color: var(--navy); margin-bottom: 1.2rem;
+    }
+
+    /* ══ FIND YOUR SHADE ════════════════════════════════ */
+    .find-shade { padding: 5.6rem 0; }
+    .shade-intro {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 6.4rem; align-items: center;
+    }
+    .shade-intro__text .sec-title { font-size: 3.6rem; margin-bottom: 1.6rem; }
+    .shade-intro__text p {
+      font: 400 1.5rem/1.75 var(--font-sans);
+      color: var(--pebble); margin-bottom: 2.8rem;
+    }
+    .shade-grid {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: .8rem;
+    }
+    .shade-swatch {
+      aspect-ratio: 1; border-radius: .8rem;
+      cursor: pointer; position: relative; overflow: hidden;
+      transition: transform .3s;
+    }
+    .shade-swatch:hover { transform: scale(1.06); }
+    .shade-swatch__label {
+      position: absolute; bottom: .8rem; left: 0; right: 0;
+      text-align: center;
+      font: 600 1.0rem/1 var(--font-sans);
+      letter-spacing: .06em; color: #fff;
+      text-shadow: 0 1px 3px rgba(0,0,0,.4);
+    }
+
+    /* ══ MADE FOR THE WORLD ═════════════════════════════ */
+    .made-for-world {
+      padding: 7.2rem 0;
+      background: var(--navy);
+      overflow: hidden;
+    }
+    .world-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 8rem; align-items: center;
+    }
+    .world-img {
+      border-radius: 2rem; overflow: hidden; aspect-ratio: 4/5;
+    }
+    .world-img img { width: 100%; height: 100%; }
+    .world-text .sec-kicker { color: var(--green); }
+    .world-text .sec-title { color: #fff; font-size: 4.2rem; margin-bottom: 2rem; }
+    .world-text p {
+      font: 400 1.5rem/1.8 var(--font-sans);
+      color: rgba(255,255,255,.55); margin-bottom: 3.2rem;
+    }
+    .stats-row { display: flex; gap: 4rem; margin-bottom: 3.6rem; }
+    .stat strong {
+      display: block;
+      font: 500 3.6rem/1 var(--font-display);
+      color: var(--green); margin-bottom: .6rem;
+    }
+    .stat span {
+      font: 400 1.2rem/1.4 var(--font-sans);
+      color: rgba(255,255,255,.45);
+      letter-spacing: .08em; text-transform: uppercase;
+    }
+
+    /* ══ INSTAGRAM FEED ════════════════════════════════ */
+    .insta-feed { padding: 5.6rem 0; }
+    .insta-header { text-align: center; margin-bottom: 3.2rem; }
+    .insta-handle {
+      font: 500 1.6rem/1 var(--font-display);
+      color: var(--navy); letter-spacing: .06em;
+    }
+    .insta-handle span { color: var(--teal); }
+    .insta-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: .8rem;
+    }
+    .insta-item {
+      aspect-ratio: 1; overflow: hidden;
+      border-radius: .6rem; cursor: pointer;
+      position: relative;
+    }
+    .insta-item img {
+      width: 100%; height: 100%;
+      transition: transform .5s var(--ease);
+    }
+    .insta-item:hover img { transform: scale(1.1); }
+    .insta-item__overlay {
+      position: absolute; inset: 0;
+      background: rgba(19,49,95,.5);
+      display: grid; place-items: center;
+      opacity: 0; transition: opacity .3s;
+    }
+    .insta-item:hover .insta-item__overlay { opacity: 1; }
+    .insta-item__overlay svg { color: #fff; width: 2.4rem; height: 2.4rem; }
+
+    /* ══ NEWSLETTER ════════════════════════════════════ */
+    .newsletter {
+      padding: 8rem 0;
+      background: linear-gradient(135deg, var(--ink) 0%, var(--navy) 100%);
+      text-align: center; position: relative; overflow: hidden;
+    }
+    .newsletter::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none'%3E%3Cg fill='%23ffffff' fill-opacity='0.02'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    }
+    .newsletter__inner { position: relative; }
+    .newsletter .sec-kicker { color: var(--green); text-align: center; }
+    .newsletter__title {
+      font: 500 4.4rem/1.1 var(--font-serif);
+      color: #fff; letter-spacing: .02em; margin-bottom: 1.4rem;
+    }
+    .newsletter__sub {
+      font: 400 1.5rem/1.6 var(--font-sans);
+      color: rgba(255,255,255,.5); margin-bottom: 4rem;
+    }
+    .newsletter__form {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      grid-template-areas: "input btn" "error btn";
+      column-gap: 1.2rem;
+      row-gap: 0.5rem;
+      max-width: 48rem;
+      margin-inline: auto;
+    }
+    .newsletter__form > .newsletter__submit { grid-area: btn; align-self: start; }
+    .newsletter__input {
+      grid-area: input;
+      padding: 1.6rem 2.4rem;
+      border-radius: 5rem;
+      border: 1.5px solid rgba(255,255,255,.15);
+      background: rgba(255,255,255,.08);
+      backdrop-filter: blur(8px);
+      color: #fff;
+      font: 400 1.4rem/1 var(--font-sans);
+      outline: none;
+      transition: border-color .3s, background .3s;
+    }
+    .newsletter__input::placeholder { color: rgba(255,255,255,.4); }
+    .newsletter__input:focus { border-color: var(--teal); background: rgba(255,255,255,.12); }
+    .newsletter__submit {
+      padding: 1.6rem 2.8rem;
+      border-radius: 5rem;
+      background: linear-gradient(135deg, var(--teal), var(--ocean));
+      border: none; cursor: pointer;
+      font: 600 1.2rem/1 var(--font-sans);
+      letter-spacing: .14em; text-transform: uppercase;
+      color: #fff; transition: box-shadow .25s;
+      white-space: nowrap;
+    }
+    .newsletter__submit:hover { box-shadow: 0 0 0 3px rgba(31,168,160,.3); }
+    .newsletter .newsletter__error {
+      grid-area: error;
+      font-family: var(--font-sans);
+      font-size: 1.2rem;
+      font-style: italic;
+      font-weight: 400;
+      line-height: 1;
+      color: #e74c3c;
+      letter-spacing: .03em;
+      padding-left: 0.8rem;
+      margin: 0;
+    }
+    .newsletter .newsletter__note {
+      font: 300 1.6rem/1.6 var(--font-sans);
+      color: rgba(255,255,255,.3);
+      margin-top: 4.8rem;
+      max-width: none;
+    }
+
+    /* ══ FOOTER ════════════════════════════════════════ */
+    .footer {
+      background: #E3EFF5;
+      padding: 4.8rem 0 2.8rem;
+      color: rgba(19,49,95,.75);
+    }
+    .footer__top {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 4.8rem; margin-bottom: 3.6rem;
+    }
+    .footer__brand { display: none; }
+    .footer__brand p {
+      font: 300 1.4rem/1.7 var(--font-sans);
+      color: rgba(19,49,95,.55); margin-bottom: 2.4rem;
+    }
+    .footer__social { display: flex; gap: 1.2rem; }
+    .footer__social a {
+      width: 3.8rem; height: 3.8rem; border-radius: 50%;
+      border: 1px solid rgba(19,49,95,.2);
+      display: grid; place-items: center;
+      color: rgba(19,49,95,.45);
+      transition: background .2s, border-color .2s, color .2s;
+    }
+    .footer__social a:hover { background: rgba(19,49,95,.06); border-color: var(--teal); color: var(--teal); }
+    .footer__social svg { width: 1.5rem; height: 1.5rem; }
+    .footer__col h4 {
+      font: 700 1.1rem/1 var(--font-sans);
+      letter-spacing: .25em; text-transform: uppercase;
+      color: var(--navy); margin-bottom: 2rem;
+    }
+    .footer__col ul { list-style: none; display: flex; flex-direction: column; gap: 1.2rem; }
+    .footer__col ul li a {
+      font: 400 1.5rem/1 var(--font-sans);
+      color: rgba(19,49,95,.72);
+      transition: color .2s;
+    }
+    .footer__col ul li a:hover { color: var(--teal); }
+    .footer__bottom {
+      display: flex; align-items: center;
+      justify-content: space-between;
+      padding-top: 3.2rem;
+      border-top: 1px solid rgba(19,49,95,.12);
+      font: 300 1.2rem/1 var(--font-sans);
+      color: rgba(19,49,95,.4);
+      flex-wrap: wrap; gap: 1.6rem;
+    }
+    .footer__bottom a { color: rgba(19,49,95,.5); transition: color .2s; }
+    .footer__bottom a:hover { color: var(--navy); }
+    .footer__legal { display: flex; gap: 2.4rem; }
+
+    /* ══ SCROLL REVEAL ══════════════════════════════════ */
+    .reveal {
+      opacity: 0; transform: translateY(2.8rem);
+      transition: opacity .7s var(--ease), transform .7s var(--ease);
+    }
+    .reveal.visible { opacity: 1; transform: none; }
+    .reveal.d1 { transition-delay: .1s; }
+    .reveal.d2 { transition-delay: .2s; }
+    .reveal.d3 { transition-delay: .3s; }
+    .reveal.d4 { transition-delay: .4s; }
+    .reveal.d5 { transition-delay: .5s; }
+
+    /* ══ RESPONSIVE ════════════════════════════════════ */
+    @media (max-width: 1100px) {
+      .insta-grid { grid-template-columns: repeat(3, 1fr); }
+      .pool-grid { grid-template-columns: 1fr 1fr; }
+      .pool-card:first-child { grid-row: span 1; min-height: 30rem; }
+      .pool-card:first-child { aspect-ratio: 16/9; }
+    }
+    @media (max-width: 900px) {
+      .hero-banner { height: 44rem; }
+      .hero-banner__title { font-size: 4.8rem; }
+      .hero-banner__off { font-size: 3.6rem; }
+      .activity-grid { grid-template-columns: repeat(3, 1fr); }
+      .products-row { grid-template-columns: repeat(2, 1fr); }
+      .picks-grid { grid-template-columns: 1fr 1fr; }
+      .shade-intro { grid-template-columns: 1fr; }
+      .world-grid { grid-template-columns: 1fr; }
+      .world-img { aspect-ratio: 16/9; }
+      .footer__top { grid-template-columns: 1fr 1fr; gap: 3.2rem; }
+    }
+    @media (max-width: 600px) {
+      .collections-grid { grid-template-columns: 1fr; }
+      .activity-grid { grid-template-columns: repeat(2, 1fr); }
+      .products-row { grid-template-columns: 1fr 1fr; gap: .8rem; }
+      .picks-grid { grid-template-columns: 1fr; }
+      .insta-grid { grid-template-columns: repeat(3, 1fr); }
+      .hero-banner__title { font-size: 3.2rem; }
+      .hero-banner { height: 36rem; }
+      .footer__top { grid-template-columns: 1fr; }
+      .footer__bottom { flex-direction: column; text-align: center; }
+      .stats-row { gap: 2.4rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ══ NAVBAR ════════════════════════════════════════ -->
+  <nav class="nav" id="navbar">
+    <div class="page-width nav__inner">
+      <a class="nav__logo" href="index.html">
+        <img src="brand asset/logo chính.png" alt="CARÉTTA" />
+      </a>
+      <ul class="nav__links" id="navLinks">
+        <li><a href="index.html">Home</a></li>
+        <li class="has-mega">
+          <a href="collections.html" class="active">Collections</a>
+          <div class="mega-drop">
+            <div>
+              <div class="mega-drop__title">Women</div>
+              <ul class="mega-drop__list">
+                <li><a href="women.html">So Hot</a></li>
+                <li><a href="women.html">Seaside Holidays</a></li>
+                <li><a href="women.html">Gorgeous</a></li>
+                <li><a href="women.html">Origin</a></li>
+                <li><a href="women.html">Call Summer</a></li>
+                <li><a href="women.html">Basic Style</a></li>
+                <li><a href="women.html">Floral</a></li>
+                <li><a href="women.html">Orchid</a></li>
+                <li><a href="women.html">Marine Life</a></li>
+                <li><a href="women.html">Chubby</a></li>
+              </ul>
+            </div>
+            <div>
+              <div class="mega-drop__title">Men</div>
+              <ul class="mega-drop__list">
+                <li><a href="men.html">LEO</a></li>
+                <li><a href="men.html">AQUA</a></li>
+              </ul>
+            </div>
+            <div>
+              <div class="mega-drop__title">Kids</div>
+              <ul class="mega-drop__list">
+                <li><a href="kids.html">Warmy Wetsuit Collection</a></li>
+                <li><a href="kids.html">Teen Collection</a></li>
+              </ul>
+            </div>
+          </div>
+        </li>
+        <li><a href="women.html">Women</a></li>
+        <li><a href="men.html">Men</a></li>
+        <li><a href="kids.html">Kids</a></li>
+        <li><a href="why-caretta.html">Why Carétta</a></li>
+      </ul>
+      <div class="nav__isearch" id="navIsearch">
+        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" id="searchInput" placeholder="Tìm kiếm sản phẩm..." autocomplete="off">
+        <button class="nav__isearch-close" id="searchClose">✕</button>
+      </div>
+      <div class="nav__actions">
+        <button class="nav__icon-btn" id="searchBtn" title="Tìm kiếm">
+          <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        </button>
+        <button class="nav__icon-btn" id="loginBtn" title="Tài khoản">
+          <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        </button>
+        <button class="nav__icon-btn" id="cartBtn" title="Giỏ hàng">
+          <svg viewBox="0 0 24 24"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+          <span class="cart-badge" id="cartBadge"></span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+
+  <!-- ══ HERO BANNER ═══════════════════════════════════ -->
+  <section class="hero-banner">
+    <img class="hero-banner__bg"
+      src="https://images.unsplash.com/photo-1519046904884-53103b34b206?w=1800&q=85"
+      alt="CARÉTTA Summer Collection" />
+    <div class="hero-banner__overlay"></div>
+    <div class="hero-banner__content">
+      <h1 class="hero-banner__title">Velocity<br/>Collection</h1>
+      <span class="hero-banner__off">GIẢM 15%</span>
+      <a href="#latest" class="btn btn-primary">Khám Phá Ngay</a>
+    </div>
+  </section>
+
+  <!-- ══ LATEST COLLECTIONS ════════════════════════════ -->
+  <section class="latest-collections" id="latest">
+    <div class="page-width">
+      <div class="sec-header reveal">
+        <div>
+          <span class="sec-kicker">Mới Nhất</span>
+          <h2 class="sec-title">Bộ Sưu Tập <span>Mùa Hè</span></h2>
+        </div>
+        <a href="products.html" class="sec-link">Xem Tất Cả →</a>
+      </div>
+      <div class="collections-grid">
+        <div class="collection-card reveal d1">
+          <img src="https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=900&q=80" alt="CORTLINE Collection" />
+          <div class="collection-card__overlay"></div>
+          <div class="collection-card__body">
+            <div class="collection-card__name">VELOCITY</div>
+            <a href="#" class="collection-card__btn">Khám Phá →</a>
+          </div>
+        </div>
+        <div class="collection-card reveal d2">
+          <img src="https://images.unsplash.com/photo-1571902943202-507ec2618e8f?w=900&q=80" alt="ESMER Collection" />
+          <div class="collection-card__overlay"></div>
+          <div class="collection-card__body">
+            <div class="collection-card__name">AQUA PRO</div>
+            <a href="#" class="collection-card__btn">Khám Phá →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ MOVE YOUR WAY ════════════════════════════════ -->
+  <section class="move-your-way">
+    <div class="page-width">
+      <div class="sec-header reveal">
+        <div>
+          <span class="sec-kicker">Hoạt Động</span>
+          <h2 class="sec-title">Chuyển Động <span>Theo Cách Của Bạn</span></h2>
+        </div>
+      </div>
+      <div class="activity-grid">
+        <div class="activity-card reveal d1">
+          <img src="https://images.unsplash.com/photo-1530549387789-4c1017266635?w=500&q=80" alt="Bơi Lội" />
+          <div class="activity-card__overlay"></div>
+          <div class="activity-card__label">Bơi Lội<span class="activity-card__sub">23 sản phẩm</span></div>
+        </div>
+        <div class="activity-card reveal d2">
+          <img src="https://images.unsplash.com/photo-1518611012118-696072aa579a?w=500&q=80" alt="Chạy Bộ" />
+          <div class="activity-card__overlay"></div>
+          <div class="activity-card__label">Chạy Bộ<span class="activity-card__sub">18 sản phẩm</span></div>
+        </div>
+        <div class="activity-card reveal d3">
+          <img src="https://images.unsplash.com/photo-1483721310020-03333e577078?w=500&q=80" alt="Yoga" />
+          <div class="activity-card__overlay"></div>
+          <div class="activity-card__label">Yoga<span class="activity-card__sub">14 sản phẩm</span></div>
+        </div>
+        <div class="activity-card reveal d4">
+          <img src="https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=500&q=80" alt="Gym" />
+          <div class="activity-card__overlay"></div>
+          <div class="activity-card__label">Gym<span class="activity-card__sub">31 sản phẩm</span></div>
+        </div>
+        <div class="activity-card reveal d5">
+          <img src="https://images.unsplash.com/photo-1509631179647-0177331693ae?w=500&q=80" alt="Bãi Biển" />
+          <div class="activity-card__overlay"></div>
+          <div class="activity-card__label">Bãi Biển<span class="activity-card__sub">26 sản phẩm</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ IN THE POOL ═══════════════════════════════════ -->
+  <section class="in-the-pool">
+    <div class="page-width">
+      <div class="pool-header reveal">
+        <span class="sec-kicker" style="color:var(--green);">Đồ Bơi Kỹ Thuật</span>
+        <h2 class="sec-title" style="color:#fff;">Trong Làn Nước</h2>
+        <p>Được thiết kế cho vận động viên — hoàn hảo cho cả hồ bơi và đại dương.</p>
+      </div>
+      <div class="pool-grid">
+        <div class="pool-card reveal d1">
+          <img src="https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=700&q=80" alt="Velocity Pro One-Piece" />
+          <div class="pool-card__overlay"></div>
+          <div class="pool-card__body">
+            <span class="pool-card__tag">Bán Chạy Nhất</span>
+            <div class="pool-card__name">Velocity Pro One-Piece</div>
+            <a href="#" class="btn btn-outline" style="font-size:1.1rem;padding:1rem 2rem;">Xem Ngay →</a>
+          </div>
+        </div>
+        <div class="pool-card reveal d2">
+          <img src="https://images.unsplash.com/photo-1509631179647-0177331693ae?w=600&q=80" alt="AquaFlex Bikini" />
+          <div class="pool-card__overlay"></div>
+          <div class="pool-card__body">
+            <span class="pool-card__tag">Mới Ra Mắt</span>
+            <div class="pool-card__name">AquaFlex Bikini Set</div>
+            <a href="#" class="collection-card__btn" style="color:#fff;border-color:rgba(255,255,255,.5)">Xem →</a>
+          </div>
+        </div>
+        <div class="pool-card reveal d3">
+          <img src="https://images.unsplash.com/photo-1530549387789-4c1017266635?w=600&q=80" alt="CoralBreeze Rash Guard" />
+          <div class="pool-card__overlay"></div>
+          <div class="pool-card__body">
+            <span class="pool-card__tag">UPF 50+</span>
+            <div class="pool-card__name">CoralBreeze Rash Guard</div>
+            <a href="#" class="collection-card__btn" style="color:#fff;border-color:rgba(255,255,255,.5)">Xem →</a>
+          </div>
+        </div>
+        <div class="pool-card reveal d4">
+          <img src="https://images.unsplash.com/photo-1571902943202-507ec2618e8f?w=600&q=80" alt="TideRider Board Shorts" />
+          <div class="pool-card__overlay"></div>
+          <div class="pool-card__body">
+            <span class="pool-card__tag">Nam</span>
+            <div class="pool-card__name">TideRider Board Shorts</div>
+            <a href="#" class="collection-card__btn" style="color:#fff;border-color:rgba(255,255,255,.5)">Xem →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ SHOP BY CATEGORY ══════════════════════════════ -->
+  <section class="shop-category">
+    <div class="page-width">
+      <div class="sec-header reveal">
+        <div>
+          <span class="sec-kicker">Danh Mục</span>
+          <h2 class="sec-title">Mua Theo <span>Danh Mục</span></h2>
+        </div>
+        <a href="products.html" class="sec-link">Tất Cả Sản Phẩm →</a>
+      </div>
+      <div class="category-pills reveal">
+        <button class="category-pill active">Tất Cả</button>
+        <button class="category-pill">Đồ Bơi Nữ</button>
+        <button class="category-pill">Đồ Bơi Nam</button>
+        <button class="category-pill">Áo Thể Thao</button>
+        <button class="category-pill">Quần Tập</button>
+        <button class="category-pill">Phụ Kiện</button>
+      </div>
+      <div class="products-row">
+        <a href="product_detail.html?id=1" class="product-card reveal d1">
+          <div class="product-card__img">
+            <img src="https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=600&q=80" alt="Velocity Pro" />
+            <span class="product-card__badge sale">−15%</span>
+            <div class="product-card__quick">Xem Sản Phẩm</div>
+          </div>
+          <div class="product-card__name">Velocity Pro One-Piece</div>
+          <div class="product-card__sub">Đồ Bơi · Nữ</div>
+          <div class="product-card__footer">
+            <span><span class="product-card__price">1.290.000 ₫</span><span class="product-card__price-old">1.650.000 ₫</span></span>
+            <div class="swatches">
+              <div class="swatch" style="background:#1FA8A0;" title="Ocean Teal"></div>
+              <div class="swatch" style="background:#13315F;" title="Navy"></div>
+              <div class="swatch" style="background:#1B2A33;" title="Black"></div>
+            </div>
+          </div>
+        </a>
+        <a href="product_detail.html?id=2" class="product-card reveal d2">
+          <div class="product-card__img">
+            <img src="https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=600&q=80" alt="AquaFlex Bikini" />
+            <span class="product-card__badge new">Mới</span>
+            <div class="product-card__quick">Xem Sản Phẩm</div>
+          </div>
+          <div class="product-card__name">AquaFlex Bikini Set</div>
+          <div class="product-card__sub">Đồ Bơi · Nữ</div>
+          <div class="product-card__footer">
+            <span class="product-card__price">890.000 ₫</span>
+            <div class="swatches">
+              <div class="swatch" style="background:#FF9256;"></div>
+              <div class="swatch" style="background:#34C39A;"></div>
+              <div class="swatch" style="background:#13315F;"></div>
+            </div>
+          </div>
+        </a>
+        <a href="product_detail.html?id=3" class="product-card reveal d3">
+          <div class="product-card__img">
+            <img src="https://images.unsplash.com/photo-1518611012118-696072aa579a?w=600&q=80" alt="ThermoStride Tights" />
+            <div class="product-card__quick">Xem Sản Phẩm</div>
+          </div>
+          <div class="product-card__name">ThermoStride Tights</div>
+          <div class="product-card__sub">Thể Thao · Nữ</div>
+          <div class="product-card__footer">
+            <span class="product-card__price">750.000 ₫</span>
+            <div class="swatches">
+              <div class="swatch" style="background:#1B2A33;"></div>
+              <div class="swatch" style="background:#1E7FB8;"></div>
+              <div class="swatch" style="background:#34C39A;"></div>
+            </div>
+          </div>
+        </a>
+        <a href="product_detail.html?id=4" class="product-card reveal d4">
+          <div class="product-card__img">
+            <img src="https://images.unsplash.com/photo-1483721310020-03333e577078?w=600&q=80" alt="OceanCore Sports Bra" />
+            <span class="product-card__badge new">Mới</span>
+            <div class="product-card__quick">Xem Sản Phẩm</div>
+          </div>
+          <div class="product-card__name">OceanCore Sports Bra</div>
+          <div class="product-card__sub">Thể Thao · Nữ</div>
+          <div class="product-card__footer">
+            <span class="product-card__price">490.000 ₫</span>
+            <div class="swatches">
+              <div class="swatch" style="background:#34C39A;"></div>
+              <div class="swatch" style="background:#EE5D68;"></div>
+              <div class="swatch" style="background:#1B2A33;"></div>
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ NEWSLETTER ════════════════════════════════════ -->
+  <section class="newsletter">
+    <div class="page-width newsletter__inner">
+      <span class="sec-kicker" style="color:var(--green);">Kết Nối Với Chúng Tôi</span>
+      <h2 class="newsletter__title">Tham Gia Cộng Đồng CARÉTTA</h2>
+      <p class="newsletter__sub">Là người đầu tiên biết về bộ sưu tập mới và những ưu đãi độc quyền</p>
+      <form class="newsletter__form" onsubmit="return handleSubscribe(event)">
+        <input class="newsletter__input" type="tel" placeholder="Số điện thoại của bạn" inputmode="numeric" maxlength="10" oninput="this.value=this.value.replace(/[^0-9]/g,'');document.getElementById('subscribeErr').textContent=''" />
+        <button class="newsletter__submit">Đăng Ký</button>
+      </form>
+      <p class="newsletter__error" id="subscribeErr"></p>
+      <p class="newsletter__note">Không spam. Hủy đăng ký bất cứ lúc nào.</p>
+    </div>
+  </section>
+
+  <!-- ══ FOOTER ════════════════════════════════════════ -->
+  <footer class="footer">
+    <div class="page-width">
+      <div class="footer__top">
+        <div class="footer__col">
+          <h4>Bộ Sưu Tập</h4>
+          <ul>
+            <li><a href="women.html">Đồ Bơi Nữ</a></li>
+            <li><a href="men.html">Đồ Bơi Nam</a></li>
+            <li><a href="kids.html">Trẻ Em</a></li>
+            <li><a href="products.html">Tất Cả Sản Phẩm</a></li>
+          </ul>
+        </div>
+        <div class="footer__col">
+          <h4>Về Chúng Tôi</h4>
+          <ul>
+            <li><a href="cau-chuyen.html">Câu Chuyện</a></li>
+            <li><a href="blog.html">Blog</a></li>
+            <li><a href="phat-trien-ben-vung.html">Phát Triển Bền Vững</a></li>
+            <li><a href="tuyen-dung.html">Tuyển Dụng</a></li>
+          </ul>
+        </div>
+        <div class="footer__col">
+          <h4>Hỗ Trợ</h4>
+          <ul>
+            <li><a href="huong-dan-size.html">Hướng Dẫn Size</a></li>
+            <li><a href="giao-hang-doi-tra.html">Giao Hàng &amp; Đổi Trả</a></li>
+            <li><a href="cau-hoi-thuong-gap.html">Câu Hỏi Thường Gặp</a></li>
+            <li><a href="huong-dan-bao-quan.html">Hướng Dẫn Bảo Quản</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <span>© 2025 CARÉTTA. Tất cả quyền được bảo lưu.</span>
+        <div class="footer__legal">
+          <a href="#">Chính Sách Bảo Mật</a>
+          <a href="#">Điều Khoản</a>
+          <a href="#">Cookie</a>
+        </div>
+        <span>Thiết kế với ♡ tại Việt Nam</span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    /* ── Navbar scroll ── */
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      navbar.classList.toggle('scrolled', window.scrollY > 60);
+    }, { passive: true });
+
+    /* ── Scroll Reveal ── */
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }
+      });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    /* ── Category pills ── */
+    document.querySelectorAll('.category-pill').forEach(pill => {
+      pill.addEventListener('click', () => {
+        document.querySelectorAll('.category-pill').forEach(p => p.classList.remove('active'));
+        pill.classList.add('active');
+      });
+    });
+
+    /* ── Newsletter ── */
+    function handleSubscribe(e) {
+      e.preventDefault();
+      const btn = e.target.querySelector('button');
+      const input = e.target.querySelector('input');
+      const err = document.getElementById('subscribeErr');
+      const val = input.value.trim();
+      if (!/^0[0-9]{9}$/.test(val)) {
+        err.textContent = 'Thông tin bị sai, vui lòng nhập lại!';
+        return false;
+      }
+      err.textContent = '';
+      btn.textContent = '✓ Đã Đăng Ký!';
+      btn.style.background = 'var(--green)';
+      input.value = '';
+      setTimeout(() => { btn.textContent = 'Đăng Ký'; btn.style.background = ''; }, 3000);
+      return false;
+    }
+  </script>
+
+  <!-- ══ SEARCH RESULTS DROPDOWN ══════════════════════ -->
+  <div class="nav__search-drop" id="searchResults"></div>
+
+  <!-- ══ AUTH MODAL ═══════════════════════════════════ -->
+  <div class="modal-bg" id="authOverlay">
+    <div class="auth-modal">
+      <button class="modal-x" id="authClose">✕</button>
+      <img class="auth-brand" src="brand asset/logo chính.png" alt="CARÉTTA">
+      <div id="authContent"></div>
+    </div>
+  </div>
+
+  <!-- ══ CART ═════════════════════════════════════════ -->
+  <div class="cart-bg" id="cartBg"></div>
+  <div class="cart-panel" id="cartPanel">
+    <div class="cart-panel-head">
+      <h3>Giỏ Hàng</h3>
+      <button class="cart-panel-close" id="cartClose">✕</button>
+    </div>
+    <div class="cart-list" id="cartList"></div>
+    <div class="cart-foot" id="cartFoot"></div>
+  </div>
+
+  <script>
+  const PRODUCTS_DB=[
+    {id:1,name:'Velocity Pro One-Piece',cat:'Đồ Bơi · Nữ',price:1290000,img:'https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=80&q=70',href:'product_detail.html?id=1'},
+    {id:2,name:'AquaFlex Bikini Set',cat:'Đồ Bơi · Nữ',price:890000,img:'https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=80&q=70',href:'product_detail.html?id=2'},
+    {id:3,name:'ThermoStride Tights',cat:'Thể Thao · Nữ',price:750000,img:'https://images.unsplash.com/photo-1518611012118-696072aa579a?w=80&q=70',href:'product_detail.html?id=3'},
+    {id:4,name:'OceanCore Sports Bra',cat:'Thể Thao · Nữ',price:490000,img:'https://images.unsplash.com/photo-1483721310020-03333e577078?w=80&q=70',href:'product_detail.html?id=4'},
+    {id:5,name:'CoralBreeze Rash Guard',cat:'Đồ Bơi · UPF 50+',price:680000,img:'https://images.unsplash.com/photo-1530549387789-4c1017266635?w=80&q=70',href:'product_detail.html?id=5'},
+    {id:6,name:'DeepDive Swim Trunk',cat:'Đồ Bơi · Nam',price:560000,img:'https://images.unsplash.com/photo-1509631179647-0177331693ae?w=80&q=70',href:'product_detail.html?id=6'},
+    {id:7,name:'SunSurf Long Sleeve',cat:'Đồ Bơi · Unisex',price:620000,img:'https://images.unsplash.com/photo-1519415943484-9fa1873496d4?w=80&q=70',href:'product_detail.html?id=7'},
+    {id:8,name:'PeakFlow Tank Top',cat:'Thể Thao · Nữ',price:420000,img:'https://images.unsplash.com/photo-1483721310020-03333e577078?w=80&q=70',href:'product_detail.html?id=8'},
+    {id:9,name:'WaveRider Bikini Top',cat:'Đồ Bơi · Nữ',price:390000,img:'https://images.unsplash.com/photo-1571902943202-507ec2618e8f?w=80&q=70',href:'product_detail.html?id=9'},
+    {id:10,name:'Abyss Board Short',cat:'Đồ Bơi · Nam',price:450000,img:'https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=80&q=70',href:'product_detail.html?id=10'},
+    {id:11,name:'Seafoam Yoga Set',cat:'Thể Thao · Nữ',price:980000,img:'https://images.unsplash.com/photo-1518611012118-696072aa579a?w=80&q=70',href:'product_detail.html?id=11'},
+    {id:12,name:'TidalFlow Shorts',cat:'Thể Thao · Unisex',price:350000,img:'https://images.unsplash.com/photo-1530549387789-4c1017266635?w=80&q=70',href:'product_detail.html?id=12'},
+  ];
+  function getCart(){try{return JSON.parse(localStorage.getItem('caretta_cart')||'[]')}catch(e){return[]}}
+  function saveCart(c){localStorage.setItem('caretta_cart',JSON.stringify(c))}
+  function getUser(){try{return JSON.parse(localStorage.getItem('caretta_user')||'null')}catch(e){return null}}
+  function updateBadge(){const n=getCart().reduce((s,i)=>s+i.qty,0);const b=document.getElementById('cartBadge');if(!b)return;b.textContent=n;b.classList.toggle('show',n>0)}
+  // Search
+  const navIsearch=document.getElementById('navIsearch');
+  const navLinks=document.getElementById('navLinks');
+  const searchDrop=document.getElementById('searchResults');
+  document.getElementById('searchBtn').addEventListener('click',()=>{navIsearch.classList.add('open');navLinks.classList.add('search-hidden');document.getElementById('searchInput').focus()});
+  document.getElementById('searchClose').addEventListener('click',closeSearch);
+  document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeSearch();closeAuth();closeCartP()}});
+  function closeSearch(){navIsearch.classList.remove('open');navLinks.classList.remove('search-hidden');document.getElementById('searchInput').value='';searchDrop.innerHTML='';searchDrop.classList.remove('open')}
+  document.getElementById('searchInput').addEventListener('input',function(){
+    const q=this.value.trim().toLowerCase();
+    if(!q){searchDrop.innerHTML='';searchDrop.classList.remove('open');return}
+    const hits=PRODUCTS_DB.filter(p=>p.name.toLowerCase().includes(q)||p.cat.toLowerCase().includes(q));
+    searchDrop.innerHTML=hits.length?hits.map(p=>`<a href="${p.href}" class="search-result-item"><img class="search-result-thumb" src="${p.img}" alt="${p.name}"><div><div class="search-result-name">${p.name}</div><div class="search-result-cat">${p.cat}</div></div><div class="search-result-price">${p.price.toLocaleString('vi-VN')}₫</div></a>`).join(''):'<div class="search-no-result">Không tìm thấy sản phẩm nào.</div>';
+    searchDrop.classList.add('open')
+  });
+  // Auth
+  const ao=document.getElementById('authOverlay');
+  document.getElementById('loginBtn').addEventListener('click',openAuth);
+  document.getElementById('authClose').addEventListener('click',closeAuth);
+  ao.addEventListener('click',e=>{if(e.target===ao)closeAuth()});
+  function openAuth(){renderAuth();ao.classList.add('open')}
+  function closeAuth(){ao.classList.remove('open')}
+  function renderAuth(){
+    const user=getUser();const box=document.getElementById('authContent');const btn=document.getElementById('loginBtn');
+    if(user){btn.classList.add('logged-in');box.innerHTML=`<div class="auth-user-panel"><div class="auth-avatar">${user.name.charAt(0).toUpperCase()}</div><div><div class="auth-user-name">${user.name}</div><div class="auth-user-email">${user.email}</div></div><button class="auth-signout" onclick="signOut()">Đăng xuất</button></div><p style="font:400 1.2rem/1.5 var(--font-sans);color:rgba(19,49,95,.4);text-align:center">Chào mừng trở lại, ${user.name.split(' ').pop()}!</p>`}
+    else{btn.classList.remove('logged-in');box.innerHTML=`<div class="auth-tabs"><button class="auth-tab active" onclick="switchTab('login',this)">Đăng Nhập</button><button class="auth-tab" onclick="switchTab('register',this)">Đăng Ký</button></div><form class="auth-form" id="loginForm" onsubmit="doLogin(event)"><div class="f-group"><label>Email</label><input type="email" name="email" required placeholder="email@example.com"></div><div class="f-group"><label>Mật khẩu</label><input type="password" name="password" required placeholder="••••••••"></div><div class="f-msg" id="loginMsg"></div><button type="submit" class="auth-btn">Đăng Nhập</button></form><form class="auth-form hidden" id="registerForm" onsubmit="doRegister(event)"><div class="f-group"><label>Họ tên</label><input type="text" name="name" required placeholder="Nguyễn Văn A"></div><div class="f-group"><label>Email</label><input type="email" name="email" required placeholder="email@example.com"></div><div class="f-group"><label>Mật khẩu</label><input type="password" name="password" required placeholder="Ít nhất 6 ký tự" minlength="6"></div><div class="f-msg" id="registerMsg"></div><button type="submit" class="auth-btn">Tạo Tài Khoản</button></form>`}
+  }
+  function switchTab(tab,el){document.querySelectorAll('.auth-tab').forEach(t=>t.classList.remove('active'));el.classList.add('active');document.getElementById('loginForm').classList.toggle('hidden',tab!=='login');document.getElementById('registerForm').classList.toggle('hidden',tab!=='register')}
+  function doLogin(e){e.preventDefault();const f=e.target,email=f.email.value,pass=f.password.value;const users=JSON.parse(localStorage.getItem('caretta_users')||'[]');const u=users.find(u=>u.email===email&&u.password===pass);const msg=document.getElementById('loginMsg');if(u){localStorage.setItem('caretta_user',JSON.stringify(u));closeAuth();renderAuth()}else{msg.className='f-msg err';msg.textContent='Email hoặc mật khẩu không đúng.'}}
+  function doRegister(e){e.preventDefault();const f=e.target,name=f.name.value,email=f.email.value,pass=f.password.value;const users=JSON.parse(localStorage.getItem('caretta_users')||'[]');const msg=document.getElementById('registerMsg');if(users.find(u=>u.email===email)){msg.className='f-msg err';msg.textContent='Email này đã được sử dụng.';return}const nu={name,email,password:pass};users.push(nu);localStorage.setItem('caretta_users',JSON.stringify(users));localStorage.setItem('caretta_user',JSON.stringify(nu));closeAuth();renderAuth()}
+  function signOut(){localStorage.removeItem('caretta_user');closeAuth();renderAuth()}
+  // Cart
+  const cp=document.getElementById('cartPanel');const cb=document.getElementById('cartBg');
+  document.getElementById('cartBtn').addEventListener('click',openCartP);
+  document.getElementById('cartClose').addEventListener('click',closeCartP);
+  cb.addEventListener('click',closeCartP);
+  function openCartP(){cp.classList.add('open');cb.classList.add('open');renderCartP()}
+  function closeCartP(){cp.classList.remove('open');cb.classList.remove('open')}
+  function renderCartP(){
+    const user=getUser();const cart=getCart();
+    const list=document.getElementById('cartList');const foot=document.getElementById('cartFoot');
+    if(!user){
+      list.innerHTML=`<div class="cart-gate"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg><p>Vui lòng đăng nhập<br>để xem giỏ hàng của bạn</p><button class="cart-gate-btn" onclick="closeCartP();openAuth()">Đăng Nhập / Đăng Ký</button></div>`;
+      foot.innerHTML='';return;
+    }
+    if(!cart.length){
+      list.innerHTML=`<div class="cart-empty-state"><p>Giỏ hàng của bạn đang trống.</p><a href="products.html">Khám Phá Sản Phẩm</a></div>`;
+      foot.innerHTML='';return;
+    }
+    list.innerHTML=cart.map((item,i)=>`<div class="c-item"><img src="${item.img}" alt="${item.name}"><div class="c-item-info"><div class="c-item-name">${item.name}</div><div class="c-item-meta">${item.color||''}${item.size?' · Size '+item.size:''}</div><div class="c-item-price">${(item.price*item.qty).toLocaleString('vi-VN')}₫</div><div class="c-item-row"><button class="c-qty-btn" onclick="chQty(${i},-1)">−</button><span class="c-qty-num">${item.qty}</span><button class="c-qty-btn" onclick="chQty(${i},1)">+</button><button class="c-remove" onclick="rmItem(${i})">✕</button></div></div></div>`).join('');
+    const sum=cart.reduce((s,i)=>s+i.price*i.qty,0);
+    foot.innerHTML=`<div class="cart-total-row"><span>Tạm tính</span><strong>${sum.toLocaleString('vi-VN')}₫</strong></div><button class="cart-checkout-btn" onclick="doCheckout()">Tiến Hành Mua Hàng</button><a href="products.html" class="cart-continue-link">← Tiếp tục mua sắm</a>`;
+  }
+  function doCheckout(){
+    const u=getUser();const cart=getCart();if(!u||!cart.length)return;
+    const sum=cart.reduce((s,i)=>s+i.price*i.qty,0);
+    document.getElementById('cartList').innerHTML=`<div class="cart-success"><svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg><strong>Đặt hàng thành công!</strong><p>Cảm ơn ${u.name||u.email}!<br>Tổng đơn: ${sum.toLocaleString('vi-VN')}₫<br>Chúng tôi sẽ liên hệ xác nhận sớm.</p></div>`;
+    document.getElementById('cartFoot').innerHTML='';saveCart([]);updateBadge();
+  }
+  function chQty(i,d){const c=getCart();c[i].qty=Math.max(1,c[i].qty+d);saveCart(c);renderCartP();updateBadge()}
+  function rmItem(i){const c=getCart();c.splice(i,1);saveCart(c);renderCartP();updateBadge()}
+  updateBadge();renderAuth();
+  document.querySelectorAll('.has-mega').forEach(li=>{let t;li.addEventListener('mouseenter',()=>{clearTimeout(t);li.classList.add('open');});li.addEventListener('mouseleave',()=>{t=setTimeout(()=>li.classList.remove('open'),200);});});
+  </script>
+</body>
+</html>
