@@ -1,0 +1,230 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hướng Dẫn Size — CARÉTTA</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Newsreader:opsz,wght@6..72,300;6..72,400;6..72,500;6..72,600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { --green:#34C39A; --teal:#1FA8A0; --ocean:#1E7FB8; --navy:#13315F; --ink:#1B2A33; --mist:#ECF3F2; --coral:#FF9256; --font-display:'Newsreader',Georgia,serif; --font-serif:'Newsreader',Georgia,serif; --font-sans:'Inter',system-ui,sans-serif; --ease:cubic-bezier(0.22,1,0.36,1); }
+    html { font-size: 62.5%; scroll-behavior: smooth; }
+    body { font-family:var(--font-sans); color:var(--ink); background:#fff; line-height:1.6; -webkit-font-smoothing:antialiased; overflow-x:hidden; }
+    img { display:block; max-width:100%; } a { text-decoration:none; color:inherit; } button { font-family:inherit; cursor:pointer; border:none; background:none; }
+    .nav { position:fixed; top:0; left:0; right:0; z-index:200; padding:2px 0; background:rgba(19,49,95,.97); backdrop-filter:blur(16px); box-shadow:0 2px 30px rgba(0,0,0,.2); }
+    .nav__inner { max-width:1400px; margin-inline:auto; padding-inline:32px; display:flex; align-items:center; justify-content:space-between; gap:24px; }
+    .nav__logo { display:flex; align-items:center; margin-left:-1.6rem; }
+    .nav__logo img { height:72px; width:auto; }
+    .nav__links { display:flex; gap:36px; list-style:none; }
+    .nav__links a { font:500 12px/1 var(--font-sans); letter-spacing:.14em; text-transform:uppercase; color:rgba(255,255,255,.8); transition:color .2s; position:relative; }
+    .nav__links a::after { content:''; position:absolute; bottom:-.4rem; left:0; width:0; height:1.5px; background:var(--green); transition:width .3s var(--ease); }
+    .nav__links a:hover { color:#fff; } .nav__links a:hover::after { width:100%; }
+    .nav__actions { display:flex; align-items:center; gap:6px; }
+    .nav__icon-btn { width:3.8rem; height:3.8rem; border-radius:50%; border:1px solid rgba(255,255,255,.2); background:transparent; cursor:pointer; display:grid; place-items:center; color:rgba(255,255,255,.8); transition:background .2s,border-color .2s; position:relative; flex-shrink:0; }
+    .nav__icon-btn:hover { background:rgba(255,255,255,.1); color:#fff; border-color:rgba(255,255,255,.4); }
+    .nav__icon-btn svg { width:1.6rem; height:1.6rem; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+    .nav__isearch { display:none; flex:1; align-items:center; gap:1rem; background:#fff; border:1.5px solid #d8d8d8; border-radius:4px; padding:.7rem 1.2rem; margin:0 2.4rem; }
+    .nav__isearch.open { display:flex; }
+    .nav__isearch svg { width:1.6rem; height:1.6rem; color:#bbb; flex-shrink:0; stroke:currentColor; fill:none; stroke-width:2; }
+    .nav__isearch input { flex:1; border:none; outline:none; font:400 1.4rem/1 var(--font-sans); color:#222; background:transparent; }
+    .nav__isearch input::placeholder { color:#bbb; }
+    .nav__isearch-close { background:none; border:1px solid #d8d8d8; border-radius:3px; cursor:pointer; color:#888; font-size:1.2rem; padding:.3rem .7rem; transition:all .2s; flex-shrink:0; }
+    .nav__links.search-hidden { display:none; }
+    .nav__links li.has-mega { position:static; }
+    .mega-drop { position:absolute; top:100%; left:0; right:0; background:#fff; border-top:2px solid rgba(31,168,160,.12); box-shadow:0 16px 48px rgba(19,49,95,.13); padding:36px 80px; display:grid; grid-template-columns:repeat(3,1fr); gap:48px; opacity:0; pointer-events:none; transform:translateY(-8px); transition:opacity .22s ease,transform .22s ease; z-index:99; }
+    .nav__links li.has-mega.open .mega-drop { opacity:1; pointer-events:all; transform:none; }
+    .mega-drop__title { font:700 14px/1 var(--font-sans); letter-spacing:.16em; text-transform:uppercase; color:#13315F; margin-bottom:16px; padding-bottom:10px; border-bottom:1.5px solid rgba(19,49,95,.18); }
+    .mega-drop__list { list-style:none; display:flex; flex-direction:column; gap:9px; }
+    .mega-drop__list a { font:400 14px/1.4 var(--font-sans); color:rgba(19,49,95,.72); text-transform:none; letter-spacing:0; transition:color .18s; }
+    .mega-drop__list a::after { display:none !important; } .mega-drop__list a:hover { color:var(--teal); }
+    .page-banner { padding:11rem 2rem 5.6rem; background:linear-gradient(160deg,#dceef8 0%,#ECF3F2 100%); text-align:center; }
+    .page-banner__kicker { font:600 1.1rem/1 var(--font-sans); letter-spacing:.26em; text-transform:uppercase; color:var(--teal); margin-bottom:1.6rem; }
+    .page-banner__title { font:500 4.2rem/1.1 var(--font-serif); color:var(--navy); letter-spacing:.04em; }
+    .page-content { max-width:860px; margin:0 auto; padding:6rem 2.4rem 9rem; }
+    .content-section { margin-bottom:5rem; }
+    .content-section h2 { font:500 2.6rem/1.2 var(--font-serif); color:var(--navy); margin-bottom:2rem; padding-bottom:1.2rem; border-bottom:2px solid var(--teal); }
+    .content-section h3 { font:600 1.6rem/1.3 var(--font-sans); color:var(--navy); margin:2.4rem 0 1rem; }
+    .content-section p { font:400 1.55rem/1.85 var(--font-sans); color:rgba(27,42,51,.82); margin-bottom:1.4rem; }
+    .content-section ul { padding-left:2.2rem; margin-bottom:1.4rem; }
+    .content-section li { font:400 1.5rem/1.8 var(--font-sans); color:rgba(27,42,51,.82); margin-bottom:.7rem; }
+    .content-table { width:100%; border-collapse:collapse; margin:2rem 0; overflow-x:auto; display:block; }
+    .content-table th { background:var(--navy); color:#fff; padding:1.2rem 1.6rem; text-align:center; font:600 1.2rem/1 var(--font-sans); letter-spacing:.06em; text-transform:uppercase; white-space:nowrap; }
+    .content-table th:first-child { text-align:left; }
+    .content-table td { padding:1rem 1.6rem; border-bottom:1px solid rgba(19,49,95,.08); font:400 1.4rem/1.5 var(--font-sans); color:rgba(27,42,51,.82); text-align:center; }
+    .content-table td:first-child { text-align:left; font-weight:600; color:var(--navy); }
+    .content-table tr:nth-child(even) td { background:rgba(19,49,95,.03); }
+    .measure-steps { display:grid; grid-template-columns:repeat(3,1fr); gap:2rem; margin:2rem 0; }
+    .measure-step { background:#f8fbfc; border-radius:1.2rem; padding:2.4rem 2rem; text-align:center; }
+    .measure-step .step-icon { font-size:2.8rem; margin-bottom:1.2rem; }
+    .measure-step h4 { font:700 1.3rem/1.2 var(--font-sans); color:var(--navy); margin-bottom:.8rem; }
+    .measure-step p { font:400 1.35rem/1.6 var(--font-sans); color:rgba(27,42,51,.72); margin:0; }
+    .tip-box { background:rgba(31,168,160,.07); border:1px solid rgba(31,168,160,.2); border-radius:1rem; padding:2rem 2.4rem; margin:2rem 0; display:flex; gap:1.6rem; align-items:flex-start; }
+    .tip-box .tip-icon { font-size:2rem; flex-shrink:0; }
+    .tip-box p { font:400 1.45rem/1.7 var(--font-sans); color:rgba(27,42,51,.82); margin:0; }
+    .footer { background:#E3EFF5; padding:4.8rem 0 2.8rem; }
+    .footer__inner { max-width:1400px; margin-inline:auto; padding-inline:3.2rem; }
+    .footer__top { display:grid; grid-template-columns:1fr 1fr 1fr; gap:4.8rem; margin-bottom:3.6rem; }
+    .footer__col h4 { font:700 1.1rem/1 var(--font-sans); letter-spacing:.25em; text-transform:uppercase; color:var(--navy); margin-bottom:2rem; }
+    .footer__col ul { list-style:none; display:flex; flex-direction:column; gap:1rem; }
+    .footer__col ul li a { font:400 1.5rem/1 var(--font-sans); color:rgba(19,49,95,.72); transition:color .2s; }
+    .footer__col ul li a:hover { color:var(--teal); }
+    .footer__bottom { display:flex; align-items:center; justify-content:space-between; padding-top:2.8rem; border-top:1px solid rgba(19,49,95,.12); font:300 1.1rem/1 var(--font-sans); color:rgba(19,49,95,.4); flex-wrap:wrap; gap:1.2rem; }
+    .footer__legal { display:flex; gap:2rem; } .footer__legal a { color:rgba(19,49,95,.5); transition:color .2s; } .footer__legal a:hover { color:var(--navy); }
+    @media (max-width:900px) { .nav__links { display:none; } .measure-steps { grid-template-columns:1fr 1fr; } .footer__top { grid-template-columns:1fr 1fr; } }
+    @media (max-width:600px) { .page-banner__title { font-size:3rem; } .measure-steps { grid-template-columns:1fr; } .footer__top { grid-template-columns:1fr; } }
+  </style>
+</head>
+<body>
+
+  <nav class="nav" id="navbar">
+    <div class="nav__inner">
+      <a class="nav__logo" href="index.html"><img src="brand asset/logo chính.png" alt="CARÉTTA" /></a>
+      <ul class="nav__links" id="navLinks">
+        <li><a href="index.html">Home</a></li>
+        <li class="has-mega"><a href="collections.html">Collections</a>
+          <div class="mega-drop">
+            <div><div class="mega-drop__title">Women</div><ul class="mega-drop__list"><li><a href="women.html">So Hot</a></li><li><a href="women.html">Seaside Holidays</a></li><li><a href="women.html">Gorgeous</a></li><li><a href="women.html">Origin</a></li><li><a href="women.html">Call Summer</a></li><li><a href="women.html">Basic Style</a></li><li><a href="women.html">Floral</a></li><li><a href="women.html">Orchid</a></li><li><a href="women.html">Marine Life</a></li><li><a href="women.html">Chubby</a></li></ul></div>
+            <div><div class="mega-drop__title">Men</div><ul class="mega-drop__list"><li><a href="men.html">LEO</a></li><li><a href="men.html">AQUA</a></li></ul></div>
+            <div><div class="mega-drop__title">Kids</div><ul class="mega-drop__list"><li><a href="kids.html">Warmy Wetsuit Collection</a></li><li><a href="kids.html">Teen Collection</a></li></ul></div>
+          </div>
+        </li>
+        <li><a href="women.html">Women</a></li><li><a href="men.html">Men</a></li><li><a href="kids.html">Kids</a></li><li><a href="why-caretta.html">Why Carétta</a></li>
+      </ul>
+      <div class="nav__isearch" id="navIsearch">
+        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" placeholder="Tìm kiếm sản phẩm..." autocomplete="off">
+        <button class="nav__isearch-close" id="searchClose">✕</button>
+      </div>
+      <div class="nav__actions">
+        <button class="nav__icon-btn" id="searchBtn"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></button>
+        <button class="nav__icon-btn"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></button>
+        <button class="nav__icon-btn"><svg viewBox="0 0 24 24"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg></button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="page-banner">
+    <div class="page-banner__kicker">Hỗ Trợ</div>
+    <h1 class="page-banner__title">Hướng Dẫn Chọn Size</h1>
+  </div>
+
+  <div class="page-content">
+
+    <div class="content-section">
+      <h2>Tại sao size quan trọng với đồ bơi trợ nổi?</h2>
+      <p>Với đồ bơi thông thường, sai size chỉ ảnh hưởng đến tính thẩm mỹ. Với sản phẩm Carétta, size đúng còn ảnh hưởng trực tiếp đến hiệu quả trợ nổi. Áo quá rộng khiến foam không tiếp xúc đúng vị trí; áo quá chật ảnh hưởng đến hô hấp và cử động.</p>
+      <p>Hãy dành 2 phút đo số đo để chọn đúng ngay từ đầu.</p>
+    </div>
+
+    <div class="content-section">
+      <h2>1. Cách đo số đo cơ thể</h2>
+      <div class="measure-steps">
+        <div class="measure-step">
+          <div class="step-icon">📏</div>
+          <h4>Vòng ngực</h4>
+          <p>Đo vòng ngực tại điểm rộng nhất, dây thước nằm ngang song song mặt đất. Thở ra tự nhiên khi đo.</p>
+        </div>
+        <div class="measure-step">
+          <div class="step-icon">📐</div>
+          <h4>Vòng eo</h4>
+          <p>Đo tại điểm nhỏ nhất của eo (thường ngang rốn), không thắt dây quá chặt.</p>
+        </div>
+        <div class="measure-step">
+          <div class="step-icon">🔵</div>
+          <h4>Vòng hông</h4>
+          <p>Đo vòng hông tại điểm rộng nhất, thường cách thắt lưng khoảng 18–20 cm.</p>
+        </div>
+      </div>
+      <div class="tip-box">
+        <div class="tip-icon">💡</div>
+        <p>Nên nhờ người khác đo giúp để đảm bảo dây thước thẳng và chính xác. Đo bằng thước dây mềm, không dùng thước cứng.</p>
+      </div>
+    </div>
+
+    <div class="content-section">
+      <h2>2. Bảng size người lớn (Women & Men)</h2>
+      <p>Tất cả số đo tính bằng <strong>cm</strong>. Nếu bạn nằm giữa hai size, hãy chọn size lớn hơn.</p>
+      <table class="content-table">
+        <thead>
+          <tr>
+            <th>Size</th>
+            <th>Vòng ngực</th>
+            <th>Vòng eo</th>
+            <th>Vòng hông</th>
+            <th>Chiều cao gợi ý</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>S</td><td>80 – 84</td><td>62 – 66</td><td>88 – 92</td><td>155 – 162</td></tr>
+          <tr><td>M</td><td>85 – 89</td><td>67 – 71</td><td>93 – 97</td><td>160 – 167</td></tr>
+          <tr><td>L</td><td>90 – 95</td><td>72 – 77</td><td>98 – 103</td><td>165 – 172</td></tr>
+          <tr><td>XL</td><td>96 – 102</td><td>78 – 84</td><td>104 – 110</td><td>170 – 178</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="content-section">
+      <h2>3. Bảng size trẻ em</h2>
+      <p>Size trẻ em được thiết kế cho dòng <strong>Warmy Wetsuit Collection</strong> và <strong>Teen Collection</strong>. Trẻ em phát triển nhanh — nếu đang ở giữa hai size, hãy chọn size lớn hơn để mặc được lâu hơn.</p>
+      <table class="content-table">
+        <thead>
+          <tr>
+            <th>Size</th>
+            <th>Độ tuổi</th>
+            <th>Chiều cao (cm)</th>
+            <th>Cân nặng (kg)</th>
+            <th>Vòng ngực (cm)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>2T</td><td>2 – 3 tuổi</td><td>88 – 98</td><td>13 – 16</td><td>50 – 53</td></tr>
+          <tr><td>3T</td><td>3 – 4 tuổi</td><td>98 – 105</td><td>15 – 18</td><td>52 – 55</td></tr>
+          <tr><td>4T</td><td>4 – 5 tuổi</td><td>104 – 112</td><td>17 – 20</td><td>54 – 57</td></tr>
+          <tr><td>5–6</td><td>5 – 6 tuổi</td><td>110 – 120</td><td>19 – 23</td><td>56 – 60</td></tr>
+          <tr><td>7–8</td><td>7 – 8 tuổi</td><td>120 – 130</td><td>22 – 27</td><td>59 – 64</td></tr>
+          <tr><td>9–10</td><td>9 – 10 tuổi</td><td>130 – 140</td><td>26 – 33</td><td>62 – 68</td></tr>
+          <tr><td>11–12</td><td>11 – 12 tuổi</td><td>140 – 152</td><td>32 – 42</td><td>67 – 74</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="content-section">
+      <h2>4. Vẫn chưa chắc chắn về size?</h2>
+      <p>Đội ngũ Carétta sẵn sàng hỗ trợ bạn chọn size phù hợp nhất. Chụp số đo của bạn và nhắn tin cho chúng tôi:</p>
+      <ul>
+        <li>Zalo / Messenger: Carétta Buoyancy Swimwear</li>
+        <li>Email: <a href="mailto:support@caretta.vn" style="color:var(--teal)">support@caretta.vn</a></li>
+      </ul>
+    </div>
+
+  </div>
+
+  <footer class="footer">
+    <div class="footer__inner">
+      <div class="footer__top">
+        <div class="footer__col"><h4>Bộ Sưu Tập</h4><ul><li><a href="women.html">Đồ Bơi Nữ</a></li><li><a href="men.html">Đồ Bơi Nam</a></li><li><a href="kids.html">Trẻ Em</a></li><li><a href="products.html">Tất Cả Sản Phẩm</a></li></ul></div>
+        <div class="footer__col"><h4>Về Chúng Tôi</h4><ul><li><a href="cau-chuyen.html">Câu Chuyện</a></li>
+            <li><a href="blog.html">Blog</a></li><li><a href="phat-trien-ben-vung.html">Phát Triển Bền Vững</a></li><li><a href="tuyen-dung.html">Tuyển Dụng</a></li></ul></div>
+        <div class="footer__col"><h4>Hỗ Trợ</h4><ul><li><a href="huong-dan-size.html">Hướng Dẫn Size</a></li><li><a href="giao-hang-doi-tra.html">Giao Hàng &amp; Đổi Trả</a></li><li><a href="cau-hoi-thuong-gap.html">Câu Hỏi Thường Gặp</a></li><li><a href="huong-dan-bao-quan.html">Hướng Dẫn Bảo Quản</a></li></ul></div>
+      </div>
+      <div class="footer__bottom">
+        <span>© 2025 CARÉTTA. Tất cả quyền được bảo lưu.</span>
+        <div class="footer__legal"><a href="#">Bảo Mật</a><a href="#">Điều Khoản</a></div>
+        <span>Thiết kế với ♡ tại Việt Nam</span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const searchBtn=document.getElementById('searchBtn');
+    const searchClose=document.getElementById('searchClose');
+    const navIsearch=document.getElementById('navIsearch');
+    const navLinks=document.getElementById('navLinks');
+    searchBtn.addEventListener('click',()=>{navIsearch.classList.add('open');navLinks.classList.add('search-hidden');setTimeout(()=>navIsearch.querySelector('input').focus(),50);});
+    searchClose.addEventListener('click',()=>{navIsearch.classList.remove('open');navLinks.classList.remove('search-hidden');});
+    document.querySelectorAll('.has-mega').forEach(li=>{let t;li.addEventListener('mouseenter',()=>{clearTimeout(t);li.classList.add('open');});li.addEventListener('mouseleave',()=>{t=setTimeout(()=>li.classList.remove('open'),200);});});
+  </script>
+</body>
+</html>
