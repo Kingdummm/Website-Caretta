@@ -1,0 +1,1886 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CARÉTTA — Thời Trang Thể Thao & Đồ Bơi</title>
+  <meta name="description" content="CARÉTTA — Thời trang thể thao và đồ bơi cao cấp lấy cảm hứng từ đại dương. Chuyển động có chủ đích. Bơi lội duyên dáng." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Newsreader:opsz,wght@6..72,300;6..72,400;6..72,500;6..72,600&display=swap" rel="stylesheet" />
+  <style>
+    /* ── Reset & Root ─────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --green:  #34C39A;
+      --teal:   #1FA8A0;
+      --ocean:  #1E7FB8;
+      --navy:   #13315F;
+      --ink:    #1B2A33;
+      --mist:   #ECF3F2;
+      --sand:   #F3EEE4;
+      --pebble: #8A99A0;
+      --coral:  #FF9256;
+      --gold:   #FFCD68;
+      --hibiscus: #EE5D68;
+      --white:  #FFFFFF;
+
+      --font-display: 'Newsreader', Georgia, serif;
+      --font-serif:   'Newsreader', Georgia, serif;
+      --font-sans:    'Inter', system-ui, sans-serif;
+
+      --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+      --transition: 0.6s var(--ease-out);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-sans);
+      color: var(--ink);
+      background: var(--white);
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    img { display: block; max-width: 100%; }
+    a { text-decoration: none; color: inherit; }
+
+    /* ── Utility ──────────────────────────────────────── */
+    .container {
+      width: min(1200px, 100% - 48px);
+      margin-inline: auto;
+    }
+
+    .kicker {
+      font: 600 11px/1 var(--font-sans);
+      letter-spacing: .3em;
+      text-transform: uppercase;
+      color: var(--teal);
+      display: block;
+      margin-bottom: 14px;
+    }
+
+.reveal {
+      opacity: 0;
+      transform: translateY(32px);
+      transition: opacity .7s var(--ease-out), transform .7s var(--ease-out);
+    }
+    .reveal.visible { opacity: 1; transform: none; }
+    .reveal.delay-1 { transition-delay: .1s; }
+    .reveal.delay-2 { transition-delay: .2s; }
+    .reveal.delay-3 { transition-delay: .3s; }
+    .reveal.delay-4 { transition-delay: .4s; }
+
+    /* ── Buttons ──────────────────────────────────────── */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 32px;
+      border-radius: 50px;
+      font: 600 13px/1 var(--font-sans);
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      cursor: pointer;
+      border: none;
+      transition: transform .3s cubic-bezier(.34,1.56,.64,1), box-shadow .3s ease, background .3s ease, border-color .3s ease;
+    }
+    .btn:hover { transform: translateY(-4px) scale(1.03); }
+    .btn:active { transform: translateY(-1px) scale(.98); }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--teal), var(--ocean));
+      color: #fff;
+      box-shadow: 0 8px 32px rgba(30,127,184,.35);
+    }
+    .btn-primary:hover {
+      box-shadow: 0 16px 48px rgba(30,127,184,.6), 0 0 0 1px rgba(255,255,255,.15);
+      background: linear-gradient(135deg, #22c5bc, #2490d0);
+    }
+
+    .btn-outline {
+      background: rgba(255,255,255,.08);
+      color: #fff;
+      border: 1.5px solid rgba(255,255,255,.5);
+      backdrop-filter: blur(8px);
+    }
+    .btn-outline:hover {
+      background: rgba(255,255,255,.18);
+      border-color: rgba(255,255,255,.9);
+      box-shadow: 0 8px 32px rgba(255,255,255,.12), inset 0 1px 0 rgba(255,255,255,.2);
+    }
+
+    .btn-dark {
+      background: var(--navy);
+      color: #fff;
+      box-shadow: 0 6px 24px rgba(19,49,95,.25);
+    }
+    .btn-dark:hover { box-shadow: 0 10px 32px rgba(19,49,95,.4); }
+
+    /* ═══════════════════════════════════════════════════
+       NAVBAR
+    ═══════════════════════════════════════════════════ */
+    .nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 4px 0;
+      transition: background .4s, padding .4s, box-shadow .4s;
+    }
+    .nav.scrolled {
+      background: rgba(19,49,95,.97);
+      backdrop-filter: blur(16px);
+      padding: 2px 0;
+      box-shadow: 0 2px 30px rgba(0,0,0,.2);
+    }
+    .nav__inner {
+      max-width: 1400px;
+      margin-inline: auto;
+      padding-inline: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+    .nav__logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-left: -16px;
+    }
+    .nav__logo .site-logo  { height: 72px; width: auto; display: block; }
+    .feat-logo             { width: 100%; height: auto; display: block; }
+    .foot-logo             { height: 80px; width: auto; display: block; margin-bottom: 16px; margin-left: -14px; margin-top: -12px; }
+    .nav__links {
+      display: flex;
+      gap: 36px;
+      list-style: none;
+    }
+    .nav__links a {
+      font: 500 12px/1 var(--font-sans);
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,.8);
+      transition: color .25s;
+      position: relative;
+    }
+    .nav__links a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px; left: 0;
+      width: 0; height: 1.5px;
+      background: var(--green);
+      transition: width .3s var(--ease-out);
+    }
+    .nav__links a:hover { color: #fff; }
+    .nav__links a:hover::after { width: 100%; }
+
+    /* ── NAV ACTIONS */
+    .nav__actions { display: flex; align-items: center; gap: 6px; }
+    .nav__icon-btn { width: 38px; height: 38px; border-radius: 50%; border: 1px solid rgba(255,255,255,.2); background: transparent; cursor: pointer; display: grid; place-items: center; color: rgba(255,255,255,.8); transition: background .2s, border-color .2s; position: relative; flex-shrink: 0; }
+    .nav__icon-btn:hover { background: rgba(255,255,255,.1); color: #fff; border-color: rgba(255,255,255,.4); }
+    .nav__icon-btn svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    .nav__icon-btn.logged-in { border-color: rgba(52,195,154,.6); background: rgba(52,195,154,.1); }
+    .cart-badge { position: absolute; top: -3px; right: -3px; min-width: 16px; height: 16px; background: #34C39A; color: #13315F; font: 700 9px/16px var(--font-sans); text-align: center; border-radius: 8px; padding: 0 3px; display: none; border: 1.5px solid rgba(19,49,95,.97); }
+    .cart-badge.show { display: block; }
+
+    /* ── NAV INLINE SEARCH */
+    .nav__isearch { display: none; flex: 1; align-items: center; gap: 10px; background: #fff; border: 1.5px solid #d8d8d8; border-radius: 4px; padding: 7px 12px; margin: 0 24px; }
+    .nav__isearch.open { display: flex; }
+    .nav__isearch svg { width: 16px; height: 16px; color: #bbb; flex-shrink: 0; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    .nav__isearch input { flex: 1; border: none; outline: none; font: 400 14px/1 var(--font-sans); color: #222; background: transparent; }
+    .nav__isearch input::placeholder { color: #bbb; }
+    .nav__isearch-close { background: none; border: 1px solid #d8d8d8; border-radius: 3px; cursor: pointer; color: #888; font-size: 12px; padding: 3px 7px; line-height: 1.4; transition: all .2s; flex-shrink: 0; }
+    .nav__isearch-close:hover { color: #111; border-color: #999; }
+    .nav__links.search-hidden { display: none; }
+    .nav__links li.has-mega { position: static; }
+    .mega-drop { position: absolute; top: 100%; left: 0; right: 0; background: #fff; border-top: 2px solid rgba(31,168,160,.12); box-shadow: 0 16px 48px rgba(19,49,95,.13); padding: 36px 80px; display: grid; grid-template-columns: repeat(3,1fr); gap: 48px; opacity: 0; pointer-events: none; transform: translateY(-8px); transition: opacity .22s ease, transform .22s ease; z-index: 99; }
+    .nav__links li.has-mega.open .mega-drop { opacity: 1; pointer-events: all; transform: none; }
+    .mega-drop__title { font: 700 14px/1 var(--font-sans); letter-spacing: .16em; text-transform: uppercase; color: #13315F; margin-bottom: 16px; padding-bottom: 10px; border-bottom: 1.5px solid rgba(19,49,95,.18); }
+    .mega-drop__list { list-style: none; display: flex; flex-direction: column; gap: 9px; }
+    .mega-drop__list a { font: 400 14px/1.4 var(--font-sans); color: rgba(19,49,95,.72); text-transform: none; letter-spacing: 0; transition: color .18s; }
+    .mega-drop__list a::after { display: none !important; }
+    .mega-drop__list a:hover { color: var(--teal); }
+    .nav__search-drop { position: fixed; top: 80px; left: 0; right: 0; background: #fff; box-shadow: 0 4px 20px rgba(0,0,0,.08); border-top: 1px solid #f0f0f0; display: none; max-height: 340px; overflow-y: auto; z-index: 499; }
+    .nav__search-drop.open { display: block; }
+    .search-result-item { display: flex; align-items: center; gap: 14px; padding: 10px 48px; text-decoration: none; color: #1a1a1a; transition: background .15s; }
+    .search-result-item:hover { background: #f6f6f6; }
+    .search-result-thumb { width: 44px; height: 44px; object-fit: cover; border-radius: 6px; background: #f0f0f0; flex-shrink: 0; }
+    .search-result-name { font: 500 13px/1.3 var(--font-sans); margin-bottom: 3px; }
+    .search-result-cat { font: 400 10px/1 var(--font-sans); color: #999; text-transform: uppercase; letter-spacing: .12em; }
+    .search-result-price { margin-left: auto; font: 700 13px/1 var(--font-sans); color: #13315F; white-space: nowrap; padding-left: 12px; }
+    .search-no-result { color: #bbb; font: 400 14px/1 var(--font-sans); padding: 20px; text-align: center; }
+
+    /* ── AUTH MODAL */
+    .modal-bg { position: fixed; inset: 0; z-index: 600; background: rgba(0,0,0,.55); backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity .3s; }
+    .modal-bg.open { opacity: 1; pointer-events: all; }
+    .auth-modal { background: #fff; border-radius: 16px; width: min(420px, 92vw); padding: 36px; position: relative; transform: translateY(16px); transition: transform .3s; }
+    .modal-bg.open .auth-modal { transform: none; }
+    .modal-x { position: absolute; top: 14px; right: 14px; width: 30px; height: 30px; border: none; background: rgba(19,49,95,.06); border-radius: 50%; cursor: pointer; font-size: 15px; color: #13315F; display: grid; place-items: center; transition: background .2s; }
+    .modal-x:hover { background: rgba(19,49,95,.12); }
+    .auth-brand { height: 44px; width: auto; display: block; margin-bottom: 20px; }
+    .auth-tabs { display: flex; border-bottom: 2px solid rgba(19,49,95,.08); margin-bottom: 22px; gap: 0; }
+    .auth-tab { flex: 1; padding: 10px 6px; border: none; background: none; cursor: pointer; font: 600 11px/1 var(--font-sans); letter-spacing: .1em; text-transform: uppercase; color: rgba(19,49,95,.35); border-bottom: 2px solid transparent; margin-bottom: -2px; transition: color .2s, border-color .2s; }
+    .auth-tab.active { color: #13315F; border-bottom-color: #13315F; }
+    .auth-form { display: flex; flex-direction: column; gap: 12px; }
+    .auth-form.hidden { display: none; }
+    .f-group label { display: block; font: 500 10px/1 var(--font-sans); letter-spacing: .1em; text-transform: uppercase; color: rgba(19,49,95,.45); margin-bottom: 5px; }
+    .f-group input { width: 100%; height: 42px; border: 1.5px solid rgba(19,49,95,.12); border-radius: 8px; padding: 0 12px; font: 400 13px/1 var(--font-sans); color: #13315F; outline: none; transition: border-color .2s; box-sizing: border-box; }
+    .f-group input:focus { border-color: #1FA8A0; }
+    .f-msg { font: 400 11px/1.4 var(--font-sans); padding: 8px 10px; border-radius: 6px; display: none; }
+    .f-msg.err { background: #fef2f2; color: #dc2626; display: block; }
+    .f-msg.ok { background: #f0fdf4; color: #16a34a; display: block; }
+    .auth-btn { height: 44px; background: linear-gradient(135deg, #13315F, #1E7FB8); color: #fff; border: none; border-radius: 8px; font: 700 11px/1 var(--font-sans); letter-spacing: .12em; text-transform: uppercase; cursor: pointer; transition: box-shadow .2s, transform .15s; margin-top: 4px; }
+    .auth-btn:hover { box-shadow: 0 8px 24px rgba(19,49,95,.2); transform: translateY(-1px); }
+    .auth-user-panel { background: rgba(19,49,95,.04); border-radius: 10px; padding: 14px; display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+    .auth-avatar { width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, #1FA8A0, #1E7FB8); display: grid; place-items: center; color: #fff; font: 700 15px/1 var(--font-sans); flex-shrink: 0; }
+    .auth-user-name { font: 600 13px/1.2 var(--font-sans); color: #13315F; }
+    .auth-user-email { font: 400 11px/1 var(--font-sans); color: rgba(19,49,95,.4); margin-top: 2px; }
+    .auth-signout { margin-left: auto; padding: 6px 12px; border: 1px solid rgba(19,49,95,.15); border-radius: 20px; background: none; cursor: pointer; font: 500 10px/1 var(--font-sans); color: rgba(19,49,95,.45); letter-spacing: .06em; text-transform: uppercase; transition: all .2s; white-space: nowrap; }
+    .auth-signout:hover { background: #13315F; color: #fff; border-color: #13315F; }
+
+    /* ── CART PANEL */
+    .cart-bg { position: fixed; inset: 0; z-index: 700; background: rgba(0,0,0,.45); opacity: 0; pointer-events: none; transition: opacity .3s; }
+    .cart-bg.open { opacity: 1; pointer-events: all; }
+    .cart-panel { position: fixed; top: 0; right: 0; bottom: 0; z-index: 701; width: min(400px, 95vw); background: #fff; transform: translateX(100%); transition: transform .35s cubic-bezier(.4,0,.2,1); display: flex; flex-direction: column; box-shadow: -8px 0 40px rgba(0,0,0,.15); }
+    .cart-panel.open { transform: none; }
+    .cart-panel-head { display: flex; align-items: center; justify-content: space-between; padding: 20px 22px; border-bottom: 1px solid rgba(19,49,95,.08); flex-shrink: 0; }
+    .cart-panel-head h3 { font: 600 17px/1 var(--font-sans); color: #13315F; letter-spacing: .02em; }
+    .cart-panel-close { width: 32px; height: 32px; border-radius: 50%; border: none; background: rgba(19,49,95,.06); cursor: pointer; font-size: 16px; color: #13315F; display: grid; place-items: center; transition: background .2s; }
+    .cart-panel-close:hover { background: rgba(19,49,95,.12); }
+    .cart-list { flex: 1; overflow-y: auto; padding: 16px 22px; display: flex; flex-direction: column; gap: 16px; }
+    .cart-gate { display: flex; flex-direction: column; align-items: center; text-align: center; padding: 56px 24px 40px; gap: 16px; }
+    .cart-gate svg { width: 44px; height: 44px; stroke: currentColor; fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; color: rgba(19,49,95,.2); }
+    .cart-gate p { font: 400 14px/1.6 var(--font-sans); color: rgba(19,49,95,.5); }
+    .cart-gate-btn { height: 44px; padding: 0 28px; background: #13315F; color: #fff; border: none; border-radius: 8px; font: 600 11px/1 var(--font-sans); letter-spacing: .12em; text-transform: uppercase; cursor: pointer; transition: background .2s; }
+    .cart-gate-btn:hover { background: #1E7FB8; }
+    .cart-empty-state { text-align: center; padding: 48px 20px; display: flex; flex-direction: column; align-items: center; gap: 16px; }
+    .cart-empty-state p { font: 400 14px/1.5 var(--font-sans); color: rgba(19,49,95,.35); }
+    .cart-empty-state a { display: inline-block; padding: 11px 26px; background: #13315F; color: #fff; border-radius: 6px; font: 600 11px/1 var(--font-sans); letter-spacing: .1em; text-transform: uppercase; text-decoration: none; transition: background .2s; }
+    .cart-empty-state a:hover { background: #1E7FB8; }
+    .c-item { display: flex; gap: 12px; align-items: flex-start; }
+    .c-item img { width: 76px; height: 76px; object-fit: cover; border-radius: 8px; background: #eef1f5; flex-shrink: 0; }
+    .c-item-info { flex: 1; min-width: 0; }
+    .c-item-name { font: 500 12px/1.35 var(--font-sans); color: #13315F; margin-bottom: 3px; }
+    .c-item-meta { font: 400 10px/1 var(--font-sans); color: rgba(19,49,95,.4); text-transform: uppercase; letter-spacing: .07em; margin-bottom: 8px; }
+    .c-item-price { font: 700 13px/1 var(--font-sans); color: #13315F; }
+    .c-item-row { display: flex; align-items: center; gap: 6px; margin-top: 7px; }
+    .c-qty-btn { width: 24px; height: 24px; border: 1px solid rgba(19,49,95,.18); border-radius: 4px; background: none; cursor: pointer; font-size: 13px; color: #13315F; display: grid; place-items: center; transition: background .15s; }
+    .c-qty-btn:hover { background: rgba(19,49,95,.06); }
+    .c-qty-num { font: 600 12px/1 var(--font-sans); color: #13315F; min-width: 18px; text-align: center; }
+    .c-remove { margin-left: auto; background: none; border: none; cursor: pointer; color: rgba(19,49,95,.25); font-size: 15px; line-height: 1; padding: 3px; transition: color .2s; }
+    .c-remove:hover { color: #dc2626; }
+    .cart-foot { padding: 14px 22px 20px; border-top: 1px solid rgba(19,49,95,.08); flex-shrink: 0; }
+    .cart-total-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+    .cart-total-row span { font: 400 12px/1 var(--font-sans); color: rgba(19,49,95,.45); }
+    .cart-total-row strong { font: 700 20px/1 var(--font-sans); color: #13315F; }
+    .cart-checkout-btn { display: flex; align-items: center; justify-content: center; width: 100%; height: 52px; background: linear-gradient(135deg, #13315F, #1E7FB8); color: #fff; border: none; border-radius: 8px; font: 700 11px/1 var(--font-sans); letter-spacing: .14em; text-transform: uppercase; cursor: pointer; transition: box-shadow .2s, transform .15s; margin-bottom: 10px; }
+    .cart-checkout-btn:hover { box-shadow: 0 8px 28px rgba(19,49,95,.28); transform: translateY(-1px); }
+    .cart-continue-link { display: block; text-align: center; font: 400 12px/1 var(--font-sans); color: rgba(19,49,95,.4); text-decoration: none; padding: 4px 0 2px; transition: color .2s; }
+    .cart-continue-link:hover { color: #13315F; }
+    .cart-success { display: flex; flex-direction: column; align-items: center; text-align: center; padding: 56px 24px 40px; gap: 14px; }
+    .cart-success svg { width: 48px; height: 48px; stroke: #34C39A; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    .cart-success strong { font: 600 15px/1 var(--font-sans); color: #13315F; }
+    .cart-success p { font: 400 13px/1.5 var(--font-sans); color: rgba(19,49,95,.5); }
+
+    .nav__hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: 4px;
+    }
+    .nav__hamburger span {
+      width: 24px; height: 2px;
+      background: #fff;
+      border-radius: 2px;
+      transition: transform .3s, opacity .3s;
+    }
+
+    /* ═══════════════════════════════════════════════════
+       HERO
+    ═══════════════════════════════════════════════════ */
+    .hero {
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      position: relative;
+      overflow: hidden;
+      background: url('ảnh bìa.png') center/cover no-repeat;
+      padding: 80px 0 80px;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(160deg, rgba(10,30,61,.72) 0%, rgba(19,49,95,.55) 50%, rgba(10,30,61,.45) 100%);
+      z-index: 1;
+    }
+
+    /* Orbs hidden — photo background */
+    .hero__orb { display: none; }
+
+    /* Wave SVG at bottom */
+    .hero__wave {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      line-height: 0;
+      z-index: 2;
+    }
+
+    .hero__content {
+      position: absolute;
+      bottom: 80px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 2;
+      text-align: center;
+      color: #fff;
+      max-width: 720px;
+      padding: 0 24px;
+      width: 100%;
+    }
+
+    .hero__logo {
+      width: clamp(100px, 14vw, 150px);
+      aspect-ratio: 1 / 0.6;
+      overflow: hidden;
+      margin: 0 auto 36px;
+      animation: float 5s ease-in-out infinite;
+      line-height: 0;
+    }
+    .hero__logo img {
+      width: 100%;
+      display: block;
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50%       { transform: translateY(-10px); }
+    }
+
+    .hero__eyebrow {
+      font: 500 11px/1 var(--font-sans);
+      letter-spacing: .5em;
+      text-transform: uppercase;
+      color: var(--green);
+      margin-bottom: 20px;
+      text-indent: .5em;
+    }
+
+    .hero__title {
+      font-family: var(--font-display);
+      font-size: clamp(36px, 6vw, 68px);
+      font-weight: 500;
+      letter-spacing: .25em;
+      text-indent: .25em;
+      line-height: 1;
+      margin-bottom: 12px;
+      background: linear-gradient(135deg, #fff 30%, rgba(255,255,255,.6));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero__accent {
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-size: clamp(14px, 1.8vw, 20px);
+      color: rgba(255,255,255,.85);
+      margin-bottom: 28px;
+      font-weight: 400;
+    }
+
+    .hero__tagline {
+      font: 300 14px/1.75 var(--font-sans);
+      letter-spacing: .06em;
+      color: rgba(255,255,255,.7);
+      max-width: 460px;
+      margin: 0 auto 44px;
+    }
+
+    .hero__ctas {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: nowrap;
+      align-items: center;
+    }
+
+    .hero__scroll {
+      position: absolute;
+      bottom: 36px; left: 50%;
+      transform: translateX(-50%);
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      color: rgba(255,255,255,.45);
+      font: 400 11px/1 var(--font-sans);
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      animation: scrollBounce 2s ease-in-out infinite;
+    }
+    .hero__scroll svg { width: 20px; height: 20px; }
+    @keyframes scrollBounce {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50%       { transform: translateX(-50%) translateY(6px); }
+    }
+
+    /* ═══════════════════════════════════════════════════
+       MARQUEE STRIP
+    ═══════════════════════════════════════════════════ */
+    .marquee-strip {
+      background: var(--navy);
+      padding: 16px 0;
+      overflow: hidden;
+      border-top: 1px solid rgba(255,255,255,.06);
+    }
+    .marquee-track {
+      display: flex;
+      gap: 0;
+      white-space: nowrap;
+      animation: marquee 28s linear infinite;
+    }
+    .marquee-track span {
+      font: 500 11px/1 var(--font-sans);
+      letter-spacing: .3em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,.45);
+      padding: 0 40px;
+    }
+    .marquee-track span.dot {
+      color: var(--teal);
+      padding: 0;
+      letter-spacing: 0;
+    }
+    @keyframes marquee {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+
+    /* ═══════════════════════════════════════════════════
+       BRAND STORY
+    ═══════════════════════════════════════════════════ */
+    .story {
+      padding: 100px 0;
+      background: var(--white);
+    }
+    .story__grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+    .story__visual {
+      position: relative;
+    }
+    .story__img-main {
+      width: 100%;
+      aspect-ratio: 4/5;
+      object-fit: cover;
+      border-radius: 24px;
+      box-shadow: 0 40px 80px rgba(19,49,95,.15);
+    }
+    .story__img-accent {
+      position: absolute;
+      bottom: -32px; right: -32px;
+      width: 55%;
+      aspect-ratio: 1;
+      object-fit: cover;
+      border-radius: 20px;
+      border: 6px solid #fff;
+      box-shadow: 0 20px 50px rgba(19,49,95,.18);
+    }
+    .story__badge {
+      position: absolute;
+      top: 32px; left: -24px;
+      background: var(--navy);
+      color: #fff;
+      border-radius: 16px;
+      padding: 20px 22px;
+      text-align: center;
+      box-shadow: 0 12px 40px rgba(19,49,95,.3);
+    }
+    .story__badge-num {
+      font: 500 36px/1 var(--font-display);
+      color: var(--green);
+    }
+    .story__badge-text {
+      font: 400 11px/1.4 var(--font-sans);
+      color: rgba(255,255,255,.65);
+      margin-top: 4px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .story__text h2 {
+      font: 500 clamp(32px, 4vw, 52px)/1.1 var(--font-serif);
+      color: var(--navy);
+      margin-bottom: 24px;
+    }
+    .story__text h2 em {
+      font-style: italic;
+      color: var(--teal);
+    }
+    .story__text p {
+      font: 400 16px/1.75 var(--font-sans);
+      color: #3a4d5c;
+      margin-bottom: 20px;
+    }
+    .story__stats {
+      display: flex;
+      gap: 40px;
+      margin-top: 40px;
+      padding-top: 40px;
+      border-top: 1px solid #eef1f0;
+    }
+    .story__stat-num {
+      font: 500 36px/1 var(--font-display);
+      background: linear-gradient(135deg, var(--teal), var(--ocean));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .story__stat-label {
+      font: 400 13px/1.4 var(--font-sans);
+      color: var(--pebble);
+      margin-top: 4px;
+    }
+
+    /* ═══════════════════════════════════════════════════
+       COLLECTIONS
+    ═══════════════════════════════════════════════════ */
+    .collections {
+      padding: 100px 0;
+      background: var(--mist);
+    }
+    .collections__header {
+      text-align: center;
+      margin-bottom: 60px;
+    }
+    .collections__header h2 {
+      font: 500 clamp(30px, 4vw, 48px)/1.1 var(--font-serif);
+      color: var(--navy);
+    }
+    .collections__header p {
+      font: 400 16px/1.6 var(--font-sans);
+      color: var(--pebble);
+      margin-top: 12px;
+    }
+
+    .collections__grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .coll-card {
+      position: relative;
+      border-radius: 24px;
+      overflow: hidden;
+      aspect-ratio: 3/4;
+      cursor: pointer;
+      group: true;
+    }
+    .coll-card:first-child { grid-row: span 2; aspect-ratio: auto; }
+
+    .coll-card__img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform .8s var(--ease-out);
+    }
+    .coll-card:hover .coll-card__img { transform: scale(1.06); }
+
+    .coll-card__overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(10,20,40,.85) 0%, rgba(10,20,40,.1) 60%);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 36px 32px;
+      transition: background .4s;
+    }
+    .coll-card:hover .coll-card__overlay {
+      background: linear-gradient(to top, rgba(10,20,40,.9) 0%, rgba(10,20,40,.25) 60%);
+    }
+
+    .coll-card__tag {
+      font: 500 11px/1 var(--font-sans);
+      letter-spacing: .28em;
+      text-transform: uppercase;
+      color: var(--green);
+      margin-bottom: 10px;
+    }
+    .coll-card__title {
+      font: 500 28px/1.1 var(--font-serif);
+      color: #fff;
+      margin-bottom: 12px;
+    }
+    .coll-card__desc {
+      font: 400 14px/1.6 var(--font-sans);
+      color: rgba(255,255,255,.7);
+      margin-bottom: 24px;
+      max-width: 280px;
+    }
+    .coll-card__link {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font: 600 12px/1 var(--font-sans);
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: #fff;
+      transform: translateY(8px);
+      opacity: 0;
+      transition: transform .4s var(--ease-out), opacity .4s;
+    }
+    .coll-card__link svg { transition: transform .3s; }
+    .coll-card:hover .coll-card__link { transform: none; opacity: 1; }
+    .coll-card:hover .coll-card__link svg { transform: translateX(4px); }
+
+    /* ═══════════════════════════════════════════════════
+       VALUES / WHY CARÉTTA
+    ═══════════════════════════════════════════════════ */
+    .values {
+      padding: 100px 0;
+      background: var(--white);
+    }
+    .values__header {
+      text-align: center;
+      margin-bottom: 64px;
+    }
+    .values__header h2 {
+      font: 500 clamp(30px, 4vw, 48px)/1.1 var(--font-serif);
+      color: var(--navy);
+    }
+
+    .values__grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 32px;
+    }
+
+    .value-card {
+      padding: 40px 28px;
+      border-radius: 20px;
+      border: 1px solid #eef1f0;
+      text-align: center;
+      background: #fff;
+      transition: transform .3s var(--ease-out), box-shadow .3s, border-color .3s;
+      position: relative;
+      overflow: hidden;
+    }
+    .value-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--teal), var(--ocean));
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform .4s var(--ease-out);
+    }
+    .value-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 60px rgba(19,49,95,.1);
+      border-color: transparent;
+    }
+    .value-card:hover::before { transform: scaleX(1); }
+
+    .value-card__icon {
+      width: 64px; height: 64px;
+      margin: 0 auto 24px;
+      background: var(--mist);
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      transition: background .3s;
+    }
+    .value-card:hover .value-card__icon {
+      background: linear-gradient(135deg, var(--teal), var(--ocean));
+    }
+    .value-card__icon svg { transition: stroke .3s; }
+    .value-card:hover .value-card__icon svg { stroke: #fff; }
+
+    .value-card h3 {
+      font: 500 18px/1.2 var(--font-serif);
+      color: var(--navy);
+      margin-bottom: 12px;
+    }
+    .value-card p {
+      font: 400 14px/1.65 var(--font-sans);
+      color: #5a7080;
+    }
+
+    /* ═══════════════════════════════════════════════════
+       LOOKBOOK / GALLERY
+    ═══════════════════════════════════════════════════ */
+    .lookbook {
+      padding: 100px 0;
+      background: var(--sand);
+    }
+    .lookbook__header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      margin-bottom: 48px;
+    }
+    .lookbook__header h2 {
+      font: 500 clamp(28px, 3.5vw, 44px)/1.1 var(--font-serif);
+      color: var(--navy);
+    }
+    .lookbook__gallery {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      grid-template-rows: repeat(2, 320px);
+      gap: 16px;
+    }
+    .lookbook__gallery .g1 { grid-column: 1 / 6; grid-row: 1 / 3; }
+    .lookbook__gallery .g2 { grid-column: 6 / 9; grid-row: 1; }
+    .lookbook__gallery .g3 { grid-column: 9 / 13; grid-row: 1; }
+    .lookbook__gallery .g4 { grid-column: 6 / 9; grid-row: 2; }
+    .lookbook__gallery .g5 { grid-column: 9 / 13; grid-row: 2; }
+
+    .gitem {
+      border-radius: 18px;
+      overflow: hidden;
+      position: relative;
+    }
+    .gitem img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      transition: transform .8s var(--ease-out);
+    }
+    .gitem:hover img { transform: scale(1.07); }
+    .gitem__label {
+      position: absolute;
+      bottom: 16px; left: 16px;
+      background: rgba(255,255,255,.9);
+      backdrop-filter: blur(8px);
+      border-radius: 50px;
+      padding: 8px 16px;
+      font: 600 11px/1 var(--font-sans);
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--navy);
+    }
+
+    /* ═══════════════════════════════════════════════════
+       MATERIALS / FEATURES BAND
+    ═══════════════════════════════════════════════════ */
+    .features-band {
+      background: linear-gradient(135deg, var(--navy) 0%, #1a3f72 50%, var(--ocean) 100%);
+      padding: 80px 0;
+      position: relative;
+      overflow: hidden;
+    }
+    .features-band::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    }
+    .features-band__inner {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .features-band__center {
+      text-align: center;
+    }
+    .features-band__center .turtle-wrap {
+      width: clamp(140px, 16vw, 200px);
+      margin: 0 auto;
+      line-height: 0;
+      animation: float 5s ease-in-out infinite;
+    }
+
+    /* ═══════════════════════════════════════════════════
+       TESTIMONIALS
+    ═══════════════════════════════════════════════════ */
+    .testimonials {
+      padding: 100px 0;
+      background: var(--white);
+    }
+    .testimonials__header {
+      text-align: center;
+      margin-bottom: 60px;
+    }
+    .testimonials__header h2 {
+      font: 500 clamp(28px, 3.5vw, 44px)/1.1 var(--font-serif);
+      color: var(--navy);
+    }
+    .testimonials__grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 28px;
+    }
+    .tcard {
+      padding: 40px 32px;
+      border-radius: 20px;
+      border: 1px solid #eef1f0;
+      background: #fff;
+      transition: transform .3s, box-shadow .3s;
+    }
+    .tcard:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 48px rgba(19,49,95,.08);
+    }
+    .tcard__stars {
+      display: flex;
+      gap: 4px;
+      margin-bottom: 20px;
+    }
+    .tcard__stars svg { width: 16px; height: 16px; fill: var(--gold); }
+    .tcard__text {
+      font: 400 15px/1.75 var(--font-serif);
+      font-style: italic;
+      color: var(--ink);
+      margin-bottom: 28px;
+    }
+    .tcard__author {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .tcard__avatar {
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      object-fit: cover;
+      background: var(--mist);
+      flex-shrink: 0;
+    }
+    .tcard__name {
+      font: 600 14px/1 var(--font-sans);
+      color: var(--navy);
+    }
+    .tcard__role {
+      font: 400 12px/1 var(--font-sans);
+      color: var(--pebble);
+      margin-top: 4px;
+    }
+    .tcard__verified {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font: 500 11px/1 var(--font-sans);
+      color: var(--teal);
+    }
+
+    /* ═══════════════════════════════════════════════════
+       NEWSLETTER
+    ═══════════════════════════════════════════════════ */
+    .newsletter {
+      padding: 100px 0;
+      background: linear-gradient(135deg, #0a1e3d 0%, var(--navy) 100%);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .newsletter__orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(100px);
+      opacity: .25;
+    }
+    .newsletter__orb-1 {
+      width: 500px; height: 500px;
+      background: var(--teal);
+      top: -200px; right: -100px;
+    }
+    .newsletter__orb-2 {
+      width: 400px; height: 400px;
+      background: var(--ocean);
+      bottom: -150px; left: -80px;
+    }
+    .newsletter__inner { position: relative; z-index: 1; }
+    .newsletter h2 {
+      font: 500 clamp(28px, 3.5vw, 44px)/1.1 var(--font-serif);
+      color: #fff;
+      margin-bottom: 12px;
+    }
+    .newsletter p {
+      font: 300 16px/1.6 var(--font-sans);
+      color: rgba(255,255,255,.6);
+      max-width: 480px;
+      margin: 0 auto 40px;
+    }
+    .newsletter__form {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      grid-template-areas: "input btn" "error btn";
+      column-gap: 12px;
+      row-gap: 5px;
+      max-width: 480px;
+      margin: 0 auto;
+    }
+    .newsletter__form > button { grid-area: btn; align-self: start; }
+    .newsletter__input {
+      grid-area: input;
+      padding: 16px 24px;
+      border-radius: 50px;
+      border: 1.5px solid rgba(255,255,255,.15);
+      background: rgba(255,255,255,.08);
+      backdrop-filter: blur(8px);
+      color: #fff;
+      font: 400 14px var(--font-sans);
+      outline: none;
+      transition: border-color .3s, background .3s;
+    }
+    .newsletter__input::placeholder { color: rgba(255,255,255,.4); }
+    .newsletter__input:focus {
+      border-color: var(--teal);
+      background: rgba(255,255,255,.12);
+    }
+    .newsletter .newsletter__error {
+      grid-area: error;
+      font-family: var(--font-sans);
+      font-size: 12px;
+      font-style: italic;
+      font-weight: 400;
+      line-height: 1;
+      color: #e74c3c;
+      letter-spacing: .03em;
+      padding-left: 8px;
+      margin: 0;
+      max-width: none;
+    }
+    .newsletter .newsletter__note {
+      font: 300 16px/1.6 var(--font-sans);
+      color: rgba(255,255,255,.3);
+      margin-top: 48px;
+      letter-spacing: .04em;
+    }
+
+    /* ═══════════════════════════════════════════════════
+       FOOTER
+    ═══════════════════════════════════════════════════ */
+    .footer {
+      background: #E3EFF5;
+      padding: 48px 0 28px;
+      color: rgba(19,49,95,.75);
+    }
+    .footer__top {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 48px;
+      margin-bottom: 36px;
+    }
+    .footer__brand { display: none; }
+    .footer__brand p {
+      font: 300 14px/1.7 var(--font-sans);
+      color: rgba(19,49,95,.55);
+      margin-bottom: 28px;
+    }
+    .footer__social {
+      display: flex;
+      gap: 12px;
+    }
+    .footer__social a {
+      width: 38px; height: 38px;
+      border-radius: 50%;
+      border: 1px solid rgba(19,49,95,.2);
+      display: grid;
+      place-items: center;
+      color: rgba(19,49,95,.45);
+      transition: border-color .3s, color .3s, background .3s;
+    }
+    .footer__social a:hover {
+      border-color: var(--teal);
+      color: var(--teal);
+      background: rgba(31,168,160,.08);
+    }
+
+    .footer__col h4 {
+      font: 600 13px/1 var(--font-sans);
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: var(--navy);
+      margin-bottom: 20px;
+    }
+    .footer__col ul { list-style: none; }
+    .footer__col ul li { margin-bottom: 12px; }
+    .footer__col ul a {
+      font: 400 15px/1 var(--font-sans);
+      color: rgba(19,49,95,.72);
+      transition: color .3s;
+    }
+    .footer__col ul a:hover { color: var(--teal); }
+
+    .footer__bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 32px;
+      border-top: 1px solid rgba(19,49,95,.12);
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .footer__bottom p {
+      font: 400 13px/1 var(--font-sans);
+      color: rgba(19,49,95,.4);
+    }
+    .footer__bottom-links {
+      display: flex;
+      gap: 24px;
+    }
+    .footer__bottom-links a {
+      font: 400 13px/1 var(--font-sans);
+      color: rgba(19,49,95,.4);
+      transition: color .3s;
+    }
+    .footer__bottom-links a:hover { color: var(--navy); }
+
+    /* ═══════════════════════════════════════════════════
+       MOBILE NAV DRAWER
+    ═══════════════════════════════════════════════════ */
+    .nav__drawer {
+      position: fixed;
+      inset: 0;
+      background: var(--navy);
+      z-index: 99;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 36px;
+      transform: translateX(100%);
+      transition: transform .4s var(--ease-out);
+    }
+    .nav__drawer.open { transform: none; }
+    .nav__drawer a {
+      font: 500 22px/1 var(--font-display);
+      letter-spacing: .2em;
+      color: rgba(255,255,255,.8);
+      text-transform: uppercase;
+      transition: color .2s;
+    }
+    .nav__drawer a:hover { color: var(--green); }
+    .nav__drawer-close {
+      position: absolute;
+      top: 24px; right: 24px;
+      cursor: pointer;
+      color: rgba(255,255,255,.6);
+    }
+
+    /* ═══════════════════════════════════════════════════
+       RESPONSIVE
+    ═══════════════════════════════════════════════════ */
+    @media (max-width: 1024px) {
+      .story__grid { grid-template-columns: 1fr; gap: 60px; }
+      .story__visual { max-width: 500px; margin: 0 auto; }
+      .values__grid { grid-template-columns: repeat(2, 1fr); }
+      .lookbook__gallery {
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: auto;
+      }
+      .lookbook__gallery .g1 { grid-column: 1 / 3; grid-row: auto; aspect-ratio: 16/7; }
+      .lookbook__gallery .g2,
+      .lookbook__gallery .g3,
+      .lookbook__gallery .g4,
+      .lookbook__gallery .g5 { grid-column: auto; grid-row: auto; }
+      .features-band__inner { justify-content: center; }
+      .footer__top { grid-template-columns: 1fr 1fr; gap: 40px; }
+    }
+
+    @media (max-width: 768px) {
+      .nav__links { display: none; }
+      .nav__hamburger { display: flex; }
+      .collections__grid { grid-template-columns: 1fr; }
+      .coll-card:first-child { aspect-ratio: 3/4; }
+      .coll-card__link { opacity: 1; transform: none; }
+      .values__grid { grid-template-columns: 1fr; }
+      .testimonials__grid { grid-template-columns: 1fr; }
+      .lookbook__gallery { grid-template-columns: 1fr; }
+      .lookbook__gallery .g1 { grid-column: auto; aspect-ratio: 3/4; }
+      .lookbook__gallery .g2,
+      .lookbook__gallery .g3,
+      .lookbook__gallery .g4,
+      .lookbook__gallery .g5 { aspect-ratio: 3/4; }
+      .story__img-accent { display: none; }
+      .story__badge { left: 0; top: 16px; }
+      .newsletter__form { flex-direction: column; border-radius: 20px; }
+      .newsletter__input { text-align: center; }
+      .footer__top { grid-template-columns: 1fr; }
+      .footer__bottom { flex-direction: column; text-align: center; }
+      .lookbook__header { flex-direction: column; align-items: flex-start; gap: 16px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ══ MOBILE DRAWER ══════════════════════════════ -->
+  <nav class="nav__drawer" id="drawer">
+    <div class="nav__drawer-close" id="drawerClose" aria-label="Close menu">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+        <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+      </svg>
+    </div>
+    <a href="#">Home</a>
+    <a href="collections.html">Collections</a>
+    <a href="why-caretta.html">Why Carétta</a>
+
+    <a href="#" class="btn btn-primary" style="font-size:13px;padding:14px 32px;">Shop Now</a>
+  </nav>
+
+  <!-- ══ NAVBAR ════════════════════════════════════ -->
+  <header class="nav" id="navbar">
+    <div class="nav__inner">
+      <a class="nav__logo" href="#">
+        <img class="site-logo" src="brand asset/logo chính.png" alt="CARÉTTA">
+      </a>
+      <ul class="nav__links" id="navLinks">
+        <li><a href="#">Home</a></li>
+        <li class="has-mega">
+          <a href="collections.html">Collections</a>
+          <div class="mega-drop">
+            <div>
+              <div class="mega-drop__title">Women</div>
+              <ul class="mega-drop__list">
+                <li><a href="women.html">So Hot</a></li>
+                <li><a href="women.html">Seaside Holidays</a></li>
+                <li><a href="women.html">Gorgeous</a></li>
+                <li><a href="women.html">Origin</a></li>
+                <li><a href="women.html">Call Summer</a></li>
+                <li><a href="women.html">Basic Style</a></li>
+                <li><a href="women.html">Floral</a></li>
+                <li><a href="women.html">Orchid</a></li>
+                <li><a href="women.html">Marine Life</a></li>
+                <li><a href="women.html">Chubby</a></li>
+              </ul>
+            </div>
+            <div>
+              <div class="mega-drop__title">Men</div>
+              <ul class="mega-drop__list">
+                <li><a href="men.html">LEO</a></li>
+                <li><a href="men.html">AQUA</a></li>
+              </ul>
+            </div>
+            <div>
+              <div class="mega-drop__title">Kids</div>
+              <ul class="mega-drop__list">
+                <li><a href="kids.html">Warmy Wetsuit Collection</a></li>
+                <li><a href="kids.html">Teen Collection</a></li>
+              </ul>
+            </div>
+          </div>
+        </li>
+        <li><a href="women.html">Women</a></li>
+        <li><a href="men.html">Men</a></li>
+        <li><a href="kids.html">Kids</a></li>
+        <li><a href="why-caretta.html">Why Carétta</a></li>
+      </ul>
+      <div class="nav__isearch" id="navIsearch">
+        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" id="searchInput" placeholder="Tìm kiếm sản phẩm..." autocomplete="off">
+        <button class="nav__isearch-close" id="searchClose">✕</button>
+      </div>
+      <div class="nav__actions">
+        <button class="nav__icon-btn" id="searchBtn" title="Tìm kiếm">
+          <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        </button>
+        <button class="nav__icon-btn" id="loginBtn" title="Tài khoản">
+          <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        </button>
+        <button class="nav__icon-btn" id="cartBtn" title="Giỏ hàng">
+          <svg viewBox="0 0 24 24"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+          <span class="cart-badge" id="cartBadge"></span>
+        </button>
+      </div>
+      <div class="nav__hamburger" id="hamburger" aria-label="Open menu">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+  </header>
+
+  <!-- ══ HERO ══════════════════════════════════════ -->
+  <section class="hero">
+    <div class="hero__orb hero__orb-1"></div>
+    <div class="hero__orb hero__orb-2"></div>
+    <div class="hero__orb hero__orb-3"></div>
+
+    <div class="hero__content">
+      <div class="hero__ctas">
+        <a href="collections.html" class="btn btn-primary">
+          Khám Phá Bộ Sưu Tập
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+        <a href="#story" class="btn btn-outline">Câu Chuyện Của Chúng Tôi</a>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ══ MARQUEE STRIP ═════════════════════════════ -->
+  <div class="marquee-strip" aria-hidden="true">
+    <div class="marquee-track">
+      <!-- duplicated for seamless loop -->
+      <span>Đồ Bơi</span><span class="dot">◆</span>
+      <span>Thể Thao</span><span class="dot">◆</span>
+      <span>Cảm Hứng Đại Dương</span><span class="dot">◆</span>
+      <span>Hiệu Năng</span><span class="dot">◆</span>
+      <span>Bền Vững</span><span class="dot">◆</span>
+      <span>Phong Cách</span><span class="dot">◆</span>
+      <span>Đồ Bơi</span><span class="dot">◆</span>
+      <span>Thể Thao</span><span class="dot">◆</span>
+      <span>Cảm Hứng Đại Dương</span><span class="dot">◆</span>
+      <span>Hiệu Năng</span><span class="dot">◆</span>
+      <span>Bền Vững</span><span class="dot">◆</span>
+      <span>Phong Cách</span><span class="dot">◆</span>
+      <span>Đồ Bơi</span><span class="dot">◆</span>
+      <span>Thể Thao</span><span class="dot">◆</span>
+      <span>Cảm Hứng Đại Dương</span><span class="dot">◆</span>
+      <span>Hiệu Năng</span><span class="dot">◆</span>
+      <span>Bền Vững</span><span class="dot">◆</span>
+      <span>Phong Cách</span><span class="dot">◆</span>
+    </div>
+  </div>
+
+  <!-- ══ BRAND STORY ═══════════════════════════════ -->
+
+  <!-- ══ COLLECTIONS ═══════════════════════════════ -->
+  <section class="collections" id="collections">
+    <div class="container">
+      <div class="collections__header">
+        <span class="kicker reveal">Mùa 2025</span>
+        <h2 class="reveal delay-1">Khám Phá Bộ Sưu Tập</h2>
+        <p class="reveal delay-2">Từ bơi thi đấu đến phong cách bãi biển — mỗi sản phẩm đều đạt hiệu năng vượt trội.</p>
+      </div>
+
+      <div class="collections__grid">
+        <!-- Card 1 — Swimwear (tall) -->
+        <div class="coll-card reveal">
+          <img
+            src="https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?w=800&q=80&fit=crop&crop=top"
+            alt="Swimwear Collection"
+            class="coll-card__img"
+          />
+          <div class="coll-card__overlay">
+            <span class="coll-card__tag">Bán Chạy Nhất</span>
+            <h3 class="coll-card__title">Đồ Bơi</h3>
+            <p class="coll-card__desc">Đồ bơi hiệu năng cao được thiết kế để tối ưu tốc độ, thoải mái và phong cách trong từng sải bơi.</p>
+            <a href="#" class="coll-card__link">
+              Khám Phá Ngay
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- Card 2 — Activewear -->
+        <div class="coll-card reveal delay-1">
+          <img
+            src="https://images.unsplash.com/photo-1518310952931-b1de897abd40?w=600&q=80&fit=crop"
+            alt="Activewear Collection"
+            class="coll-card__img"
+          />
+          <div class="coll-card__overlay">
+            <span class="coll-card__tag">Hàng Mới Về</span>
+            <h3 class="coll-card__title">Thể Thao</h3>
+            <p class="coll-card__desc">Trang phục từ sân tập đến phố phường — linh hoạt cho mọi chuyển động, gây ấn tượng mọi nơi.</p>
+            <a href="#" class="coll-card__link">
+              Khám Phá Ngay
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- Card 3 — Beach Wear -->
+        <div class="coll-card reveal delay-2">
+          <img
+            src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600&q=80&fit=crop"
+            alt="Beach Collection"
+            class="coll-card__img"
+          />
+          <div class="coll-card__overlay">
+            <span class="coll-card__tag">Hè 2025</span>
+            <h3 class="coll-card__title">Phong Cách Bãi Biển</h3>
+            <p class="coll-card__desc">Phong cách từ bãi biển đến quán bar — có chống tia UV và vải chống muối biển.</p>
+            <a href="#" class="coll-card__link">
+              Khám Phá Ngay
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- Card 4 — Training -->
+        <div class="coll-card reveal delay-1">
+          <img
+            src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=600&q=80&fit=crop"
+            alt="Training Collection"
+            class="coll-card__img"
+          />
+          <div class="coll-card__overlay">
+            <span class="coll-card__tag">Hiệu Năng</span>
+            <h3 class="coll-card__title">Bộ Tập Luyện</h3>
+            <p class="coll-card__desc">Đồ nén và phụ kiện tập luyện thiết yếu dành cho vận động viên nghiêm túc.</p>
+            <a href="#" class="coll-card__link">
+              Khám Phá Ngay
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- Card 5 — Accessories -->
+        <div class="coll-card reveal delay-2">
+          <img
+            src="https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=600&q=80&fit=crop"
+            alt="Accessories Collection"
+            class="coll-card__img"
+          />
+          <div class="coll-card__overlay">
+            <span class="coll-card__tag">Thiết Yếu</span>
+            <h3 class="coll-card__title">Phụ Kiện</h3>
+            <p class="coll-card__desc">Kính bơi, mũ bơi và túi xách được chế tác để hoàn thiện phong cách CARÉTTA.</p>
+            <a href="#" class="coll-card__link">
+              Khám Phá Ngay
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ VALUES ═════════════════════════════════════ -->
+  <section class="values" id="values">
+    <div class="container">
+      <div class="values__header">
+        <span class="kicker reveal">Tại Sao Chọn CARÉTTA</span>
+        <h2 class="reveal delay-1">Chế tác có chủ đích,<br/>mặc với sự tự tin</h2>
+      </div>
+
+      <div class="values__grid">
+        <div class="value-card reveal">
+          <div class="value-card__icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="1.8" stroke-linecap="round">
+              <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+            </svg>
+          </div>
+          <h3>Hiệu Năng Đỉnh Cao</h3>
+          <p>Vải kỹ thuật co giãn 4 chiều với khả năng chống tia UV50+ dành cho những vận động viên luôn đòi hỏi nhiều hơn từ trang phục.</p>
+        </div>
+
+        <div class="value-card reveal delay-1">
+          <div class="value-card__icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="1.8" stroke-linecap="round">
+              <path d="M3 6l9-4 9 4v6c0 5.25-3.75 9.74-9 11-5.25-1.26-9-5.75-9-11V6z"/>
+            </svg>
+          </div>
+          <h3>Chất Liệu Thân Thiện Biển Cả</h3>
+          <p>Mỗi sản phẩm được làm từ nhựa tái chế từ đại dương và vải thân thiện môi trường — vì bảo vệ biển bắt đầu từ những gì bạn mặc.</p>
+        </div>
+
+        <div class="value-card reveal delay-2">
+          <div class="value-card__icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="1.8" stroke-linecap="round">
+              <circle cx="12" cy="12" r="10"/>
+              <path d="M8 14s1.5 2 4 2 4-2 4-2M9 9h.01M15 9h.01"/>
+            </svg>
+          </div>
+          <h3>Bền Bỉ Theo Thời Gian</h3>
+          <p>Cấu trúc kháng clo, giữ form bền vững — giữ nguyên hiệu năng qua từng vòng bơi, từng mùa mà không phai màu.</p>
+        </div>
+
+        <div class="value-card reveal delay-3">
+          <div class="value-card__icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="1.8" stroke-linecap="round">
+              <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/>
+              <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+            </svg>
+          </div>
+          <h3>Tinh Thần Đại Dương Toàn Cầu</h3>
+          <p>Từ bể bơi ven biển đến các rạn san hô nhiệt đới, trang phục CARÉTTA được tạo ra để đồng hành cùng bạn đến bất cứ nơi nào sóng nước dẫn lối.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ══ LOOKBOOK ═══════════════════════════════════ -->
+  <section class="lookbook" id="lookbook">
+    <div class="container">
+      <div class="lookbook__header">
+        <div>
+          <span class="kicker reveal">Hè 2025</span>
+          <h2 class="reveal delay-1">Bộ Ảnh Lookbook</h2>
+        </div>
+        <a href="#" class="btn btn-dark reveal delay-2" style="white-space:nowrap;">
+          Xem Tất Cả
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+      </div>
+
+      <div class="lookbook__gallery">
+        <div class="gitem g1 reveal">
+          <img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=700&q=80&fit=crop" alt="Lookbook 1" />
+          <div class="gitem__label">Phong Cách Hè</div>
+        </div>
+        <div class="gitem g2 reveal delay-1">
+          <img src="https://images.unsplash.com/photo-1574701148212-8518049c7b2c?w=500&q=80&fit=crop" alt="Lookbook 2" />
+          <div class="gitem__label">Sẵn Sàng Xuống Hồ</div>
+        </div>
+        <div class="gitem g3 reveal delay-2">
+          <img src="https://images.unsplash.com/photo-1513596846216-48ae70153834?w=500&q=80&fit=crop" alt="Lookbook 3" />
+          <div class="gitem__label">Bộ Sưu Tập Đại Dương</div>
+        </div>
+        <div class="gitem g4 reveal delay-1">
+          <img src="https://images.unsplash.com/photo-1476480862126-209bfaa8edc8?w=500&q=80&fit=crop" alt="Lookbook 4" />
+          <div class="gitem__label">Sống Năng Động</div>
+        </div>
+        <div class="gitem g5 reveal delay-2">
+          <img src="https://images.unsplash.com/photo-1530549387789-4c1017266635?w=500&q=80&fit=crop" alt="Lookbook 5" />
+          <div class="gitem__label">Bơi Mạnh Mẽ</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ TESTIMONIALS ═══════════════════════════════ -->
+  <section class="testimonials">
+    <div class="container">
+      <div class="testimonials__header">
+
+        <h2 class="reveal delay-1">Feedback Từ Khách Hàng Đã Mua</h2>
+      </div>
+
+      <div class="testimonials__grid">
+        <div class="tcard reveal">
+          <div class="tcard__stars">
+            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          </div>
+          <p class="tcard__text">"Mình order size M theo bảng size của Carétta, mặc vừa khít luôn. Bơi được gần 3 tháng rồi mà màu vẫn chưa phai, vải bó sát mà không bị xệ hay cuộn lên. Lần sau chắc chắn mua thêm!"</p>
+          <div class="tcard__author">
+            <img class="tcard__avatar" src="https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?w=80&q=55" alt="Nguyễn Minh Anh" />
+            <div>
+              <div class="tcard__name">Nguyễn Minh Anh</div>
+              <div class="tcard__role">Khách hàng · Hà Nội</div>
+            </div>
+            <div class="tcard__verified">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>
+              Đã mua hàng
+            </div>
+          </div>
+        </div>
+
+        <div class="tcard reveal delay-1">
+          <div class="tcard__stars">
+            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          </div>
+          <p class="tcard__text">"Ban đầu mình hơi phân vân vì giá cao hơn mấy hãng khác, nhưng mặc thử rồi là không muốn cởi ra nữa. Chất vải mềm, không bị lộ khi tập, ship nhanh, đóng gói cũng rất đẹp. Đáng tiền lắm!"</p>
+          <div class="tcard__author">
+            <img class="tcard__avatar" src="https://images.unsplash.com/photo-1484863137850-59afcfe05386?w=80&q=55" alt="Trần Phương Linh" />
+            <div>
+              <div class="tcard__name">Trần Phương Linh</div>
+              <div class="tcard__role">Khách hàng · TP.HCM</div>
+            </div>
+            <div class="tcard__verified">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>
+              Đã mua hàng
+            </div>
+          </div>
+        </div>
+
+        <div class="tcard reveal delay-2">
+          <div class="tcard__stars">
+            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          </div>
+          <p class="tcard__text">"Mua bộ quần short để tập chạy và bơi. Vải co giãn tốt, không bị kéo hay bung chỉ sau vài lần giặt. Mình khá kỹ tính với đồ thể thao nhưng bộ này thật sự ổn. Anh em thể thao nên thử!"</p>
+          <div class="tcard__author">
+            <img class="tcard__avatar" src="https://images.unsplash.com/photo-1503023345310-bd7c1de61c7d?w=80&q=55" alt="Lê Quang Đức" />
+            <div>
+              <div class="tcard__name">Lê Quang Đức</div>
+              <div class="tcard__role">Khách hàng · Đà Nẵng</div>
+            </div>
+            <div class="tcard__verified">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>
+              Đã mua hàng
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ NEWSLETTER ═════════════════════════════════ -->
+  <section class="newsletter" id="contact">
+    <div class="newsletter__orb newsletter__orb-1"></div>
+    <div class="newsletter__orb newsletter__orb-2"></div>
+    <div class="newsletter__inner">
+      <span class="kicker reveal" style="color:var(--green);">Kết Nối Với Chúng Tôi</span>
+      <h2 class="reveal delay-1">Tham Gia Cộng Đồng CARÉTTA</h2>
+      <p class="reveal delay-2">Là người đầu tiên biết về bộ sưu tập mới và những ưu đãi độc quyền</p>
+      <form class="newsletter__form reveal delay-3" onsubmit="return handleSubscribe(event)">
+        <input
+          type="tel"
+          class="newsletter__input"
+          placeholder="Số điện thoại của bạn"
+          required
+          inputmode="numeric"
+          maxlength="10"
+          oninput="this.value=this.value.replace(/[^0-9]/g,'');document.getElementById('subscribeErr').textContent=''"
+          aria-label="Số điện thoại"
+        />
+        <p class="newsletter__error" id="subscribeErr"></p>
+        <button type="submit" class="btn btn-primary">
+          Đăng Ký
+        </button>
+      </form>
+      <p class="newsletter__note reveal delay-4">Không spam. Hủy đăng ký bất cứ lúc nào.</p>
+    </div>
+  </section>
+
+  <!-- ══ FOOTER ═════════════════════════════════════ -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__top">
+        <div class="footer__col">
+          <h4>Bộ Sưu Tập</h4>
+          <ul>
+            <li><a href="women.html">Đồ Bơi Nữ</a></li>
+            <li><a href="men.html">Đồ Bơi Nam</a></li>
+            <li><a href="kids.html">Trẻ Em</a></li>
+            <li><a href="products.html">Tất Cả Sản Phẩm</a></li>
+          </ul>
+        </div>
+
+        <div class="footer__col">
+          <h4>Về Chúng Tôi</h4>
+          <ul>
+            <li><a href="cau-chuyen.html">Câu Chuyện</a></li>
+            <li><a href="blog.html">Blog</a></li>
+            <li><a href="phat-trien-ben-vung.html">Phát Triển Bền Vững</a></li>
+            <li><a href="tuyen-dung.html">Tuyển Dụng</a></li>
+          </ul>
+        </div>
+
+        <div class="footer__col">
+          <h4>Hỗ Trợ</h4>
+          <ul>
+            <li><a href="huong-dan-size.html">Hướng Dẫn Size</a></li>
+            <li><a href="giao-hang-doi-tra.html">Giao Hàng &amp; Đổi Trả</a></li>
+            <li><a href="cau-hoi-thuong-gap.html">Câu Hỏi Thường Gặp</a></li>
+            <li><a href="huong-dan-bao-quan.html">Hướng Dẫn Bảo Quản</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer__bottom">
+        <p>© 2025 CARÉTTA. Bảo lưu mọi quyền.</p>
+        <div class="footer__bottom-links">
+          <a href="#">Chính Sách Bảo Mật</a>
+          <a href="#">Điều Khoản Dịch Vụ</a>
+          <a href="#">Cài Đặt Cookie</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ══ SCRIPTS ════════════════════════════════════ -->
+  <script>
+    // ── Navbar scroll effect
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      navbar.classList.toggle('scrolled', window.scrollY > 60);
+    }, { passive: true });
+
+    // ── Mobile drawer
+    const hamburger = document.getElementById('hamburger');
+    const drawer    = document.getElementById('drawer');
+    const drawerClose = document.getElementById('drawerClose');
+    hamburger.addEventListener('click', () => drawer.classList.add('open'));
+    drawerClose.addEventListener('click', () => drawer.classList.remove('open'));
+    drawer.querySelectorAll('a').forEach(a => {
+      a.addEventListener('click', () => drawer.classList.remove('open'));
+    });
+
+    // ── Reveal on scroll
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          observer.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+    reveals.forEach(el => observer.observe(el));
+
+    // ── Newsletter form
+    function handleSubscribe(e) {
+      e.preventDefault();
+      const btn = e.target.querySelector('button');
+      const input = e.target.querySelector('input');
+      const err = document.getElementById('subscribeErr');
+      const val = input.value.trim();
+      if (!/^0[0-9]{9}$/.test(val)) {
+        err.textContent = 'Thông tin bị sai, vui lòng nhập lại!';
+        return false;
+      }
+      err.textContent = '';
+      btn.textContent = '✓ Đã Đăng Ký!';
+      btn.style.background = 'linear-gradient(135deg, var(--green), var(--teal))';
+      input.value = '';
+      setTimeout(() => { btn.textContent = 'Đăng Ký'; btn.style.background = ''; }, 3000);
+      return false;
+    }
+  </script>
+
+  <!-- ══ SEARCH RESULTS DROPDOWN ══════════════════════ -->
+  <div class="nav__search-drop" id="searchResults"></div>
+
+  <!-- ══ AUTH MODAL ═══════════════════════════════════ -->
+  <div class="modal-bg" id="authOverlay">
+    <div class="auth-modal">
+      <button class="modal-x" id="authClose">✕</button>
+      <img class="auth-brand" src="brand asset/logo chính.png" alt="CARÉTTA">
+      <div id="authContent"></div>
+    </div>
+  </div>
+
+  <!-- ══ CART ═════════════════════════════════════════ -->
+  <div class="cart-bg" id="cartBg"></div>
+  <div class="cart-panel" id="cartPanel">
+    <div class="cart-panel-head">
+      <h3>Giỏ Hàng</h3>
+      <button class="cart-panel-close" id="cartClose">✕</button>
+    </div>
+    <div class="cart-list" id="cartList"></div>
+    <div class="cart-foot" id="cartFoot"></div>
+  </div>
+
+  <script>
+  // ══ SHARED DATA ════════════════════════════════════
+  const PRODUCTS_DB = [
+    {id:1,name:'Velocity Pro One-Piece',cat:'Đồ Bơi · Nữ',price:1290000,img:'https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=80&q=70',href:'product_detail.html?id=1'},
+    {id:2,name:'AquaFlex Bikini Set',cat:'Đồ Bơi · Nữ',price:890000,img:'https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=80&q=70',href:'product_detail.html?id=2'},
+    {id:3,name:'ThermoStride Tights',cat:'Thể Thao · Nữ',price:750000,img:'https://images.unsplash.com/photo-1518611012118-696072aa579a?w=80&q=70',href:'product_detail.html?id=3'},
+    {id:4,name:'OceanCore Sports Bra',cat:'Thể Thao · Nữ',price:490000,img:'https://images.unsplash.com/photo-1483721310020-03333e577078?w=80&q=70',href:'product_detail.html?id=4'},
+    {id:5,name:'CoralBreeze Rash Guard',cat:'Đồ Bơi · UPF 50+',price:680000,img:'https://images.unsplash.com/photo-1530549387789-4c1017266635?w=80&q=70',href:'product_detail.html?id=5'},
+    {id:6,name:'DeepDive Swim Trunk',cat:'Đồ Bơi · Nam',price:560000,img:'https://images.unsplash.com/photo-1509631179647-0177331693ae?w=80&q=70',href:'product_detail.html?id=6'},
+    {id:7,name:'SunSurf Long Sleeve',cat:'Đồ Bơi · Unisex',price:620000,img:'https://images.unsplash.com/photo-1519415943484-9fa1873496d4?w=80&q=70',href:'product_detail.html?id=7'},
+    {id:8,name:'PeakFlow Tank Top',cat:'Thể Thao · Nữ',price:420000,img:'https://images.unsplash.com/photo-1483721310020-03333e577078?w=80&q=70',href:'product_detail.html?id=8'},
+    {id:9,name:'WaveRider Bikini Top',cat:'Đồ Bơi · Nữ',price:390000,img:'https://images.unsplash.com/photo-1571902943202-507ec2618e8f?w=80&q=70',href:'product_detail.html?id=9'},
+    {id:10,name:'Abyss Board Short',cat:'Đồ Bơi · Nam',price:450000,img:'https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=80&q=70',href:'product_detail.html?id=10'},
+    {id:11,name:'Seafoam Yoga Set',cat:'Thể Thao · Nữ',price:980000,img:'https://images.unsplash.com/photo-1518611012118-696072aa579a?w=80&q=70',href:'product_detail.html?id=11'},
+    {id:12,name:'TidalFlow Shorts',cat:'Thể Thao · Unisex',price:350000,img:'https://images.unsplash.com/photo-1530549387789-4c1017266635?w=80&q=70',href:'product_detail.html?id=12'},
+  ];
+
+  // ── Cart helpers
+  function getCart() { try { return JSON.parse(localStorage.getItem('caretta_cart')||'[]'); } catch(e){ return []; } }
+  function saveCart(c) { localStorage.setItem('caretta_cart', JSON.stringify(c)); }
+  function getUser() { try { return JSON.parse(localStorage.getItem('caretta_user')||'null'); } catch(e){ return null; } }
+
+  // ── Badge
+  function updateBadge() {
+    const n = getCart().reduce((s,i)=>s+i.qty,0);
+    const b = document.getElementById('cartBadge');
+    if(!b) return;
+    b.textContent = n;
+    b.classList.toggle('show', n>0);
+  }
+
+  // ══ SEARCH ════════════════════════════════════════
+  const navIsearch = document.getElementById('navIsearch');
+  const navLinks   = document.getElementById('navLinks');
+  const searchDrop = document.getElementById('searchResults');
+  document.getElementById('searchBtn').addEventListener('click', ()=>{
+    navIsearch.classList.add('open');
+    navLinks.classList.add('search-hidden');
+    document.getElementById('searchInput').focus();
+  });
+  document.getElementById('searchClose').addEventListener('click', closeSearch);
+  document.addEventListener('keydown', e=>{ if(e.key==='Escape'){ closeSearch(); closeAuth(); closeCart(); } });
+  function closeSearch(){ navIsearch.classList.remove('open'); navLinks.classList.remove('search-hidden'); document.getElementById('searchInput').value=''; searchDrop.innerHTML=''; searchDrop.classList.remove('open'); }
+
+  document.getElementById('searchInput').addEventListener('input', function(){
+    const q = this.value.trim().toLowerCase();
+    if(!q){ searchDrop.innerHTML=''; searchDrop.classList.remove('open'); return; }
+    const hits = PRODUCTS_DB.filter(p=>p.name.toLowerCase().includes(q)||p.cat.toLowerCase().includes(q));
+    searchDrop.innerHTML = hits.length
+      ? hits.map(p=>`<a href="${p.href}" class="search-result-item">
+          <img class="search-result-thumb" src="${p.img}" alt="${p.name}">
+          <div><div class="search-result-name">${p.name}</div><div class="search-result-cat">${p.cat}</div></div>
+          <div class="search-result-price">${p.price.toLocaleString('vi-VN')}₫</div>
+        </a>`).join('')
+      : '<div class="search-no-result">Không tìm thấy sản phẩm nào.</div>';
+    searchDrop.classList.add('open');
+  });
+
+  // ══ AUTH ══════════════════════════════════════════
+  const authOverlay = document.getElementById('authOverlay');
+  document.getElementById('loginBtn').addEventListener('click', openAuth);
+  document.getElementById('authClose').addEventListener('click', closeAuth);
+  authOverlay.addEventListener('click', e=>{ if(e.target===authOverlay) closeAuth(); });
+
+  function openAuth(){
+    renderAuth();
+    authOverlay.classList.add('open');
+  }
+  function closeAuth(){ authOverlay.classList.remove('open'); }
+
+  function renderAuth(){
+    const user = getUser();
+    const box = document.getElementById('authContent');
+    const btn = document.getElementById('loginBtn');
+    if(user){
+      btn.classList.add('logged-in');
+      box.innerHTML = `
+        <div class="auth-user-panel">
+          <div class="auth-avatar">${user.name.charAt(0).toUpperCase()}</div>
+          <div><div class="auth-user-name">${user.name}</div><div class="auth-user-email">${user.email}</div></div>
+          <button class="auth-signout" onclick="signOut()">Đăng xuất</button>
+        </div>
+        <p style="font:400 12px/1.5 var(--font-sans);color:rgba(19,49,95,.4);text-align:center">Chào mừng trở lại, ${user.name.split(' ').pop()}!</p>`;
+    } else {
+      btn.classList.remove('logged-in');
+      box.innerHTML = `
+        <div class="auth-tabs">
+          <button class="auth-tab active" onclick="switchTab('login',this)">Đăng Nhập</button>
+          <button class="auth-tab" onclick="switchTab('register',this)">Đăng Ký</button>
+        </div>
+        <form class="auth-form" id="loginForm" onsubmit="doLogin(event)">
+          <div class="f-group"><label>Email</label><input type="email" name="email" required placeholder="email@example.com"></div>
+          <div class="f-group"><label>Mật khẩu</label><input type="password" name="password" required placeholder="••••••••"></div>
+          <div class="f-msg" id="loginMsg"></div>
+          <button type="submit" class="auth-btn">Đăng Nhập</button>
+        </form>
+        <form class="auth-form hidden" id="registerForm" onsubmit="doRegister(event)">
+          <div class="f-group"><label>Họ tên</label><input type="text" name="name" required placeholder="Nguyễn Văn A"></div>
+          <div class="f-group"><label>Email</label><input type="email" name="email" required placeholder="email@example.com"></div>
+          <div class="f-group"><label>Mật khẩu</label><input type="password" name="password" required placeholder="Ít nhất 6 ký tự" minlength="6"></div>
+          <div class="f-msg" id="registerMsg"></div>
+          <button type="submit" class="auth-btn">Tạo Tài Khoản</button>
+        </form>`;
+    }
+  }
+
+  function switchTab(tab, el){
+    document.querySelectorAll('.auth-tab').forEach(t=>t.classList.remove('active'));
+    el.classList.add('active');
+    document.getElementById('loginForm').classList.toggle('hidden', tab!=='login');
+    document.getElementById('registerForm').classList.toggle('hidden', tab!=='register');
+  }
+
+  function doLogin(e){
+    e.preventDefault();
+    const f=e.target, email=f.email.value, pass=f.password.value;
+    const users=JSON.parse(localStorage.getItem('caretta_users')||'[]');
+    const u=users.find(u=>u.email===email&&u.password===pass);
+    const msg=document.getElementById('loginMsg');
+    if(u){ localStorage.setItem('caretta_user',JSON.stringify(u)); closeAuth(); renderAuth(); }
+    else { msg.className='f-msg err'; msg.textContent='Email hoặc mật khẩu không đúng.'; }
+  }
+
+  function doRegister(e){
+    e.preventDefault();
+    const f=e.target, name=f.name.value, email=f.email.value, pass=f.password.value;
+    const users=JSON.parse(localStorage.getItem('caretta_users')||'[]');
+    const msg=document.getElementById('registerMsg');
+    if(users.find(u=>u.email===email)){ msg.className='f-msg err'; msg.textContent='Email này đã được sử dụng.'; return; }
+    const nu={name,email,password:pass};
+    users.push(nu);
+    localStorage.setItem('caretta_users',JSON.stringify(users));
+    localStorage.setItem('caretta_user',JSON.stringify(nu));
+    closeAuth(); renderAuth();
+  }
+
+  function signOut(){ localStorage.removeItem('caretta_user'); closeAuth(); renderAuth(); }
+
+  // ══ CART ══════════════════════════════════════════
+  const cartPanel = document.getElementById('cartPanel');
+  const cartBg = document.getElementById('cartBg');
+  document.getElementById('cartBtn').addEventListener('click', openCart);
+  document.getElementById('cartClose').addEventListener('click', closeCart);
+  cartBg.addEventListener('click', closeCart);
+
+  function openCart(){ cartPanel.classList.add('open'); cartBg.classList.add('open'); renderCartPanel(); }
+  function closeCart(){ cartPanel.classList.remove('open'); cartBg.classList.remove('open'); }
+
+  function renderCartPanel(){
+    const user=getUser(); const cart=getCart();
+    const list=document.getElementById('cartList');
+    const foot=document.getElementById('cartFoot');
+    if(!user){
+      list.innerHTML=`<div class="cart-gate">
+        <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        <p>Vui lòng đăng nhập<br>để xem giỏ hàng của bạn</p>
+        <button class="cart-gate-btn" onclick="closeCart();openAuth()">Đăng Nhập / Đăng Ký</button>
+      </div>`;
+      foot.innerHTML=''; return;
+    }
+    if(!cart.length){
+      list.innerHTML=`<div class="cart-empty-state">
+        <p>Giỏ hàng của bạn đang trống.</p>
+        <a href="products.html">Khám Phá Sản Phẩm</a>
+      </div>`;
+      foot.innerHTML=''; return;
+    }
+    list.innerHTML=cart.map((item,i)=>`
+      <div class="c-item">
+        <img src="${item.img}" alt="${item.name}">
+        <div class="c-item-info">
+          <div class="c-item-name">${item.name}</div>
+          <div class="c-item-meta">${item.color||''} ${item.size?'· Size '+item.size:''}</div>
+          <div class="c-item-price">${(item.price*item.qty).toLocaleString('vi-VN')}₫</div>
+          <div class="c-item-row">
+            <button class="c-qty-btn" onclick="changeQty(${i},-1)">−</button>
+            <span class="c-qty-num">${item.qty}</span>
+            <button class="c-qty-btn" onclick="changeQty(${i},1)">+</button>
+            <button class="c-remove" onclick="removeFromCart(${i})" title="Xóa">✕</button>
+          </div>
+        </div>
+      </div>`).join('');
+    const sum=cart.reduce((s,i)=>s+i.price*i.qty,0);
+    foot.innerHTML=`
+      <div class="cart-total-row"><span>Tạm tính</span><strong>${sum.toLocaleString('vi-VN')}₫</strong></div>
+      <button class="cart-checkout-btn" onclick="handleCheckout()">Tiến Hành Mua Hàng</button>
+      <a href="products.html" class="cart-continue-link">← Tiếp tục mua sắm</a>`;
+  }
+
+  function handleCheckout(){
+    const u=getUser(); const cart=getCart();
+    if(!u||!cart.length) return;
+    const sum=cart.reduce((s,i)=>s+i.price*i.qty,0);
+    const list=document.getElementById('cartList');
+    const foot=document.getElementById('cartFoot');
+    list.innerHTML=`<div class="cart-success">
+      <svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+      <strong>Đặt hàng thành công!</strong>
+      <p>Cảm ơn ${u.name||u.email}!<br>Tổng đơn: ${sum.toLocaleString('vi-VN')}₫<br>Chúng tôi sẽ liên hệ xác nhận sớm.</p>
+    </div>`;
+    foot.innerHTML='';
+    saveCart([]); updateBadge();
+  }
+
+  function changeQty(idx,d){ const c=getCart(); c[idx].qty=Math.max(1,c[idx].qty+d); saveCart(c); renderCartPanel(); updateBadge(); }
+  function removeFromCart(idx){ const c=getCart(); c.splice(idx,1); saveCart(c); renderCartPanel(); updateBadge(); }
+
+  // ── Init
+  updateBadge();
+  renderAuth();
+  document.querySelectorAll('.has-mega').forEach(li=>{let t;li.addEventListener('mouseenter',()=>{clearTimeout(t);li.classList.add('open');});li.addEventListener('mouseleave',()=>{t=setTimeout(()=>li.classList.remove('open'),200);});});
+  </script>
+</body>
+</html>
+
+
