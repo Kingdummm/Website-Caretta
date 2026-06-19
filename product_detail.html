@@ -1,0 +1,930 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Velocity Pro One-Piece — CARÉTTA</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Newsreader:opsz,wght@6..72,300;6..72,400;6..72,500;6..72,600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --green:  #34C39A; --teal:   #1FA8A0; --ocean:  #1E7FB8;
+      --navy:   #13315F; --ink:    #1B2A33; --mist:   #ECF3F2;
+      --sand:   #F3EEE4; --pebble: #8A99A0; --coral:  #FF9256;
+      --gold:   #FFCD68; --white:  #FFFFFF;
+      --font-display: 'Newsreader', Georgia, serif;
+      --font-serif:   'Newsreader', Georgia, serif;
+      --font-sans:    'Inter', system-ui, sans-serif;
+      --ease: cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    html { font-size: 62.5%; scroll-behavior: smooth; }
+    body { font-family: var(--font-sans); font-size: 1.5rem; color: var(--ink); background: #fff; line-height: 1.65; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+    img { display: block; max-width: 100%; }
+    a { text-decoration: none; color: inherit; }
+    .page-width { max-width: 1400px; margin-inline: auto; padding-inline: 3.2rem; }
+
+    /* ══ NAVBAR ════════════════════════════════════════ */
+    .nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+      padding: 4px 0;
+      transition: background .4s, padding .4s, box-shadow .4s;
+    }
+    .nav.scrolled {
+      background: rgba(19,49,95,.97);
+      backdrop-filter: blur(16px);
+      padding: 2px 0;
+      box-shadow: 0 2px 30px rgba(0,0,0,.2);
+    }
+    .nav__inner { max-width: 1400px; margin-inline: auto; padding-inline: 32px; display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+    .nav__logo { display: flex; align-items: center; margin-left: -1.6rem; }
+    .nav__logo img { height: 72px; width: auto; }
+    .nav__links { display: flex; gap: 36px; list-style: none; }
+    .nav__links a {
+      font: 500 12px/1 var(--font-sans); letter-spacing: .14em; text-transform: uppercase;
+      color: rgba(255,255,255,.8); transition: color .2s; position: relative;
+    }
+    .nav__links a::after { content: ''; position: absolute; bottom: -.4rem; left: 0; width: 0; height: 1.5px; background: var(--green); transition: width .3s var(--ease); }
+    .nav__links a:hover { color: #fff; }
+    .nav__links a:hover::after, .nav__links a.active::after { width: 100%; }
+    .nav__links a.active { color: #fff; }
+    .nav__actions { display: flex; align-items: center; gap: 6px; }
+    .nav__icon-btn { width: 3.8rem; height: 3.8rem; border-radius: 50%; border: 1px solid rgba(255,255,255,.2); background: transparent; cursor: pointer; display: grid; place-items: center; color: rgba(255,255,255,.8); transition: background .2s, border-color .2s; position: relative; flex-shrink: 0; }
+    .nav__icon-btn:hover { background: rgba(255,255,255,.1); color: #fff; border-color: rgba(255,255,255,.4); }
+    .nav__icon-btn svg { width: 1.6rem; height: 1.6rem; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    .nav__icon-btn.logged-in { border-color: rgba(52,195,154,.6); background: rgba(52,195,154,.1); }
+    .cart-badge { position: absolute; top: -.3rem; right: -.3rem; min-width: 1.6rem; height: 1.6rem; background: var(--green); color: var(--navy); font: 700 .9rem/1.6rem var(--font-sans); text-align: center; border-radius: .8rem; padding: 0 .3rem; display: none; border: 1.5px solid rgba(19,49,95,.97); }
+    .cart-badge.show { display: block; }
+    /* ── NAV INLINE SEARCH */
+    .nav__isearch { display: none; flex: 1; align-items: center; gap: 1rem; background: #fff; border: 1.5px solid #d8d8d8; border-radius: 4px; padding: .7rem 1.2rem; margin: 0 2.4rem; }
+    .nav__isearch.open { display: flex; }
+    .nav__isearch svg { width: 1.6rem; height: 1.6rem; color: #bbb; flex-shrink: 0; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    .nav__isearch input { flex: 1; border: none; outline: none; font: 400 1.4rem/1 var(--font-sans); color: #222; background: transparent; }
+    .nav__isearch input::placeholder { color: #bbb; }
+    .nav__isearch-close { background: none; border: 1px solid #d8d8d8; border-radius: 3px; cursor: pointer; color: #888; font-size: 1.2rem; padding: .3rem .7rem; line-height: 1.4; transition: all .2s; flex-shrink: 0; }
+    .nav__isearch-close:hover { color: #111; border-color: #999; }
+    .nav__links.search-hidden { display: none; }
+    .nav__links li.has-mega { position: static; }
+    .mega-drop { position: absolute; top: 100%; left: 0; right: 0; background: #fff; border-top: 2px solid rgba(31,168,160,.12); box-shadow: 0 16px 48px rgba(19,49,95,.13); padding: 36px 80px; display: grid; grid-template-columns: repeat(3,1fr); gap: 48px; opacity: 0; pointer-events: none; transform: translateY(-8px); transition: opacity .22s ease, transform .22s ease; z-index: 99; }
+    .nav__links li.has-mega.open .mega-drop { opacity: 1; pointer-events: all; transform: none; }
+    .mega-drop__title { font: 700 14px/1 var(--font-sans); letter-spacing: .16em; text-transform: uppercase; color: #13315F; margin-bottom: 16px; padding-bottom: 10px; border-bottom: 1.5px solid rgba(19,49,95,.18); }
+    .mega-drop__list { list-style: none; display: flex; flex-direction: column; gap: 9px; }
+    .mega-drop__list a { font: 400 14px/1.4 var(--font-sans); color: rgba(19,49,95,.72); text-transform: none; letter-spacing: 0; transition: color .18s; }
+    .mega-drop__list a::after { display: none !important; }
+    .mega-drop__list a:hover { color: var(--teal); }
+    .nav__search-drop { position: fixed; top: 8rem; left: 0; right: 0; background: #fff; box-shadow: 0 4px 20px rgba(0,0,0,.08); border-top: 1px solid #f0f0f0; display: none; max-height: 34rem; overflow-y: auto; z-index: 499; }
+    .nav__search-drop.open { display: block; }
+    .search-result-item { display: flex; align-items: center; gap: 1.4rem; padding: 1rem 4.8rem; text-decoration: none; color: #1a1a1a; transition: background .15s; }
+    .search-result-item:hover { background: #f6f6f6; }
+    .search-result-thumb { width: 4.4rem; height: 4.4rem; object-fit: cover; border-radius: 6px; background: #f0f0f0; flex-shrink: 0; }
+    .search-result-name { font: 500 1.3rem/1.3 var(--font-sans); margin-bottom: 3px; }
+    .search-result-cat { font: 400 1rem/1 var(--font-sans); color: #999; text-transform: uppercase; letter-spacing: .12em; }
+    .search-result-price { margin-left: auto; font: 700 1.3rem/1 var(--font-sans); color: var(--navy); white-space: nowrap; padding-left: 1.2rem; }
+    .search-no-result { color: #bbb; font: 400 1.4rem/1 var(--font-sans); padding: 2rem; text-align: center; }
+    .modal-bg { position: fixed; inset: 0; z-index: 600; background: rgba(0,0,0,.55); backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity .3s; }
+    .modal-bg.open { opacity: 1; pointer-events: all; }
+    .auth-modal { background: #fff; border-radius: 16px; width: min(42rem, 92vw); padding: 3.6rem; position: relative; transform: translateY(16px); transition: transform .3s; }
+    .modal-bg.open .auth-modal { transform: none; }
+    .modal-x { position: absolute; top: 1.4rem; right: 1.4rem; width: 3rem; height: 3rem; border: none; background: rgba(19,49,95,.06); border-radius: 50%; cursor: pointer; font-size: 1.5rem; color: var(--navy); display: grid; place-items: center; }
+    .modal-x:hover { background: rgba(19,49,95,.12); }
+    .auth-brand { height: 4.4rem; width: auto; display: block; margin-bottom: 2rem; }
+    .auth-tabs { display: flex; border-bottom: 2px solid rgba(19,49,95,.08); margin-bottom: 2.2rem; }
+    .auth-tab { flex: 1; padding: 1rem 6px; border: none; background: none; cursor: pointer; font: 600 1.1rem/1 var(--font-sans); letter-spacing: .1em; text-transform: uppercase; color: rgba(19,49,95,.35); border-bottom: 2px solid transparent; margin-bottom: -2px; transition: color .2s, border-color .2s; }
+    .auth-tab.active { color: var(--navy); border-bottom-color: var(--navy); }
+    .auth-form { display: flex; flex-direction: column; gap: 1.2rem; }
+    .auth-form.hidden { display: none; }
+    .f-group label { display: block; font: 500 1rem/1 var(--font-sans); letter-spacing: .1em; text-transform: uppercase; color: rgba(19,49,95,.45); margin-bottom: .5rem; }
+    .f-group input { width: 100%; height: 4.2rem; border: 1.5px solid rgba(19,49,95,.12); border-radius: 8px; padding: 0 1.2rem; font: 400 1.3rem/1 var(--font-sans); color: var(--navy); outline: none; transition: border-color .2s; box-sizing: border-box; }
+    .f-group input:focus { border-color: var(--teal); }
+    .f-msg { font: 400 1.1rem/1.4 var(--font-sans); padding: .8rem 1rem; border-radius: 6px; display: none; }
+    .f-msg.err { background: #fef2f2; color: #dc2626; display: block; }
+    .auth-btn { height: 4.4rem; background: linear-gradient(135deg, var(--navy), var(--ocean)); color: #fff; border: none; border-radius: 8px; font: 700 1.1rem/1 var(--font-sans); letter-spacing: .12em; text-transform: uppercase; cursor: pointer; transition: box-shadow .2s, transform .15s; margin-top: .4rem; }
+    .auth-btn:hover { box-shadow: 0 8px 24px rgba(19,49,95,.2); transform: translateY(-1px); }
+    .auth-user-panel { background: rgba(19,49,95,.04); border-radius: 1rem; padding: 1.4rem; display: flex; align-items: center; gap: 1.2rem; margin-bottom: 1.6rem; }
+    .auth-avatar { width: 4rem; height: 4rem; border-radius: 50%; background: linear-gradient(135deg, var(--teal), var(--ocean)); display: grid; place-items: center; color: #fff; font: 700 1.5rem/1 var(--font-sans); flex-shrink: 0; }
+    .auth-user-name { font: 600 1.3rem/1.2 var(--font-sans); color: var(--navy); }
+    .auth-user-email { font: 400 1.1rem/1 var(--font-sans); color: rgba(19,49,95,.4); margin-top: 2px; }
+    .auth-signout { margin-left: auto; padding: .6rem 1.2rem; border: 1px solid rgba(19,49,95,.15); border-radius: 2rem; background: none; cursor: pointer; font: 500 1rem/1 var(--font-sans); color: rgba(19,49,95,.45); letter-spacing: .06em; text-transform: uppercase; transition: all .2s; white-space: nowrap; }
+    .auth-signout:hover { background: var(--navy); color: #fff; border-color: var(--navy); }
+    .cart-bg { position: fixed; inset: 0; z-index: 700; background: rgba(0,0,0,.45); opacity: 0; pointer-events: none; transition: opacity .3s; }
+    .cart-bg.open { opacity: 1; pointer-events: all; }
+    .cart-panel { position: fixed; top: 0; right: 0; bottom: 0; z-index: 701; width: min(40rem, 95vw); background: #fff; transform: translateX(100%); transition: transform .35s cubic-bezier(.4,0,.2,1); display: flex; flex-direction: column; box-shadow: -8px 0 40px rgba(0,0,0,.15); }
+    .cart-panel.open { transform: none; }
+    .cart-panel-head { display: flex; align-items: center; justify-content: space-between; padding: 2rem 2.2rem; border-bottom: 1px solid rgba(19,49,95,.08); flex-shrink: 0; }
+    .cart-panel-head h3 { font: 600 1.7rem/1 var(--font-sans); color: var(--navy); }
+    .cart-panel-close { width: 3.2rem; height: 3.2rem; border-radius: 50%; border: none; background: rgba(19,49,95,.06); cursor: pointer; font-size: 1.6rem; color: var(--navy); display: grid; place-items: center; transition: background .2s; }
+    .cart-panel-close:hover { background: rgba(19,49,95,.12); }
+    .cart-list { flex: 1; overflow-y: auto; padding: 1.6rem 2.2rem; display: flex; flex-direction: column; gap: 1.6rem; }
+    .cart-gate { display: flex; flex-direction: column; align-items: center; text-align: center; padding: 5.6rem 2.4rem 4rem; gap: 1.6rem; }
+    .cart-gate svg { width: 4.4rem; height: 4.4rem; stroke: currentColor; fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; color: rgba(19,49,95,.2); }
+    .cart-gate p { font: 400 1.4rem/1.6 var(--font-sans); color: rgba(19,49,95,.5); }
+    .cart-gate-btn { height: 4.4rem; padding: 0 2.8rem; background: var(--navy); color: #fff; border: none; border-radius: 8px; font: 600 1.1rem/1 var(--font-sans); letter-spacing: .12em; text-transform: uppercase; cursor: pointer; transition: background .2s; }
+    .cart-gate-btn:hover { background: var(--ocean); }
+    .cart-empty-state { text-align: center; padding: 4.8rem 2rem; display: flex; flex-direction: column; align-items: center; gap: 1.6rem; }
+    .cart-empty-state p { font: 400 1.4rem/1.5 var(--font-sans); color: rgba(19,49,95,.35); }
+    .cart-empty-state a { display: inline-block; padding: 1.1rem 2.6rem; background: var(--navy); color: #fff; border-radius: 6px; font: 600 1.1rem/1 var(--font-sans); letter-spacing: .1em; text-transform: uppercase; text-decoration: none; }
+    .c-item { display: flex; gap: 1.2rem; }
+    .c-item img { width: 7.6rem; height: 7.6rem; object-fit: cover; border-radius: 8px; background: rgba(19,49,95,.05); flex-shrink: 0; }
+    .c-item-info { flex: 1; min-width: 0; }
+    .c-item-name { font: 500 1.2rem/1.35 var(--font-sans); color: var(--navy); margin-bottom: .3rem; }
+    .c-item-meta { font: 400 1rem/1 var(--font-sans); color: rgba(19,49,95,.4); text-transform: uppercase; letter-spacing: .07em; margin-bottom: .8rem; }
+    .c-item-price { font: 700 1.3rem/1 var(--font-sans); color: var(--navy); }
+    .c-item-row { display: flex; align-items: center; gap: .6rem; margin-top: .7rem; }
+    .c-qty-btn { width: 2.4rem; height: 2.4rem; border: 1px solid rgba(19,49,95,.18); border-radius: 4px; background: none; cursor: pointer; font-size: 1.3rem; color: var(--navy); display: grid; place-items: center; transition: background .15s; }
+    .c-qty-btn:hover { background: rgba(19,49,95,.06); }
+    .c-qty-num { font: 600 1.2rem/1 var(--font-sans); color: var(--navy); min-width: 1.8rem; text-align: center; }
+    .c-remove { margin-left: auto; background: none; border: none; cursor: pointer; color: rgba(19,49,95,.25); font-size: 1.5rem; line-height: 1; padding: 3px; transition: color .2s; }
+    .c-remove:hover { color: #dc2626; }
+    .cart-foot { padding: 1.4rem 2.2rem 2rem; border-top: 1px solid rgba(19,49,95,.08); flex-shrink: 0; }
+    .cart-total-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.4rem; }
+    .cart-total-row span { font: 400 1.2rem/1 var(--font-sans); color: rgba(19,49,95,.45); }
+    .cart-total-row strong { font: 700 2rem/1 var(--font-sans); color: var(--navy); }
+    .cart-checkout-btn { display: flex; align-items: center; justify-content: center; width: 100%; height: 5.2rem; background: linear-gradient(135deg, var(--navy), var(--ocean)); color: #fff; border: none; border-radius: 8px; font: 700 1.1rem/1 var(--font-sans); letter-spacing: .14em; text-transform: uppercase; cursor: pointer; transition: box-shadow .2s, transform .15s; margin-bottom: 1rem; }
+    .cart-checkout-btn:hover { box-shadow: 0 8px 28px rgba(19,49,95,.28); transform: translateY(-1px); }
+    .cart-continue-link { display: block; text-align: center; font: 400 1.2rem/1 var(--font-sans); color: rgba(19,49,95,.4); text-decoration: none; padding: .4rem 0 .2rem; transition: color .2s; }
+    .cart-continue-link:hover { color: var(--navy); }
+    .cart-success { display: flex; flex-direction: column; align-items: center; text-align: center; padding: 5.6rem 2.4rem 4rem; gap: 1.4rem; }
+    .cart-success svg { width: 4.8rem; height: 4.8rem; stroke: var(--green); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    .cart-success strong { font: 600 1.5rem/1 var(--font-sans); color: var(--navy); }
+    .cart-success p { font: 400 1.3rem/1.5 var(--font-sans); color: rgba(19,49,95,.5); }
+    @media (max-width: 900px) { .nav__links { display: none; } }
+
+    /* ══ BREADCRUMB ════════════════════════════════════ */
+    .breadcrumb { padding: 8rem 0 2rem; background: #fff; border-bottom: 1px solid rgba(19,49,95,.07); }
+    .breadcrumb__list { display: flex; align-items: center; gap: .8rem; list-style: none; font: 400 1.2rem/1 var(--font-sans); color: var(--pebble); }
+    .breadcrumb__list a { color: var(--pebble); transition: color .2s; }
+    .breadcrumb__list a:hover { color: var(--teal); }
+    .breadcrumb__list .cur { color: var(--ink); font-weight: 500; }
+    .breadcrumb__sep { opacity: .4; }
+
+    /* ══ PRODUCT SECTION ═══════════════════════════════ */
+    .product-section { padding: 4rem 0 8rem; }
+    .product-layout {
+      display: grid;
+      grid-template-columns: 1.1fr 1fr;
+      gap: 6.4rem;
+      align-items: start;
+    }
+
+    /* — Gallery — */
+    .gallery { position: sticky; top: 8rem; }
+    .gallery__main {
+      aspect-ratio: 3/4; border-radius: 1.2rem; overflow: hidden;
+      background: var(--mist); cursor: zoom-in; margin-bottom: 1.2rem;
+      position: relative;
+    }
+    .gallery__main img { width: 100%; height: 100%; object-fit: cover; transition: transform .6s var(--ease); }
+    .gallery__main:hover img { transform: scale(1.03); }
+    .gallery__badge {
+      position: absolute; top: 1.6rem; left: 1.6rem;
+      background: var(--green); color: #fff;
+      font: 700 1.0rem/1 var(--font-sans); letter-spacing: .1em; text-transform: uppercase;
+      padding: .5rem 1.2rem; border-radius: 5rem;
+    }
+    .gallery__thumbs { display: grid; grid-template-columns: repeat(3,1fr); gap: 1rem; }
+    .gallery__thumb {
+      aspect-ratio: 3/4; border-radius: .8rem; overflow: hidden; cursor: pointer;
+      border: 2px solid transparent; transition: border-color .2s, opacity .2s;
+      background: var(--mist);
+    }
+    .gallery__thumb img { width: 100%; height: 100%; object-fit: cover; transition: transform .4s; }
+    .gallery__thumb:hover img { transform: scale(1.06); }
+    .gallery__thumb.active { border-color: var(--teal); }
+    .gallery__thumb:not(.active) { opacity: .6; }
+    .gallery__thumb:hover:not(.active) { opacity: .9; }
+
+    /* — Product Info — */
+    .pinfo__kicker { display: none; }
+    .pinfo__name { font: 500 4.8rem/1.1 var(--font-serif); color: var(--navy); letter-spacing: .02em; margin-bottom: .8rem; white-space: nowrap; }
+    .pinfo__tagline { font: 400 1.7rem/1.4 var(--font-serif); color: var(--pebble); font-style: italic; margin-bottom: 2rem; }
+    .pinfo__rating { display: flex; align-items: center; gap: 1rem; margin-bottom: 2.4rem; }
+    .stars { color: var(--gold); font-size: 1.6rem; letter-spacing: .2rem; }
+    .rating-text { font: 400 1.3rem/1 var(--font-sans); color: var(--pebble); }
+    .rating-text a { color: var(--teal); text-decoration: underline; text-underline-offset: .3rem; }
+    .pinfo__price {
+      display: flex; align-items: baseline; gap: 1.2rem;
+      margin-bottom: 3.2rem; padding-bottom: 3.2rem;
+      border-bottom: 1px solid rgba(19,49,95,.1);
+    }
+    .price-now { font: 500 3.2rem/1 var(--font-display); color: var(--navy); letter-spacing: .02em; }
+    .price-was { font: 400 1.8rem/1 var(--font-sans); color: var(--pebble); text-decoration: line-through; }
+    .price-tag { font: 700 1.0rem/1 var(--font-sans); letter-spacing: .08em; text-transform: uppercase; color: #fff; background: var(--coral); padding: .4rem 1rem; border-radius: 5rem; }
+
+    /* Selectors */
+    .sel-label { font: 600 1.1rem/1 var(--font-sans); letter-spacing: .15em; text-transform: uppercase; color: var(--ink); margin-bottom: 1.2rem; display: flex; align-items: center; gap: .8rem; }
+    .sel-label em { font-weight: 400; color: var(--pebble); font-style: normal; letter-spacing: 0; text-transform: none; }
+    .color-row { display: flex; gap: 1rem; margin-bottom: 2.8rem; }
+    .cswatch {
+      width: 3.4rem; height: 3.4rem; border-radius: 50%; cursor: pointer;
+      border: 3px solid transparent; outline: 2px solid transparent; outline-offset: .2rem;
+      transition: outline-color .2s, transform .2s;
+    }
+    .cswatch:hover { transform: scale(1.1); }
+    .cswatch.active { outline-color: var(--teal); }
+    .size-row { display: flex; gap: .8rem; flex-wrap: wrap; margin-bottom: 1rem; }
+    .sbtn {
+      min-width: 5rem; height: 4.4rem; padding: 0 1.4rem; border-radius: .8rem;
+      border: 1.5px solid rgba(19,49,95,.2); background: transparent;
+      font: 600 1.3rem/1 var(--font-sans); color: var(--ink); cursor: pointer;
+      transition: border-color .2s, background .2s, color .2s;
+    }
+    .sbtn:hover { border-color: var(--teal); color: var(--teal); }
+    .sbtn.active { border-color: var(--navy); background: var(--navy); color: #fff; }
+    .sbtn.out { opacity: .3; cursor: not-allowed; text-decoration: line-through; }
+    .size-guide { font: 400 1.2rem/1 var(--font-sans); color: var(--teal); text-decoration: underline; text-underline-offset: .3rem; cursor: pointer; display: inline-block; margin-bottom: 3.2rem; }
+
+    /* CTA */
+    .cta-block { display: flex; flex-direction: column; gap: 1.2rem; margin-bottom: 3.2rem; }
+    .btn-add {
+      width: 100%; display: flex; align-items: center; justify-content: center; gap: 1rem;
+      padding: 1.8rem; border-radius: 0;
+      background: var(--navy); color: #fff; border: none; cursor: pointer;
+      font: 600 1.3rem/1 var(--font-sans); letter-spacing: .14em; text-transform: uppercase;
+      transition: background .25s, transform .2s;
+    }
+    .btn-add:hover { background: var(--ink); transform: translateY(-.2rem); }
+    .btn-add svg { width: 1.8rem; height: 1.8rem; }
+    .btn-wish {
+      width: 100%; display: flex; align-items: center; justify-content: center; gap: .8rem;
+      padding: 1.6rem; border-radius: 0;
+      background: transparent; border: 1.5px solid rgba(19,49,95,.2); color: var(--ink);
+      font: 600 1.2rem/1 var(--font-sans); letter-spacing: .14em; text-transform: uppercase;
+      cursor: pointer; transition: background .2s, border-color .2s;
+    }
+    .btn-wish:hover { background: var(--mist); border-color: var(--navy); }
+    .btn-wish svg { width: 1.6rem; height: 1.6rem; }
+
+    /* Perks */
+    .perks-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; padding: 2.4rem; background: var(--mist); margin-bottom: 3.2rem; }
+    .perk { display: flex; align-items: center; gap: 1.2rem; }
+    .perk__icon { width: 3.6rem; height: 3.6rem; background: #fff; display: grid; place-items: center; flex-shrink: 0; box-shadow: 0 2px 8px rgba(19,49,95,.08); }
+    .perk__icon svg { width: 1.8rem; height: 1.8rem; color: var(--teal); }
+    .perk__text { font: 400 1.2rem/1.4 var(--font-sans); color: var(--ink); }
+    .perk__text strong { font-weight: 600; display: block; margin-bottom: .2rem; }
+    .ship-note { display: flex; align-items: center; gap: 1rem; font: 400 1.3rem/1.4 var(--font-sans); color: var(--pebble); }
+    .ship-note svg { color: var(--green); flex-shrink: 0; width: 1.6rem; height: 1.6rem; }
+
+    /* ══ TABS ══════════════════════════════════════════ */
+    .tabs-section { padding: 6.4rem 0; background: var(--sand); }
+    .tabs-nav { display: flex; border-bottom: 2px solid rgba(19,49,95,.1); margin-bottom: 4.8rem; overflow-x: auto; }
+    .tab-btn {
+      padding: 1.4rem 2.8rem; font: 600 1.1rem/1 var(--font-sans); letter-spacing: .14em; text-transform: uppercase;
+      color: var(--pebble); background: none; border: none; border-bottom: 2px solid transparent;
+      margin-bottom: -2px; cursor: pointer; transition: color .2s, border-color .2s; white-space: nowrap;
+    }
+    .tab-btn:hover { color: var(--navy); }
+    .tab-btn.active { color: var(--navy); border-bottom-color: var(--teal); }
+    .tab-panel { display: none; }
+    .tab-panel.active { display: grid; grid-template-columns: 1fr 1fr; gap: 6.4rem; align-items: center; }
+    .tab-img { border-radius: .8rem; overflow: hidden; aspect-ratio: 4/3; }
+    .tab-img img { width: 100%; height: 100%; object-fit: cover; }
+    .tab-content h3 { font: 500 2.6rem/1.2 var(--font-serif); color: var(--navy); margin-bottom: 1.6rem; }
+    .tab-content p { font: 400 1.5rem/1.75 var(--font-sans); color: var(--pebble); margin-bottom: 1.6rem; }
+    .feat-list { list-style: none; display: flex; flex-direction: column; gap: 1.2rem; }
+    .feat-list li { display: flex; align-items: flex-start; gap: 1.2rem; font: 400 1.4rem/1.5 var(--font-sans); color: var(--ink); }
+    .feat-list li::before { content: ''; width: .6rem; height: .6rem; border-radius: 50%; background: var(--teal); flex-shrink: 0; margin-top: .6rem; }
+    .mat-table { width: 100%; border-collapse: collapse; }
+    .mat-table tr { border-bottom: 1px solid rgba(19,49,95,.08); }
+    .mat-table td { padding: 1.2rem 0; font: 400 1.4rem/1.4 var(--font-sans); color: var(--ink); }
+    .mat-table td:first-child { font-weight: 600; color: var(--navy); width: 44%; }
+    .care-row { display: flex; gap: 2rem; flex-wrap: wrap; margin-bottom: 2.4rem; }
+    .care-ic { display: flex; flex-direction: column; align-items: center; gap: .6rem; }
+    .care-ic__c { width: 5.2rem; height: 5.2rem; border-radius: 50%; border: 2px solid rgba(19,49,95,.15); display: grid; place-items: center; font-size: 2rem; }
+    .care-ic__l { font: 400 1.1rem/1.3 var(--font-sans); color: var(--pebble); max-width: 6rem; text-align: center; }
+
+    /* ══ RELATED ═══════════════════════════════════════ */
+    .related { padding: 6.4rem 0 9.6rem; }
+    .sec-header { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 4rem; }
+    .sec-kicker { font: 600 1.0rem/1 var(--font-sans); letter-spacing: .3em; text-transform: uppercase; color: var(--teal); display: block; margin-bottom: .8rem; }
+    .sec-title { font: 500 3.2rem/1.1 var(--font-serif); color: var(--navy); letter-spacing: .02em; }
+    .sec-title span { color: var(--teal); }
+    .sec-link { font: 600 1.1rem/1 var(--font-sans); letter-spacing: .14em; text-transform: uppercase; color: var(--navy); border-bottom: 1.5px solid var(--navy); padding-bottom: .2rem; transition: color .2s, border-color .2s; }
+    .sec-link:hover { color: var(--teal); border-color: var(--teal); }
+    .rel-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.2rem; }
+    .rel-card { cursor: pointer; }
+    .rel-card__img { aspect-ratio: 3/4; border-radius: .8rem; overflow: hidden; background: var(--mist); margin-bottom: 1.4rem; position: relative; }
+    .rel-card__img img { width: 100%; height: 100%; object-fit: cover; transition: transform .6s var(--ease); }
+    .rel-card:hover .rel-card__img img { transform: scale(1.06); }
+    .rel-card__quick { position: absolute; bottom: 1.2rem; left: 1.2rem; right: 1.2rem; background: rgba(255,255,255,.95); backdrop-filter: blur(8px); padding: 1rem 1.6rem; font: 600 1.1rem/1 var(--font-sans); letter-spacing: .1em; text-transform: uppercase; color: var(--navy); text-align: center; opacity: 0; transform: translateY(.8rem); transition: opacity .3s, transform .3s; }
+    .rel-card:hover .rel-card__quick { opacity: 1; transform: none; }
+    .rel-card__name { font: 600 1.4rem/1.3 var(--font-sans); color: var(--navy); margin-bottom: .4rem; }
+    .rel-card__sub { font: 400 1.2rem/1.3 var(--font-sans); color: var(--pebble); margin-bottom: 1rem; }
+    .rel-card__row { display: flex; align-items: center; justify-content: space-between; }
+    .rel-card__price { font: 700 1.5rem/1 var(--font-sans); color: var(--navy); }
+    .swatches { display: flex; gap: .5rem; }
+    .dot { width: 1.2rem; height: 1.2rem; border-radius: 50%; border: 1.5px solid rgba(255,255,255,.7); }
+
+    /* ══ SIZE MODAL ════════════════════════════════════ */
+    .modal-bg { position: fixed; inset: 0; background: rgba(0,0,0,.5); z-index: 300; display: grid; place-items: center; opacity: 0; pointer-events: none; transition: opacity .3s; }
+    .modal-bg.open { opacity: 1; pointer-events: all; }
+    .modal { background: #fff; padding: 4.8rem; width: min(62rem, calc(100vw - 4rem)); max-height: 85vh; overflow-y: auto; transform: translateY(2.4rem); transition: transform .4s var(--ease); position: relative; border-radius: .8rem; }
+    .modal-bg.open .modal { transform: none; }
+    .modal-close { position: absolute; top: 2rem; right: 2rem; width: 3.6rem; height: 3.6rem; border-radius: 50%; border: 1.5px solid rgba(19,49,95,.2); background: #fff; cursor: pointer; display: grid; place-items: center; font-size: 1.8rem; color: var(--ink); transition: background .2s; }
+    .modal-close:hover { background: var(--mist); }
+    .modal h3 { font: 500 2.2rem/1.2 var(--font-serif); color: var(--navy); margin-bottom: .8rem; letter-spacing: .02em; }
+    .modal p { font: 400 1.3rem/1.6 var(--font-sans); color: var(--pebble); margin-bottom: 2.4rem; }
+    .sz-table { width: 100%; border-collapse: collapse; }
+    .sz-table th { background: var(--navy); color: #fff; font: 600 1.1rem/1 var(--font-sans); letter-spacing: .1em; text-transform: uppercase; padding: 1.2rem 1.6rem; text-align: left; }
+    .sz-table td { padding: 1.2rem 1.6rem; font: 400 1.3rem/1 var(--font-sans); color: var(--ink); border-bottom: 1px solid rgba(19,49,95,.07); }
+    .sz-table tr:hover td { background: var(--mist); }
+
+    /* ══ FOOTER ════════════════════════════════════════ */
+    .footer { background: #E3EFF5; padding: 4.8rem 0 2.8rem; color: rgba(19,49,95,.75); }
+    .footer__top { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 4.8rem; margin-bottom: 3.6rem; }
+    .footer__brand { display: none; }
+    .footer__brand p { font: 300 1.4rem/1.7 var(--font-sans); color: rgba(19,49,95,.55); margin-bottom: 2.4rem; }
+    .footer__social { display: flex; gap: 1.2rem; }
+    .footer__social a { width: 3.8rem; height: 3.8rem; border-radius: 50%; border: 1px solid rgba(19,49,95,.2); display: grid; place-items: center; color: rgba(19,49,95,.45); transition: background .2s, border-color .2s, color .2s; }
+    .footer__social a:hover { background: rgba(31,168,160,.08); border-color: var(--teal); color: var(--teal); }
+    .footer__social svg { width: 1.5rem; height: 1.5rem; }
+    .footer__col h4 { font: 700 1.1rem/1 var(--font-sans); letter-spacing: .25em; text-transform: uppercase; color: var(--navy); margin-bottom: 2rem; }
+    .footer__col ul { list-style: none; display: flex; flex-direction: column; gap: 1.2rem; }
+    .footer__col ul li a { font: 400 1.5rem/1 var(--font-sans); color: rgba(19,49,95,.72); transition: color .2s; }
+    .footer__col ul li a:hover { color: var(--teal); }
+    .footer__bottom { display: flex; align-items: center; justify-content: space-between; padding-top: 3.2rem; border-top: 1px solid rgba(19,49,95,.12); font: 300 1.2rem/1 var(--font-sans); color: rgba(19,49,95,.4); flex-wrap: wrap; gap: 1.6rem; }
+    .footer__bottom a { color: rgba(19,49,95,.5); transition: color .2s; }
+    .footer__bottom a:hover { color: var(--navy); }
+    .footer__legal { display: flex; gap: 2.4rem; }
+
+    /* ══ REVEAL ════════════════════════════════════════ */
+    .reveal { opacity: 0; transform: translateY(2.8rem); transition: opacity .7s var(--ease), transform .7s var(--ease); }
+    .reveal.visible { opacity: 1; transform: none; }
+    .d1{transition-delay:.1s} .d2{transition-delay:.2s} .d3{transition-delay:.3s} .d4{transition-delay:.4s}
+
+    /* ══ RESPONSIVE ════════════════════════════════════ */
+    @media (max-width: 960px) {
+      .product-layout { grid-template-columns: 1fr; gap: 3.2rem; }
+      .gallery { position: static; }
+      .tab-panel.active { grid-template-columns: 1fr; gap: 2.4rem; }
+      .rel-grid { grid-template-columns: repeat(2,1fr); }
+      .footer__top { grid-template-columns: 1fr 1fr; gap: 3.2rem; }
+    }
+    @media (max-width: 600px) {
+      .perks-grid { grid-template-columns: 1fr; }
+      .rel-grid { grid-template-columns: 1fr 1fr; gap: .8rem; }
+      .footer__top { grid-template-columns: 1fr; }
+      .footer__bottom { flex-direction: column; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ══ NAVBAR ════════════════════════════════════════ -->
+  <nav class="nav scrolled" id="navbar">
+    <div class="page-width nav__inner">
+      <a class="nav__logo" href="index.html">
+        <img src="brand asset/logo chính.png" alt="CARÉTTA">
+      </a>
+      <ul class="nav__links" id="navLinks">
+        <li><a href="index.html">Home</a></li>
+        <li class="has-mega">
+          <a href="collections.html" class="active">Collections</a>
+          <div class="mega-drop">
+            <div>
+              <div class="mega-drop__title">Women</div>
+              <ul class="mega-drop__list">
+                <li><a href="women.html">So Hot</a></li>
+                <li><a href="women.html">Seaside Holidays</a></li>
+                <li><a href="women.html">Gorgeous</a></li>
+                <li><a href="women.html">Origin</a></li>
+                <li><a href="women.html">Call Summer</a></li>
+                <li><a href="women.html">Basic Style</a></li>
+                <li><a href="women.html">Floral</a></li>
+                <li><a href="women.html">Orchid</a></li>
+                <li><a href="women.html">Marine Life</a></li>
+                <li><a href="women.html">Chubby</a></li>
+              </ul>
+            </div>
+            <div>
+              <div class="mega-drop__title">Men</div>
+              <ul class="mega-drop__list">
+                <li><a href="men.html">LEO</a></li>
+                <li><a href="men.html">AQUA</a></li>
+              </ul>
+            </div>
+            <div>
+              <div class="mega-drop__title">Kids</div>
+              <ul class="mega-drop__list">
+                <li><a href="kids.html">Warmy Wetsuit Collection</a></li>
+                <li><a href="kids.html">Teen Collection</a></li>
+              </ul>
+            </div>
+          </div>
+        </li>
+        <li><a href="index.html#values">Why Carétta</a></li>
+      </ul>
+      <div class="nav__isearch" id="navIsearch">
+        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" id="searchInput" placeholder="Tìm kiếm sản phẩm..." autocomplete="off">
+        <button class="nav__isearch-close" id="searchClose">✕</button>
+      </div>
+      <div class="nav__actions">
+        <button class="nav__icon-btn" id="searchBtn" title="Tìm kiếm"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></button>
+        <button class="nav__icon-btn" id="loginBtn" title="Tài khoản"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></button>
+        <button class="nav__icon-btn" id="cartBtn" title="Giỏ hàng"><svg viewBox="0 0 24 24"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg><span class="cart-badge" id="cartBadge"></span></button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ══ BREADCRUMB ════════════════════════════════════ -->
+  <div class="breadcrumb">
+    <div class="page-width">
+      <ol class="breadcrumb__list">
+        <li><a href="index.html">Home</a></li>
+        <li class="breadcrumb__sep">›</li>
+        <li><a href="collections.html">Collections</a></li>
+        <li><a href="women.html">Women</a></li>
+        <li><a href="men.html">Men</a></li>
+        <li><a href="kids.html">Kids</a></li>
+        <li class="breadcrumb__sep">›</li>
+        <li><a href="collections.html">Đồ Bơi</a></li>
+        <li class="breadcrumb__sep">›</li>
+        <li class="cur">Velocity Pro One-Piece</li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- ══ PRODUCT ════════════════════════════════════════ -->
+  <section class="product-section">
+    <div class="page-width">
+      <div class="product-layout">
+
+        <!-- Gallery -->
+        <div class="gallery">
+          <div class="gallery__main">
+            <span class="gallery__badge" id="galleryBadge">Mới Ra Mắt</span>
+            <img id="mainImg" src="https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=900&q=85" alt="Velocity Pro One-Piece" />
+          </div>
+          <div class="gallery__thumbs" id="galleryThumbs">
+            <div class="gallery__thumb active" data-src="https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=900&q=85">
+              <img src="https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=300&q=70" alt="" />
+            </div>
+            <div class="gallery__thumb" data-src="https://images.unsplash.com/photo-1571902943202-507ec2618e8f?w=900&q=85">
+              <img src="https://images.unsplash.com/photo-1571902943202-507ec2618e8f?w=300&q=70" alt="" />
+            </div>
+            <div class="gallery__thumb" data-src="https://images.unsplash.com/photo-1530549387789-4c1017266635?w=900&q=85">
+              <img src="https://images.unsplash.com/photo-1530549387789-4c1017266635?w=300&q=70" alt="" />
+            </div>
+            <div class="gallery__thumb" data-src="https://images.unsplash.com/photo-1509631179647-0177331693ae?w=900&q=85">
+              <img src="https://images.unsplash.com/photo-1509631179647-0177331693ae?w=300&q=70" alt="" />
+            </div>
+          </div>
+        </div>
+
+        <!-- Info -->
+        <div class="pinfo">
+<h1 class="pinfo__name">Velocity Pro One-Piece</h1>
+          <p class="pinfo__tagline">Được thiết kế cho vận động viên — hoàn hảo cho cả hồ bơi và đại dương.</p>
+
+<div class="pinfo__price">
+            <span class="price-now">1.290.000 ₫</span>
+            <span class="price-was">1.650.000 ₫</span>
+            <span class="price-tag">−22%</span>
+          </div>
+
+          <div class="sel-label">Màu sắc <em id="clrName">Ocean Teal</em></div>
+          <div class="color-row">
+            <div class="cswatch active" style="background:#1FA8A0" data-name="Ocean Teal"></div>
+            <div class="cswatch" style="background:#13315F" data-name="Midnight Navy"></div>
+            <div class="cswatch" style="background:#1E7FB8" data-name="Deep Ocean"></div>
+            <div class="cswatch" style="background:#34C39A" data-name="Seafoam"></div>
+            <div class="cswatch" style="background:#1B2A33" data-name="Onyx Black"></div>
+          </div>
+
+          <div class="sel-label">Kích thước</div>
+          <div class="size-row">
+            <button class="sbtn out">XS</button>
+            <button class="sbtn">S</button>
+            <button class="sbtn active">M</button>
+            <button class="sbtn">L</button>
+            <button class="sbtn">XL</button>
+            <button class="sbtn">XXL</button>
+          </div>
+          <span class="size-guide" id="sizeGuide">Hướng dẫn chọn size →</span>
+
+          <div class="cta-block">
+            <button class="btn-add" id="addBtn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+              Thêm Vào Giỏ Hàng
+            </button>
+            <button class="btn-wish">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+              Lưu Yêu Thích
+            </button>
+          </div>
+
+          <div class="perks-grid">
+            <div class="perk">
+              <div class="perk__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+              <div class="perk__text"><strong>Miễn phí ship</strong>Từ 500.000 ₫</div>
+            </div>
+            <div class="perk">
+              <div class="perk__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg></div>
+              <div class="perk__text"><strong>Đổi trả 30 ngày</strong>Không câu hỏi</div>
+            </div>
+            <div class="perk">
+              <div class="perk__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+              <div class="perk__text"><strong>Chính hãng 100%</strong>Bảo hành 1 năm</div>
+            </div>
+            <div class="perk">
+              <div class="perk__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg></div>
+              <div class="perk__text"><strong>Giao 2–3 ngày</strong>Toàn quốc</div>
+            </div>
+          </div>
+
+          <div class="ship-note">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            Đặt trước <strong style="color:var(--ink);margin:0 .4rem">15:00 hôm nay</strong> — giao ngay ngày mai.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ TABS ══════════════════════════════════════════ -->
+  <section class="tabs-section">
+    <div class="page-width">
+      <nav class="tabs-nav">
+        <button class="tab-btn active" data-tab="desc">Mô Tả</button>
+        <button class="tab-btn" data-tab="mat">Chất Liệu</button>
+        <button class="tab-btn" data-tab="care">Bảo Quản</button>
+        <button class="tab-btn" data-tab="ship">Vận Chuyển</button>
+      </nav>
+
+      <div class="tab-panel active" id="tab-desc">
+        <div class="tab-img">
+          <img src="https://images.unsplash.com/photo-1571902943202-507ec2618e8f?w=800&q=85" alt="" />
+        </div>
+        <div class="tab-content">
+          <h3>Hiệu Suất Gặp Thời Trang</h3>
+          <p>Velocity Pro One-Piece được thiết kế từ nghiên cứu chuyên sâu về chuyển động trong nước, mang lại sự kết hợp hoàn hảo giữa khí động học và thẩm mỹ.</p>
+          <p>Lấy cảm hứng từ hình dáng thuần túy của loài rùa biển Caretta — những sinh vật bơi lội uyển chuyển nhất đại dương.</p>
+          <ul class="feat-list">
+            <li>Chống tia UV UPF 50+ — bảo vệ hoàn toàn dưới nắng</li>
+            <li>Kháng clo và nước muối sau 200+ giờ bơi</li>
+            <li>Độ đàn hồi 4 chiều — tự do mọi hướng</li>
+            <li>Thiết kế vách ngực tích hợp — hỗ trợ tự nhiên</li>
+            <li>Khóa kéo lưng full-length dễ mặc / cởi</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="tab-panel" id="tab-mat">
+        <div class="tab-img">
+          <img src="https://images.unsplash.com/photo-1530549387789-4c1017266635?w=800&q=85" alt="" />
+        </div>
+        <div class="tab-content">
+          <h3>Chất Liệu Cao Cấp</h3>
+          <p>Chứng nhận Bluesign® — tiêu chuẩn sản xuất dệt may bền vững hàng đầu thế giới.</p>
+          <table class="mat-table">
+            <tr><td>Thành phần</td><td>78% Nylon tái chế (ECONYL®) · 22% Lycra®</td></tr>
+            <tr><td>Chứng nhận</td><td>Bluesign® · OEKO-TEX® Standard 100</td></tr>
+            <tr><td>Nguồn gốc</td><td>Vải Ý — Dệt kim tại Việt Nam</td></tr>
+            <tr><td>Chịu clo</td><td>Kháng clo 10× so với vải thường</td></tr>
+            <tr><td>UPF</td><td>UPF 50+ (ngăn 98% tia UV)</td></tr>
+          </table>
+        </div>
+      </div>
+
+      <div class="tab-panel" id="tab-care">
+        <div class="tab-img">
+          <img src="https://images.unsplash.com/photo-1509631179647-0177331693ae?w=800&q=85" alt="" />
+        </div>
+        <div class="tab-content">
+          <h3>Bảo Quản Để Bền Đẹp</h3>
+          <div class="care-row">
+            <div class="care-ic"><div class="care-ic__c">🌊</div><div class="care-ic__l">Giặt tay lạnh</div></div>
+            <div class="care-ic"><div class="care-ic__c">🚫</div><div class="care-ic__l">Không máy giặt</div></div>
+            <div class="care-ic"><div class="care-ic__c">🌿</div><div class="care-ic__l">Phơi bóng râm</div></div>
+            <div class="care-ic"><div class="care-ic__c">❌</div><div class="care-ic__l">Không sấy</div></div>
+          </div>
+          <ul class="feat-list">
+            <li>Xả ngay bằng nước ngọt sau khi bơi</li>
+            <li>Giặt tay nhẹ với xà phòng trung tính, nước ≤30°C</li>
+            <li>Không vắt xoắn — ép nhẹ để thoát nước</li>
+            <li>Phơi ngang trong bóng râm</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="tab-panel" id="tab-ship">
+        <div class="tab-img">
+          <img src="https://images.unsplash.com/photo-1566576912321-d58ddd7a6088?w=800&q=85" alt="" />
+        </div>
+        <div class="tab-content">
+          <h3>Vận Chuyển & Đổi Trả</h3>
+          <table class="mat-table">
+            <tr><td>Giao tiêu chuẩn</td><td>2–3 ngày · Miễn phí từ 500K</td></tr>
+            <tr><td>Giao nhanh</td><td>Trong ngày (HCM & HN) · 30.000 ₫</td></tr>
+            <tr><td>Toàn quốc</td><td>3–5 ngày · 35.000 ₫</td></tr>
+          </table>
+          <br/>
+          <ul class="feat-list">
+            <li><strong>Đổi trả miễn phí 30 ngày</strong> — còn tag, chưa sử dụng</li>
+            <li>Hoàn tiền 5–7 ngày làm việc</li>
+            <li>Đóng gói tái chế — không túi nhựa</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ RELATED ════════════════════════════════════════ -->
+  <section class="related">
+    <div class="page-width">
+      <div class="sec-header reveal">
+        <div>
+          <span class="sec-kicker">Có Thể Bạn Thích</span>
+          <h2 class="sec-title">Sản Phẩm <span>Liên Quan</span></h2>
+        </div>
+        <a href="collections.html" class="sec-link">Xem Tất Cả →</a>
+      </div>
+      <div class="rel-grid">
+        <a href="product_detail.html?id=2" class="rel-card reveal d1">
+          <div class="rel-card__img">
+            <img src="https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=600&q=80" alt="" />
+            <div class="rel-card__quick">Xem nhanh</div>
+          </div>
+          <div class="rel-card__name">AquaFlex Bikini Set</div>
+          <div class="rel-card__sub">Đồ Bơi · Hai Mảnh</div>
+          <div class="rel-card__row">
+            <span class="rel-card__price">890.000 ₫</span>
+            <div class="swatches"><div class="dot" style="background:#1FA8A0"></div><div class="dot" style="background:#FF9256"></div><div class="dot" style="background:#13315F"></div></div>
+          </div>
+        </a>
+        <a href="product_detail.html?id=3" class="rel-card reveal d2">
+          <div class="rel-card__img">
+            <img src="https://images.unsplash.com/photo-1518611012118-696072aa579a?w=600&q=80" alt="" />
+            <div class="rel-card__quick">Xem nhanh</div>
+          </div>
+          <div class="rel-card__name">ThermoStride Tights</div>
+          <div class="rel-card__sub">Thể Thao · Quần Dài</div>
+          <div class="rel-card__row">
+            <span class="rel-card__price">750.000 ₫</span>
+            <div class="swatches"><div class="dot" style="background:#1B2A33"></div><div class="dot" style="background:#1E7FB8"></div></div>
+          </div>
+        </a>
+        <a href="product_detail.html?id=5" class="rel-card reveal d3">
+          <div class="rel-card__img">
+            <img src="https://images.unsplash.com/photo-1519415943484-9fa1873496d4?w=600&q=80" alt="" />
+            <div class="rel-card__quick">Xem nhanh</div>
+          </div>
+          <div class="rel-card__name">CoralBreeze Rash Guard</div>
+          <div class="rel-card__sub">Đồ Bơi · UPF 50+</div>
+          <div class="rel-card__row">
+            <span class="rel-card__price">680.000 ₫</span>
+            <div class="swatches"><div class="dot" style="background:#EE5D68"></div><div class="dot" style="background:#FFCD68"></div><div class="dot" style="background:#fff;border-color:#ddd"></div></div>
+          </div>
+        </a>
+        <a href="product_detail.html?id=4" class="rel-card reveal d4">
+          <div class="rel-card__img">
+            <img src="https://images.unsplash.com/photo-1483721310020-03333e577078?w=600&q=80" alt="" />
+            <div class="rel-card__quick">Xem nhanh</div>
+          </div>
+          <div class="rel-card__name">OceanCore Sports Bra</div>
+          <div class="rel-card__sub">Thể Thao · Áo Ngực</div>
+          <div class="rel-card__row">
+            <span class="rel-card__price">490.000 ₫</span>
+            <div class="swatches"><div class="dot" style="background:#34C39A"></div><div class="dot" style="background:#1B2A33"></div><div class="dot" style="background:#FF9256"></div></div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ FOOTER ════════════════════════════════════════ -->
+  <footer class="footer">
+    <div class="page-width">
+      <div class="footer__top">
+        <div class="footer__brand">
+          <img src="brand asset/logo chính.png" alt="CARÉTTA" />
+          <p>Trang phục thể thao và đồ bơi cao cấp lấy cảm hứng từ đại dương.</p>
+          <div class="footer__social">
+            <a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".5" fill="currentColor"/></svg></a>
+            <a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a>
+            <a href="#"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.77 0 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.34 6.34 0 0 0-6.13 6.33 6.34 6.34 0 0 0 12.67 0V8.69a8.18 8.18 0 0 0 4.78 1.52V6.78a4.85 4.85 0 0 1-1.01-.09z"/></svg></a>
+          </div>
+        </div>
+        <div class="footer__col"><h4>Bộ Sưu Tập</h4><ul><li><a href="women.html">Đồ Bơi Nữ</a></li><li><a href="men.html">Đồ Bơi Nam</a></li><li><a href="kids.html">Trẻ Em</a></li><li><a href="products.html">Tất Cả Sản Phẩm</a></li></ul></div>
+        <div class="footer__col"><h4>Về Chúng Tôi</h4><ul><li><a href="cau-chuyen.html">Câu Chuyện</a></li>
+            <li><a href="blog.html">Blog</a></li><li><a href="phat-trien-ben-vung.html">Phát Triển Bền Vững</a></li><li><a href="tuyen-dung.html">Tuyển Dụng</a></li></ul></div>
+        <div class="footer__col"><h4>Hỗ Trợ</h4><ul><li><a href="huong-dan-size.html">Hướng Dẫn Size</a></li><li><a href="giao-hang-doi-tra.html">Giao Hàng &amp; Đổi Trả</a></li><li><a href="cau-hoi-thuong-gap.html">Câu Hỏi Thường Gặp</a></li><li><a href="huong-dan-bao-quan.html">Hướng Dẫn Bảo Quản</a></li></ul></div>
+      </div>
+      <div class="footer__bottom">
+        <span>© 2025 CARÉTTA. Tất cả quyền được bảo lưu.</span>
+        <div class="footer__legal"><a href="#">Bảo Mật</a><a href="#">Điều Khoản</a></div>
+        <span>Thiết kế với ♡ tại Việt Nam</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ══ SIZE MODAL ════════════════════════════════════ -->
+  <div class="modal-bg" id="sizeModal">
+    <div class="modal">
+      <button class="modal-close" id="modalClose">✕</button>
+      <h3>Hướng Dẫn Chọn Size</h3>
+      <p>Đo vòng ngực, eo và mông (cm) để chọn size phù hợp nhất.</p>
+      <table class="sz-table">
+        <thead><tr><th>Size</th><th>Ngực (cm)</th><th>Eo (cm)</th><th>Mông (cm)</th></tr></thead>
+        <tbody>
+          <tr><td>XS</td><td>76–80</td><td>58–62</td><td>82–86</td></tr>
+          <tr><td>S</td><td>80–84</td><td>62–66</td><td>86–90</td></tr>
+          <tr><td><strong>M</strong></td><td><strong>84–88</strong></td><td><strong>66–70</strong></td><td><strong>90–94</strong></td></tr>
+          <tr><td>L</td><td>88–93</td><td>70–75</td><td>94–99</td></tr>
+          <tr><td>XL</td><td>93–98</td><td>75–80</td><td>99–104</td></tr>
+          <tr><td>XXL</td><td>98–104</td><td>80–86</td><td>104–110</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    /* ── Navbar scroll ── */
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      navbar.classList.toggle('scrolled', window.scrollY > 60);
+    }, { passive: true });
+
+    /* Gallery */
+    const mainImg = document.getElementById('mainImg');
+    mainImg.style.transition = 'opacity .2s';
+    document.querySelectorAll('.gallery__thumb').forEach(th => {
+      th.addEventListener('click', () => {
+        document.querySelectorAll('.gallery__thumb').forEach(t => t.classList.remove('active'));
+        th.classList.add('active');
+        mainImg.style.opacity = '0';
+        setTimeout(() => { mainImg.src = th.dataset.src; mainImg.style.opacity = '1'; }, 200);
+      });
+    });
+
+    /* Colors */
+    document.querySelectorAll('.cswatch').forEach(sw => {
+      sw.addEventListener('click', () => {
+        document.querySelectorAll('.cswatch').forEach(s => s.classList.remove('active'));
+        sw.classList.add('active');
+        document.getElementById('clrName').textContent = sw.dataset.name;
+      });
+    });
+
+    /* Sizes */
+    document.querySelectorAll('.sbtn:not(.out)').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.sbtn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+      });
+    });
+
+    /* Tabs */
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+        btn.classList.add('active');
+        document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
+      });
+    });
+
+    /* Modal */
+    document.getElementById('sizeGuide').addEventListener('click', () => document.getElementById('sizeModal').classList.add('open'));
+    document.getElementById('modalClose').addEventListener('click', () => document.getElementById('sizeModal').classList.remove('open'));
+    document.getElementById('sizeModal').addEventListener('click', e => { if (e.target === e.currentTarget) e.currentTarget.classList.remove('open'); });
+
+    /* Reveal */
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+  </script>
+  <div class="nav__search-drop" id="searchResults"></div>
+  <div class="modal-bg" id="authOverlay"><div class="auth-modal"><button class="modal-x" id="authClose">✕</button><img class="auth-brand" src="brand asset/logo chính.png" alt="CARÉTTA"><div id="authContent"></div></div></div>
+  <div class="cart-bg" id="cartBg"></div>
+  <div class="cart-panel" id="cartPanel"><div class="cart-panel-head"><h3>Giỏ Hàng</h3><button class="cart-panel-close" id="cartClose">✕</button></div><div class="cart-list" id="cartList"></div><div class="cart-foot" id="cartFoot"></div></div>
+  <script>
+  /* ── PRODUCT CATALOG ──────────────────────────────── */
+  const CATALOG=[
+    {id:1,name:'Velocity Pro One-Piece',kicker:'Đồ Bơi Kỹ Thuật Cao',sub:'Đồ Bơi · Nữ',badge:'Giảm Giá',price:1290000,oldPrice:1650000,discount:'−22%',tagline:'Được thiết kế cho vận động viên — hoàn hảo cho cả hồ bơi và đại dương.',imgs:['1544551763-46a013bb70d5','1571902943202-507ec2618e8f','1530549387789-4c1017266635','1509631179647-0177331693ae'],colors:[{hex:'#1FA8A0',name:'Ocean Teal'},{hex:'#13315F',name:'Midnight Navy'},{hex:'#1E7FB8',name:'Deep Ocean'},{hex:'#34C39A',name:'Seafoam'},{hex:'#1B2A33',name:'Onyx Black'}]},
+    {id:2,name:'AquaFlex Bikini Set',kicker:'Bộ Đồ Bơi Hai Mảnh',sub:'Đồ Bơi · Nữ',badge:'Mới',price:890000,oldPrice:null,discount:null,tagline:'Thiết kế linh hoạt, thoải mái cho mọi hoạt động dưới nước.',imgs:['1571019614242-c5c5dee9f50b','1518611012118-696072aa579a','1544551763-46a013bb70d5','1519415943484-9fa1873496d4'],colors:[{hex:'#FF9256',name:'Coral'},{hex:'#34C39A',name:'Seafoam'},{hex:'#13315F',name:'Midnight Navy'}]},
+    {id:3,name:'ThermoStride Tights',kicker:'Quần Dài Thể Thao',sub:'Thể Thao · Nữ',badge:null,price:750000,oldPrice:null,discount:null,tagline:'Giữ ấm và thoáng khí hoàn hảo cho mọi buổi tập.',imgs:['1518611012118-696072aa579a','1571019614242-c5c5dee9f50b','1552902865-b72c031ac5ea','1483721310020-03333e577078'],colors:[{hex:'#1B2A33',name:'Onyx Black'},{hex:'#1E7FB8',name:'Deep Ocean'}]},
+    {id:4,name:'OceanCore Sports Bra',kicker:'Áo Ngực Thể Thao',sub:'Thể Thao · Nữ',badge:'Mới',price:490000,oldPrice:null,discount:null,tagline:'Hỗ trợ tối đa, phong cách tối giản cho buổi tập chuyên nghiệp.',imgs:['1483721310020-03333e577078','1518611012118-696072aa579a','1571019614242-c5c5dee9f50b','1503342217505-b0a15ec3261c'],colors:[{hex:'#34C39A',name:'Seafoam'},{hex:'#EE5D68',name:'Coral Red'},{hex:'#1B2A33',name:'Onyx Black'}]},
+    {id:5,name:'CoralBreeze Rash Guard',kicker:'Áo Chống Nắng UPF 50+',sub:'Đồ Bơi · UPF 50+',badge:null,price:680000,oldPrice:null,discount:null,tagline:'Bảo vệ làn da khỏi tia UV, giữ bạn thoải mái dưới nắng.',imgs:['1530549387789-4c1017266635','1509631179647-0177331693ae','1519415943484-9fa1873496d4','1544551763-46a013bb70d5'],colors:[{hex:'#EE5D68',name:'Coral Red'},{hex:'#FFCD68',name:'Gold'},{hex:'#ffffff',name:'White',border:true}]},
+    {id:6,name:'DeepDive Swim Trunk',kicker:'Quần Bơi Nam',sub:'Đồ Bơi · Nam',badge:'Giảm Giá',price:560000,oldPrice:700000,discount:'−20%',tagline:'Thoải mái và bền bỉ cho mọi chuyến lặn hay bơi lội.',imgs:['1509631179647-0177331693ae','1544551763-46a013bb70d5','1530549387789-4c1017266635','1490367532201-b9bc1dc483f6'],colors:[{hex:'#13315F',name:'Midnight Navy'},{hex:'#1E7FB8',name:'Deep Ocean'},{hex:'#1B2A33',name:'Onyx Black'}]},
+    {id:7,name:'SunSurf Long Sleeve',kicker:'Áo Tay Dài Đa Năng',sub:'Đồ Bơi · Unisex',badge:null,price:620000,oldPrice:null,discount:null,tagline:'Chống nắng lý tưởng cho ngày dài trên biển hoặc hồ bơi.',imgs:['1519415943484-9fa1873496d4','1530549387789-4c1017266635','1544551763-46a013bb70d5','1506629082955-511b1aa562c8'],colors:[{hex:'#ffffff',name:'White',border:true},{hex:'#34C39A',name:'Seafoam'}]},
+    {id:8,name:'PeakFlow Tank Top',kicker:'Áo Ba Lỗ Thể Thao',sub:'Thể Thao · Nữ',badge:'Mới',price:420000,oldPrice:null,discount:null,tagline:'Thoáng mát và năng động cho mọi buổi tập cardio và gym.',imgs:['1483721310020-03333e577078','1571019614242-c5c5dee9f50b','1518611012118-696072aa579a','1507003211169-0a1dd7228f2d'],colors:[{hex:'#1B2A33',name:'Onyx Black'},{hex:'#FF9256',name:'Coral'},{hex:'#ECF3F2',name:'Mist',border:true}]},
+    {id:9,name:'WaveRider Bikini Top',kicker:'Áo Bikini Nữ',sub:'Đồ Bơi · Nữ',badge:null,price:390000,oldPrice:null,discount:null,tagline:'Phong cách biển cả hiện đại, tôn vinh vóc dáng tự nhiên.',imgs:['1571902943202-507ec2618e8f','1544551763-46a013bb70d5','1571019614242-c5c5dee9f50b','1519415943484-9fa1873496d4'],colors:[{hex:'#1FA8A0',name:'Ocean Teal'},{hex:'#FFCD68',name:'Gold'}]},
+    {id:10,name:'Abyss Board Short',kicker:'Quần Short Lướt Sóng',sub:'Đồ Bơi · Nam',badge:'Giảm Giá',price:450000,oldPrice:600000,discount:'−25%',tagline:'Tự do chuyển động cho mọi cuộc phiêu lưu trên biển.',imgs:['1544551763-46a013bb70d5','1509631179647-0177331693ae','1530549387789-4c1017266635','1519415943484-9fa1873496d4'],colors:[{hex:'#0a1e3d',name:'Deep Navy'},{hex:'#1E7FB8',name:'Deep Ocean'}]},
+    {id:11,name:'Seafoam Yoga Set',kicker:'Bộ Đồ Yoga',sub:'Thể Thao · Nữ',badge:null,price:980000,oldPrice:null,discount:null,tagline:'Duỗi người tự do trong từng tư thế yoga với chất liệu mềm mại.',imgs:['1518611012118-696072aa579a','1571019614242-c5c5dee9f50b','1483721310020-03333e577078','1552902865-b72c031ac5ea'],colors:[{hex:'#34C39A',name:'Seafoam'},{hex:'#ECF3F2',name:'Mist',border:true}]},
+    {id:12,name:'TidalFlow Shorts',kicker:'Quần Short Đa Năng',sub:'Thể Thao · Unisex',badge:null,price:350000,oldPrice:null,discount:null,tagline:'Nhẹ nhàng và thoáng khí cho mọi hoạt động từ biển đến phố.',imgs:['1530549387789-4c1017266635','1483721310020-03333e577078','1518611012118-696072aa579a','1519415943484-9fa1873496d4'],colors:[{hex:'#1B2A33',name:'Onyx Black'},{hex:'#13315F',name:'Midnight Navy'},{hex:'#FF9256',name:'Coral'}]}
+  ];
+  const PRODUCTS_DB=CATALOG.map(p=>({id:p.id,name:p.name,cat:p.sub,price:p.price,img:'https://images.unsplash.com/photo-'+p.imgs[0]+'?w=80&q=70',href:'product_detail.html?id='+p.id}));
+
+  /* ── INIT PAGE FROM URL PARAM ─────────────────────── */
+  let CURRENT_PRODUCT=null;
+  (function(){
+    const pid=parseInt(new URLSearchParams(window.location.search).get('id'))||1;
+    const p=CATALOG.find(x=>x.id===pid)||CATALOG[0];
+    CURRENT_PRODUCT=p;
+    document.title=p.name+' — CARÉTTA';
+    const cur=document.querySelector('.breadcrumb .cur');
+    if(cur)cur.textContent=p.name;
+    const badge=document.getElementById('galleryBadge');
+    if(badge){if(p.badge){badge.textContent=p.badge;badge.style.display='';}else{badge.style.display='none';}}
+    const mainImg=document.getElementById('mainImg');
+    if(mainImg){mainImg.src='https://images.unsplash.com/photo-'+p.imgs[0]+'?w=900&q=85';mainImg.alt=p.name;}
+    const thumbsEl=document.getElementById('galleryThumbs');
+    if(thumbsEl){
+      thumbsEl.innerHTML=p.imgs.map((id,i)=>`<div class="gallery__thumb${i===0?' active':''}" data-src="https://images.unsplash.com/photo-${id}?w=900&q=85"><img src="https://images.unsplash.com/photo-${id}?w=300&q=70" alt=""></div>`).join('');
+      thumbsEl.querySelectorAll('.gallery__thumb').forEach(th=>{
+        th.addEventListener('click',()=>{
+          thumbsEl.querySelectorAll('.gallery__thumb').forEach(t=>t.classList.remove('active'));
+          th.classList.add('active');
+          if(mainImg){mainImg.style.opacity='0';setTimeout(()=>{mainImg.src=th.dataset.src;mainImg.style.opacity='1';},200);}
+        });
+      });
+    }
+    const kicker=document.querySelector('.pinfo__kicker');
+    if(kicker)kicker.textContent=p.kicker;
+    const nameEl=document.querySelector('.pinfo__name');
+    if(nameEl){nameEl.textContent=p.name;}
+    const tagEl=document.querySelector('.pinfo__tagline');
+    if(tagEl)tagEl.textContent=p.tagline;
+    const priceNow=document.querySelector('.price-now');if(priceNow)priceNow.textContent=p.price.toLocaleString('vi-VN')+' ₫';
+    const priceWas=document.querySelector('.price-was');if(priceWas){if(p.oldPrice){priceWas.textContent=p.oldPrice.toLocaleString('vi-VN')+' ₫';priceWas.style.display='';}else{priceWas.style.display='none';}}
+    const priceTag=document.querySelector('.price-tag');if(priceTag){if(p.discount){priceTag.textContent=p.discount;priceTag.style.display='';}else{priceTag.style.display='none';}}
+    const clrName=document.getElementById('clrName');if(clrName)clrName.textContent=p.colors[0].name;
+    const colorRow=document.querySelector('.color-row');
+    if(colorRow){
+      colorRow.innerHTML=p.colors.map((c,i)=>`<div class="cswatch${i===0?' active':''}" style="background:${c.hex}${c.border?';box-shadow:0 0 0 1.5px #bbb':''}" data-name="${c.name}"></div>`).join('');
+      colorRow.querySelectorAll('.cswatch').forEach(sw=>{
+        sw.addEventListener('click',()=>{
+          colorRow.querySelectorAll('.cswatch').forEach(s=>s.classList.remove('active'));
+          sw.classList.add('active');
+          if(clrName)clrName.textContent=sw.dataset.name;
+        });
+      });
+    }
+  })();
+
+  function getCart(){try{return JSON.parse(localStorage.getItem('caretta_cart')||'[]')}catch(e){return[]}}
+  function saveCart(c){localStorage.setItem('caretta_cart',JSON.stringify(c))}
+  function getUser(){try{return JSON.parse(localStorage.getItem('caretta_user')||'null')}catch(e){return null}}
+  function updateBadge(){const n=getCart().reduce((s,i)=>s+i.qty,0);const b=document.getElementById('cartBadge');if(!b)return;b.textContent=n;b.classList.toggle('show',n>0)}
+  const addBtn=document.getElementById('addBtn');
+  if(addBtn){addBtn.addEventListener('click',()=>{
+    const p=CURRENT_PRODUCT;if(!p)return;
+    const selColor=document.querySelector('.cswatch.active');
+    const selSize=document.querySelector('.sbtn.active:not(.out)');
+    if(!selSize){alert('Vui lòng chọn kích cỡ!');return}
+    const cart=getCart();
+    const colorName=selColor?selColor.dataset.name||p.colors[0].name:p.colors[0].name;
+    const item={name:p.name,cat:p.sub,price:p.price,img:'https://images.unsplash.com/photo-'+p.imgs[0]+'?w=80&q=70',color:colorName,size:selSize.textContent.trim(),qty:1,href:'product_detail.html?id='+p.id};
+    const exist=cart.findIndex(i=>i.name===item.name&&i.size===item.size&&i.color===item.color);
+    if(exist>=0){cart[exist].qty+=1}else{cart.push(item)}
+    saveCart(cart);updateBadge();
+    const svgCart='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1.8rem;height:1.8rem"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>';
+    addBtn.innerHTML='✓ Đã Thêm Vào Giỏ!';addBtn.style.background='var(--green)';addBtn.style.color='var(--navy)';
+    setTimeout(()=>{addBtn.innerHTML=svgCart+' Thêm Vào Giỏ Hàng';addBtn.style.background='';addBtn.style.color='';},2000);
+  })}
+  const navIsearch=document.getElementById('navIsearch');
+  const navLinks=document.getElementById('navLinks');
+  const searchDrop=document.getElementById('searchResults');
+  document.getElementById('searchBtn').addEventListener('click',()=>{navIsearch.classList.add('open');navLinks.classList.add('search-hidden');document.getElementById('searchInput').focus()});
+  document.getElementById('searchClose').addEventListener('click',closeSearch);
+  document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeSearch();closeAuth();closeCartP()}});
+  function closeSearch(){navIsearch.classList.remove('open');navLinks.classList.remove('search-hidden');document.getElementById('searchInput').value='';searchDrop.innerHTML='';searchDrop.classList.remove('open')}
+  document.getElementById('searchInput').addEventListener('input',function(){const q=this.value.trim().toLowerCase();if(!q){searchDrop.innerHTML='';searchDrop.classList.remove('open');return}const hits=PRODUCTS_DB.filter(p=>p.name.toLowerCase().includes(q)||p.cat.toLowerCase().includes(q));searchDrop.innerHTML=hits.length?hits.map(p=>`<a href="${p.href}" class="search-result-item"><img class="search-result-thumb" src="${p.img}" alt="${p.name}"><div><div class="search-result-name">${p.name}</div><div class="search-result-cat">${p.cat}</div></div><div class="search-result-price">${p.price.toLocaleString('vi-VN')}₫</div></a>`).join(''):'<div class="search-no-result">Không tìm thấy sản phẩm nào.</div>';searchDrop.classList.add('open')});
+  const ao=document.getElementById('authOverlay');
+  document.getElementById('loginBtn').addEventListener('click',openAuth);
+  document.getElementById('authClose').addEventListener('click',closeAuth);
+  ao.addEventListener('click',e=>{if(e.target===ao)closeAuth()});
+  function openAuth(){renderAuth();ao.classList.add('open')}
+  function closeAuth(){ao.classList.remove('open')}
+  function renderAuth(){const user=getUser();const box=document.getElementById('authContent');const btn=document.getElementById('loginBtn');if(user){btn.classList.add('logged-in');box.innerHTML=`<div class="auth-user-panel"><div class="auth-avatar">${user.name.charAt(0).toUpperCase()}</div><div><div class="auth-user-name">${user.name}</div><div class="auth-user-email">${user.email}</div></div><button class="auth-signout" onclick="signOut()">Đăng xuất</button></div><p style="font:400 1.2rem/1.5 var(--font-sans);color:rgba(19,49,95,.4);text-align:center">Chào mừng trở lại!</p>`}else{btn.classList.remove('logged-in');box.innerHTML=`<div class="auth-tabs"><button class="auth-tab active" onclick="switchTab('login',this)">Đăng Nhập</button><button class="auth-tab" onclick="switchTab('register',this)">Đăng Ký</button></div><form class="auth-form" id="loginForm" onsubmit="doLogin(event)"><div class="f-group"><label>Email</label><input type="email" name="email" required placeholder="email@example.com"></div><div class="f-group"><label>Mật khẩu</label><input type="password" name="password" required placeholder="••••••••"></div><div class="f-msg" id="loginMsg"></div><button type="submit" class="auth-btn">Đăng Nhập</button></form><form class="auth-form hidden" id="registerForm" onsubmit="doRegister(event)"><div class="f-group"><label>Họ tên</label><input type="text" name="name" required placeholder="Nguyễn Văn A"></div><div class="f-group"><label>Email</label><input type="email" name="email" required placeholder="email@example.com"></div><div class="f-group"><label>Mật khẩu</label><input type="password" name="password" required placeholder="Ít nhất 6 ký tự" minlength="6"></div><div class="f-msg" id="registerMsg"></div><button type="submit" class="auth-btn">Tạo Tài Khoản</button></form>`}}
+  function switchTab(tab,el){document.querySelectorAll('.auth-tab').forEach(t=>t.classList.remove('active'));el.classList.add('active');document.getElementById('loginForm').classList.toggle('hidden',tab!=='login');document.getElementById('registerForm').classList.toggle('hidden',tab!=='register')}
+  function doLogin(e){e.preventDefault();const f=e.target,email=f.email.value,pass=f.password.value;const users=JSON.parse(localStorage.getItem('caretta_users')||'[]');const u=users.find(u=>u.email===email&&u.password===pass);const msg=document.getElementById('loginMsg');if(u){localStorage.setItem('caretta_user',JSON.stringify(u));closeAuth();renderAuth()}else{msg.className='f-msg err';msg.textContent='Email hoặc mật khẩu không đúng.'}}
+  function doRegister(e){e.preventDefault();const f=e.target,name=f.name.value,email=f.email.value,pass=f.password.value;const users=JSON.parse(localStorage.getItem('caretta_users')||'[]');const msg=document.getElementById('registerMsg');if(users.find(u=>u.email===email)){msg.className='f-msg err';msg.textContent='Email này đã được sử dụng.';return}const nu={name,email,password:pass};users.push(nu);localStorage.setItem('caretta_users',JSON.stringify(users));localStorage.setItem('caretta_user',JSON.stringify(nu));closeAuth();renderAuth()}
+  function signOut(){localStorage.removeItem('caretta_user');closeAuth();renderAuth()}
+  const cp=document.getElementById('cartPanel');const cb=document.getElementById('cartBg');
+  document.getElementById('cartBtn').addEventListener('click',openCartP);
+  document.getElementById('cartClose').addEventListener('click',closeCartP);
+  cb.addEventListener('click',closeCartP);
+  function openCartP(){cp.classList.add('open');cb.classList.add('open');renderCartP()}
+  function closeCartP(){cp.classList.remove('open');cb.classList.remove('open')}
+  function renderCartP(){
+    const user=getUser();const cart=getCart();
+    const list=document.getElementById('cartList');const foot=document.getElementById('cartFoot');
+    if(!user){list.innerHTML=`<div class="cart-gate"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg><p>Vui lòng đăng nhập<br>để xem giỏ hàng của bạn</p><button class="cart-gate-btn" onclick="closeCartP();openAuth()">Đăng Nhập / Đăng Ký</button></div>`;foot.innerHTML='';return;}
+    if(!cart.length){list.innerHTML=`<div class="cart-empty-state"><p>Giỏ hàng của bạn đang trống.</p><a href="products.html">Khám Phá Sản Phẩm</a></div>`;foot.innerHTML='';return;}
+    list.innerHTML=cart.map((item,i)=>`<div class="c-item"><img src="${item.img}" alt="${item.name}"><div class="c-item-info"><div class="c-item-name">${item.name}</div><div class="c-item-meta">${item.color||''}${item.size?' · Size '+item.size:''}</div><div class="c-item-price">${(item.price*item.qty).toLocaleString('vi-VN')}₫</div><div class="c-item-row"><button class="c-qty-btn" onclick="chQty(${i},-1)">−</button><span class="c-qty-num">${item.qty}</span><button class="c-qty-btn" onclick="chQty(${i},1)">+</button><button class="c-remove" onclick="rmItem(${i})">✕</button></div></div></div>`).join('');
+    const sum=cart.reduce((s,i)=>s+i.price*i.qty,0);
+    foot.innerHTML=`<div class="cart-total-row"><span>Tạm tính</span><strong>${sum.toLocaleString('vi-VN')}₫</strong></div><button class="cart-checkout-btn" onclick="doCheckout()">Tiến Hành Mua Hàng</button><a href="products.html" class="cart-continue-link">← Tiếp tục mua sắm</a>`;
+  }
+  function doCheckout(){const u=getUser();const cart=getCart();if(!u||!cart.length)return;const sum=cart.reduce((s,i)=>s+i.price*i.qty,0);document.getElementById('cartList').innerHTML=`<div class="cart-success"><svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg><strong>Đặt hàng thành công!</strong><p>Cảm ơn ${u.name||u.email}!<br>Tổng đơn: ${sum.toLocaleString('vi-VN')}₫<br>Chúng tôi sẽ liên hệ xác nhận sớm.</p></div>`;document.getElementById('cartFoot').innerHTML='';saveCart([]);updateBadge();}
+  function chQty(i,d){const c=getCart();c[i].qty=Math.max(1,c[i].qty+d);saveCart(c);renderCartP();updateBadge()}
+  function rmItem(i){const c=getCart();c.splice(i,1);saveCart(c);renderCartP();updateBadge()}
+  updateBadge();renderAuth();
+  document.querySelectorAll('.has-mega').forEach(li=>{let t;li.addEventListener('mouseenter',()=>{clearTimeout(t);li.classList.add('open');});li.addEventListener('mouseleave',()=>{t=setTimeout(()=>li.classList.remove('open'),200);});});
+  </script>
+</body>
+</html>
+
