@@ -1,0 +1,645 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tại Sao Carétta — CARÉTTA</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Newsreader:opsz,wght@6..72,300;6..72,400;6..72,500;6..72,600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --green:  #34C39A; --teal:   #1FA8A0; --ocean:  #1E7FB8;
+      --navy:   #13315F; --ink:    #1B2A33; --mist:   #ECF3F2;
+      --sand:   #F3EEE4; --pebble: #8A99A0; --coral:  #FF9256;
+      --gold:   #FFCD68;
+      --font-display: 'Newsreader', Georgia, serif;
+      --font-serif:   'Newsreader', Georgia, serif;
+      --font-sans:    'Inter', system-ui, sans-serif;
+      --ease: cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    html { font-size: 62.5%; scroll-behavior: smooth; }
+    body { font-family: var(--font-sans); font-size: 1.6rem; color: var(--ink); background: #fff; line-height: 1.7; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+    img { display: block; max-width: 100%; }
+    a { text-decoration: none; color: inherit; }
+
+    /* ══ READING PROGRESS ═══════════════════════════════ */
+    .progress-bar { position: fixed; top: 0; left: 0; height: 2.5px; background: linear-gradient(90deg, var(--green), var(--teal), var(--ocean)); z-index: 300; width: 0%; transition: width .1s linear; }
+
+    /* ══ NAVBAR ════════════════════════════════════════ */
+    .nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+      padding: 4px 0;
+      transition: background .4s, padding .4s, box-shadow .4s;
+    }
+    .nav.scrolled {
+      background: rgba(19,49,95,.97);
+      backdrop-filter: blur(16px);
+      padding: 2px 0;
+      box-shadow: 0 2px 30px rgba(0,0,0,.2);
+    }
+    .nav__inner { max-width: 1400px; margin-inline: auto; padding-inline: 32px; display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+    .nav__logo { display: flex; align-items: center; margin-left: -1.6rem; }
+    .nav__logo img { height: 72px; width: auto; }
+    .nav__links { display: flex; gap: 36px; list-style: none; }
+    .nav__links a { font: 500 12px/1 var(--font-sans); letter-spacing: .14em; text-transform: uppercase; color: rgba(255,255,255,.8); transition: color .2s; position: relative; }
+    .nav__links a::after { content: ''; position: absolute; bottom: -.4rem; left: 0; width: 0; height: 1.5px; background: var(--green); transition: width .3s var(--ease); }
+    .nav__links a:hover, .nav__links a.active { color: #fff; }
+    .nav__links a:hover::after, .nav__links a.active::after { width: 100%; }
+    .nav__actions { display: flex; align-items: center; gap: 6px; }
+    .nav__icon-btn { width: 3.8rem; height: 3.8rem; border-radius: 50%; border: 1px solid rgba(255,255,255,.2); background: transparent; cursor: pointer; display: grid; place-items: center; color: rgba(255,255,255,.8); transition: background .2s, border-color .2s; position: relative; flex-shrink: 0; }
+    .nav__icon-btn:hover { background: rgba(255,255,255,.1); color: #fff; border-color: rgba(255,255,255,.4); }
+    .nav__icon-btn svg { width: 1.6rem; height: 1.6rem; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    .nav__icon-btn.logged-in { border-color: rgba(52,195,154,.6); background: rgba(52,195,154,.1); }
+    .cart-badge { position: absolute; top: -.3rem; right: -.3rem; min-width: 1.6rem; height: 1.6rem; background: var(--green); color: var(--navy); font: 700 .9rem/1.6rem var(--font-sans); text-align: center; border-radius: .8rem; padding: 0 .3rem; display: none; border: 1.5px solid rgba(19,49,95,.96); }
+    .cart-badge.show { display: block; }
+    /* ── NAV INLINE SEARCH */
+    .nav__isearch { display: none; flex: 1; align-items: center; gap: 1rem; background: #fff; border: 1.5px solid #d8d8d8; border-radius: 4px; padding: .7rem 1.2rem; margin: 0 2.4rem; }
+    .nav__isearch.open { display: flex; }
+    .nav__isearch svg { width: 1.6rem; height: 1.6rem; color: #bbb; flex-shrink: 0; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    .nav__isearch input { flex: 1; border: none; outline: none; font: 400 1.4rem/1 var(--font-sans); color: #222; background: transparent; }
+    .nav__isearch input::placeholder { color: #bbb; }
+    .nav__isearch-close { background: none; border: 1px solid #d8d8d8; border-radius: 3px; cursor: pointer; color: #888; font-size: 1.2rem; padding: .3rem .7rem; line-height: 1.4; transition: all .2s; flex-shrink: 0; }
+    .nav__isearch-close:hover { color: #111; border-color: #999; }
+    .nav__links.search-hidden { display: none; }
+    .nav__links li.has-mega { position: static; }
+    .mega-drop { position: absolute; top: 100%; left: 0; right: 0; background: #fff; border-top: 2px solid rgba(31,168,160,.12); box-shadow: 0 16px 48px rgba(19,49,95,.13); padding: 36px 80px; display: grid; grid-template-columns: repeat(3,1fr); gap: 48px; opacity: 0; pointer-events: none; transform: translateY(-8px); transition: opacity .22s ease, transform .22s ease; z-index: 99; }
+    .nav__links li.has-mega.open .mega-drop { opacity: 1; pointer-events: all; transform: none; }
+    .mega-drop__title { font: 700 14px/1 var(--font-sans); letter-spacing: .16em; text-transform: uppercase; color: #13315F; margin-bottom: 16px; padding-bottom: 10px; border-bottom: 1.5px solid rgba(19,49,95,.18); }
+    .mega-drop__list { list-style: none; display: flex; flex-direction: column; gap: 9px; }
+    .mega-drop__list a { font: 400 14px/1.4 var(--font-sans); color: rgba(19,49,95,.72); text-transform: none; letter-spacing: 0; transition: color .18s; }
+    .mega-drop__list a::after { display: none !important; }
+    .mega-drop__list a:hover { color: var(--teal); }
+    .nav__search-drop { position: fixed; top: 8rem; left: 0; right: 0; background: #fff; box-shadow: 0 4px 20px rgba(0,0,0,.08); border-top: 1px solid #f0f0f0; display: none; max-height: 34rem; overflow-y: auto; z-index: 499; }
+    .nav__search-drop.open { display: block; }
+    .search-result-item { display: flex; align-items: center; gap: 1.4rem; padding: 1rem 4.8rem; text-decoration: none; color: #1a1a1a; transition: background .15s; }
+    .search-result-item:hover { background: #f6f6f6; }
+    .search-result-thumb { width: 4.4rem; height: 4.4rem; object-fit: cover; border-radius: 6px; background: #f0f0f0; flex-shrink: 0; }
+    .search-result-name { font: 500 1.3rem/1.3 var(--font-sans); margin-bottom: 3px; }
+    .search-result-cat { font: 400 1rem/1 var(--font-sans); color: #999; text-transform: uppercase; letter-spacing: .12em; }
+    .search-result-price { margin-left: auto; font: 700 1.3rem/1 var(--font-sans); color: var(--navy); white-space: nowrap; padding-left: 1.2rem; }
+    .search-no-result { color: #bbb; font: 400 1.4rem/1 var(--font-sans); padding: 2rem; text-align: center; }
+    .modal-bg { position: fixed; inset: 0; z-index: 600; background: rgba(0,0,0,.55); backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity .3s; }
+    .modal-bg.open { opacity: 1; pointer-events: all; }
+    .auth-modal { background: #fff; border-radius: 16px; width: min(42rem, 92vw); padding: 3.6rem; position: relative; transform: translateY(16px); transition: transform .3s; }
+    .modal-bg.open .auth-modal { transform: none; }
+    .modal-x { position: absolute; top: 1.4rem; right: 1.4rem; width: 3rem; height: 3rem; border: none; background: rgba(19,49,95,.06); border-radius: 50%; cursor: pointer; font-size: 1.5rem; color: var(--navy); display: grid; place-items: center; transition: background .2s; }
+    .modal-x:hover { background: rgba(19,49,95,.12); }
+    .auth-brand { height: 4.4rem; width: auto; display: block; margin-bottom: 2rem; }
+    .auth-tabs { display: flex; border-bottom: 2px solid rgba(19,49,95,.08); margin-bottom: 2.2rem; }
+    .auth-tab { flex: 1; padding: 1rem 6px; border: none; background: none; cursor: pointer; font: 600 1.1rem/1 var(--font-sans); letter-spacing: .1em; text-transform: uppercase; color: rgba(19,49,95,.35); border-bottom: 2px solid transparent; margin-bottom: -2px; transition: color .2s, border-color .2s; }
+    .auth-tab.active { color: var(--navy); border-bottom-color: var(--navy); }
+    .auth-form { display: flex; flex-direction: column; gap: 1.2rem; }
+    .auth-form.hidden { display: none; }
+    .f-group label { display: block; font: 500 1rem/1 var(--font-sans); letter-spacing: .1em; text-transform: uppercase; color: rgba(19,49,95,.45); margin-bottom: .5rem; }
+    .f-group input { width: 100%; height: 4.2rem; border: 1.5px solid rgba(19,49,95,.12); border-radius: 8px; padding: 0 1.2rem; font: 400 1.3rem/1 var(--font-sans); color: var(--navy); outline: none; transition: border-color .2s; box-sizing: border-box; }
+    .f-group input:focus { border-color: var(--teal); }
+    .f-msg { font: 400 1.1rem/1.4 var(--font-sans); padding: .8rem 1rem; border-radius: 6px; display: none; }
+    .f-msg.err { background: #fef2f2; color: #dc2626; display: block; }
+    .auth-btn { height: 4.4rem; background: linear-gradient(135deg, var(--navy), var(--ocean)); color: #fff; border: none; border-radius: 8px; font: 700 1.1rem/1 var(--font-sans); letter-spacing: .12em; text-transform: uppercase; cursor: pointer; transition: box-shadow .2s, transform .15s; margin-top: .4rem; }
+    .auth-btn:hover { box-shadow: 0 8px 24px rgba(19,49,95,.2); transform: translateY(-1px); }
+    .auth-user-panel { background: rgba(19,49,95,.04); border-radius: 1rem; padding: 1.4rem; display: flex; align-items: center; gap: 1.2rem; margin-bottom: 1.6rem; }
+    .auth-avatar { width: 4rem; height: 4rem; border-radius: 50%; background: linear-gradient(135deg, var(--teal), var(--ocean)); display: grid; place-items: center; color: #fff; font: 700 1.5rem/1 var(--font-sans); flex-shrink: 0; }
+    .auth-user-name { font: 600 1.3rem/1.2 var(--font-sans); color: var(--navy); }
+    .auth-user-email { font: 400 1.1rem/1 var(--font-sans); color: rgba(19,49,95,.4); margin-top: 2px; }
+    .auth-signout { margin-left: auto; padding: .6rem 1.2rem; border: 1px solid rgba(19,49,95,.15); border-radius: 2rem; background: none; cursor: pointer; font: 500 1rem/1 var(--font-sans); color: rgba(19,49,95,.45); letter-spacing: .06em; text-transform: uppercase; transition: all .2s; white-space: nowrap; }
+    .auth-signout:hover { background: var(--navy); color: #fff; border-color: var(--navy); }
+    .cart-bg { position: fixed; inset: 0; z-index: 700; background: rgba(0,0,0,.45); opacity: 0; pointer-events: none; transition: opacity .3s; }
+    .cart-bg.open { opacity: 1; pointer-events: all; }
+    .cart-panel { position: fixed; top: 0; right: 0; bottom: 0; z-index: 701; width: min(40rem, 95vw); background: #fff; transform: translateX(100%); transition: transform .35s cubic-bezier(.4,0,.2,1); display: flex; flex-direction: column; box-shadow: -8px 0 40px rgba(0,0,0,.15); }
+    .cart-panel.open { transform: none; }
+    .cart-panel-head { display: flex; align-items: center; justify-content: space-between; padding: 2rem 2.2rem; border-bottom: 1px solid rgba(19,49,95,.08); flex-shrink: 0; }
+    .cart-panel-head h3 { font: 600 1.7rem/1 var(--font-sans); color: var(--navy); }
+    .cart-panel-close { width: 3.2rem; height: 3.2rem; border-radius: 50%; border: none; background: rgba(19,49,95,.06); cursor: pointer; font-size: 1.6rem; color: var(--navy); display: grid; place-items: center; transition: background .2s; }
+    .cart-panel-close:hover { background: rgba(19,49,95,.12); }
+    .cart-list { flex: 1; overflow-y: auto; padding: 1.6rem 2.2rem; display: flex; flex-direction: column; gap: 1.6rem; }
+    .cart-gate { display: flex; flex-direction: column; align-items: center; text-align: center; padding: 5.6rem 2.4rem 4rem; gap: 1.6rem; }
+    .cart-gate svg { width: 4.4rem; height: 4.4rem; stroke: currentColor; fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; color: rgba(19,49,95,.2); }
+    .cart-gate p { font: 400 1.4rem/1.6 var(--font-sans); color: rgba(19,49,95,.5); }
+    .cart-gate-btn { height: 4.4rem; padding: 0 2.8rem; background: var(--navy); color: #fff; border: none; border-radius: 8px; font: 600 1.1rem/1 var(--font-sans); letter-spacing: .12em; text-transform: uppercase; cursor: pointer; transition: background .2s; }
+    .cart-gate-btn:hover { background: var(--ocean); }
+    .cart-empty-state { text-align: center; padding: 4.8rem 2rem; display: flex; flex-direction: column; align-items: center; gap: 1.6rem; }
+    .cart-empty-state p { font: 400 1.4rem/1.5 var(--font-sans); color: rgba(19,49,95,.35); }
+    .cart-empty-state a { display: inline-block; padding: 1.1rem 2.6rem; background: var(--navy); color: #fff; border-radius: 6px; font: 600 1.1rem/1 var(--font-sans); letter-spacing: .1em; text-transform: uppercase; text-decoration: none; }
+    .c-item { display: flex; gap: 1.2rem; }
+    .c-item img { width: 7.6rem; height: 7.6rem; object-fit: cover; border-radius: 8px; background: rgba(19,49,95,.05); flex-shrink: 0; }
+    .c-item-info { flex: 1; min-width: 0; }
+    .c-item-name { font: 500 1.2rem/1.35 var(--font-sans); color: var(--navy); margin-bottom: .3rem; }
+    .c-item-meta { font: 400 1rem/1 var(--font-sans); color: rgba(19,49,95,.4); text-transform: uppercase; letter-spacing: .07em; margin-bottom: .8rem; }
+    .c-item-price { font: 700 1.3rem/1 var(--font-sans); color: var(--navy); }
+    .c-item-row { display: flex; align-items: center; gap: .6rem; margin-top: .7rem; }
+    .c-qty-btn { width: 2.4rem; height: 2.4rem; border: 1px solid rgba(19,49,95,.18); border-radius: 4px; background: none; cursor: pointer; font-size: 1.3rem; color: var(--navy); display: grid; place-items: center; transition: background .15s; }
+    .c-qty-btn:hover { background: rgba(19,49,95,.06); }
+    .c-qty-num { font: 600 1.2rem/1 var(--font-sans); color: var(--navy); min-width: 1.8rem; text-align: center; }
+    .c-remove { margin-left: auto; background: none; border: none; cursor: pointer; color: rgba(19,49,95,.25); font-size: 1.5rem; line-height: 1; padding: 3px; transition: color .2s; }
+    .c-remove:hover { color: #dc2626; }
+    .cart-foot { padding: 1.4rem 2.2rem 2rem; border-top: 1px solid rgba(19,49,95,.08); flex-shrink: 0; }
+    .cart-total-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.4rem; }
+    .cart-total-row span { font: 400 1.2rem/1 var(--font-sans); color: rgba(19,49,95,.45); }
+    .cart-total-row strong { font: 700 2rem/1 var(--font-sans); color: var(--navy); }
+    .cart-checkout-btn { display: flex; align-items: center; justify-content: center; width: 100%; height: 5.2rem; background: linear-gradient(135deg, var(--navy), var(--ocean)); color: #fff; border: none; border-radius: 8px; font: 700 1.1rem/1 var(--font-sans); letter-spacing: .14em; text-transform: uppercase; cursor: pointer; transition: box-shadow .2s, transform .15s; margin-bottom: 1rem; }
+    .cart-checkout-btn:hover { box-shadow: 0 8px 28px rgba(19,49,95,.28); transform: translateY(-1px); }
+    .cart-continue-link { display: block; text-align: center; font: 400 1.2rem/1 var(--font-sans); color: rgba(19,49,95,.4); text-decoration: none; padding: .4rem 0 .2rem; transition: color .2s; }
+    .cart-continue-link:hover { color: var(--navy); }
+    .cart-success { display: flex; flex-direction: column; align-items: center; text-align: center; padding: 5.6rem 2.4rem 4rem; gap: 1.4rem; }
+    .cart-success svg { width: 4.8rem; height: 4.8rem; stroke: var(--green); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    .cart-success strong { font: 600 1.5rem/1 var(--font-sans); color: var(--navy); }
+    .cart-success p { font: 400 1.3rem/1.5 var(--font-sans); color: rgba(19,49,95,.5); }
+    @media (max-width: 860px) { .nav__links { display: none; } }
+
+    /* ══ HERO ════════════════════════════════════════════ */
+    .hero {
+      position: relative; overflow: hidden;
+    }
+    .hero__bg { display: block; width: 100%; height: auto; }
+    .hero__overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to bottom, rgba(11,31,69,.35) 0%, rgba(19,49,95,.5) 60%, rgba(11,31,69,.7) 100%);
+    }
+    .hero__content { position: absolute; top: 82%; left: 50%; transform: translate(-50%, -50%); z-index: 1; text-align: center; max-width: 76rem; padding: 0 3.2rem; width: 100%; }
+    @keyframes heroFadeUp { from { opacity: 0; transform: translateY(2.8rem); } to { opacity: 1; transform: translateY(0); } }
+    .hero__title { animation: heroFadeUp .9s cubic-bezier(0.22,1,0.36,1) .2s both; }
+    .hero__kicker { font: 500 1.1rem/1 var(--font-sans); letter-spacing: .4em; text-transform: uppercase; color: var(--green); display: block; margin-bottom: 2.4rem; }
+    .hero__title { font: 500 clamp(2.8rem, 7vw, 6.4rem)/1.05 var(--font-serif); color: #fff; margin-bottom: 2.4rem; white-space: nowrap; }
+    .hero__title em { color: var(--green); font-style: italic; }
+    .hero__sub { font: 300 1.9rem/1.65 var(--font-sans); color: rgba(255,255,255,.6); max-width: 54rem; margin-inline: auto; margin-bottom: 3.2rem; letter-spacing: .02em; }
+    .hero__meta { display: flex; align-items: center; justify-content: center; gap: 2.4rem; font: 400 1.2rem/1 var(--font-sans); color: rgba(255,255,255,.35); letter-spacing: .08em; text-transform: uppercase; }
+    .hero__meta span::before { content: '·'; margin-right: 2.4rem; }
+    .hero__meta span:first-child::before { display: none; }
+    .hero__scroll { position: absolute; bottom: 3.2rem; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: 1rem; color: rgba(255,255,255,.3); font: 400 1.0rem/1 var(--font-sans); letter-spacing: .2em; text-transform: uppercase; }
+    .hero__scroll-line { width: 1px; height: 4rem; background: linear-gradient(to bottom, rgba(255,255,255,.3), transparent); animation: scrollLine 1.8s ease-in-out infinite; }
+    @keyframes scrollLine { 0%, 100% { opacity: 0.3; transform: scaleY(1); } 50% { opacity: 1; transform: scaleY(0.6); } }
+
+    /* ══ ARTICLE LAYOUT ══════════════════════════════════ */
+    .article { max-width: 96rem; margin-inline: auto; padding: 8rem 3.2rem; }
+
+    /* Section label */
+    .s-kicker { font: 500 1.0rem/1 var(--font-sans); letter-spacing: .3em; text-transform: uppercase; color: var(--teal); display: block; margin-bottom: 1.2rem; }
+
+    /* Section headings */
+    .article h2 { font: 500 3.6rem/1.15 var(--font-serif); color: var(--navy); margin-bottom: 1.8rem; }
+    .article h3 { font: 500 2.4rem/1.2 var(--font-serif); color: var(--navy); margin-bottom: 1.2rem; margin-top: 4rem; }
+
+    /* Body text */
+    .article p { font: 400 1.6rem/1.8 var(--font-sans); color: #33424b; margin-bottom: 2.2rem; }
+    .article p strong { color: var(--navy); font-weight: 600; }
+
+    /* Divider */
+    .divider { display: flex; align-items: center; gap: 1.6rem; margin: 5.6rem 0; }
+    .divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: rgba(19,49,95,.12); }
+    .divider__icon { width: 3.2rem; height: 3.2rem; flex-shrink: 0; }
+
+    /* Pull quote */
+    .pull-quote {
+      border-left: 3px solid var(--teal);
+      padding: 2.4rem 3.2rem;
+      margin: 4.8rem 0;
+      background: var(--mist);
+    }
+    .pull-quote p {
+      font: 500 2.2rem/1.4 var(--font-serif) !important;
+      color: var(--navy) !important;
+      font-style: italic;
+      margin: 0 !important;
+    }
+    .pull-quote cite { display: block; margin-top: 1.2rem; font: 500 1.1rem/1 var(--font-sans); letter-spacing: .14em; text-transform: uppercase; color: var(--teal); }
+
+    /* Full-width image break */
+    .img-break { margin: 5.6rem 0; border-radius: .8rem; overflow: hidden; }
+    .img-break img { width: 100%; height: 48rem; object-fit: cover; }
+    .img-break figcaption { text-align: center; font: 400 1.2rem/1.4 var(--font-sans); color: var(--pebble); margin-top: 1.2rem; font-style: italic; }
+    @media (max-width: 800px) { .img-break { margin: 4rem 0; } .img-break img { height: 28rem; } }
+
+    /* Values grid */
+    .values-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 2rem; margin: 4rem 0; }
+    @media (max-width: 640px) { .values-grid { grid-template-columns: 1fr; } }
+    .val-card { padding: 2.8rem 2.4rem; background: #fff; border: 1px solid rgba(19,49,95,.1); border-top: 3px solid var(--teal); }
+    .val-card.navy { border-top-color: var(--navy); }
+    .val-card.green { border-top-color: var(--green); }
+    .val-card__icon { font-size: 3rem; margin-bottom: 1.4rem; }
+    .val-card h3 { font: 500 1.8rem/1.2 var(--font-serif) !important; color: var(--navy); margin: 0 0 .8rem !important; }
+    .val-card p { font: 400 1.3rem/1.65 var(--font-sans) !important; color: var(--pebble); margin: 0 !important; }
+
+    /* Stats row */
+    .stats { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0; margin: 4.8rem 0; background: var(--navy); }
+    @media (max-width: 640px) { .stats { grid-template-columns: 1fr; } }
+    .stat { padding: 3.2rem 2.4rem; text-align: center; border-right: 1px solid rgba(255,255,255,.1); }
+    .stat:last-child { border-right: none; }
+    .stat__num { font: 500 4.4rem/1 var(--font-serif); color: var(--green); display: block; margin-bottom: .8rem; }
+    .stat__label { font: 400 1.2rem/1.4 var(--font-sans); color: rgba(255,255,255,.45); letter-spacing: .08em; text-transform: uppercase; }
+
+    /* Two-col image + text */
+    .duo { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; margin: 4.8rem 0; }
+    .duo.rev { direction: rtl; }
+    .duo.rev > * { direction: ltr; }
+    @media (max-width: 640px) { .duo { grid-template-columns: 1fr; } .duo.rev { direction: ltr; } }
+    .duo__img { border-radius: .8rem; overflow: hidden; aspect-ratio: 4/5; }
+    .duo__img img { width: 100%; height: 100%; object-fit: cover; }
+    .duo__text { display: flex; flex-direction: column; gap: 1.4rem; }
+    .duo__text h3 { margin: 0 !important; }
+    .duo__text p { margin: 0 !important; }
+
+    /* Tags */
+    .tag-row { display: flex; flex-wrap: wrap; gap: .8rem; margin: 2.4rem 0; }
+    .tag { font: 500 1.1rem/1 var(--font-sans); letter-spacing: .1em; text-transform: uppercase; padding: .6rem 1.4rem; border-radius: 5rem; border: 1.5px solid rgba(19,49,95,.15); color: var(--navy); transition: background .2s, border-color .2s; }
+    .tag:hover { background: var(--mist); border-color: var(--teal); }
+    .tag.filled { background: var(--navy); color: #fff; border-color: var(--navy); }
+
+    /* End CTA */
+    .end-cta {
+      text-align: center; padding: 7.2rem 3.2rem;
+      background: linear-gradient(160deg, var(--navy) 0%, #0b3060 100%);
+      margin-top: 6.4rem;
+      position: relative; overflow: hidden;
+    }
+    .end-cta::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1200&q=70') center/cover;
+      opacity: .28;
+    }
+    .end-cta__inner { position: relative; z-index: 1; max-width: 56rem; margin-inline: auto; }
+    .end-cta .s-kicker { justify-content: center; }
+    .end-cta h2 { font: 500 clamp(2.8rem, 5vw, 4rem)/1.15 var(--font-serif); color: #fff; margin-bottom: 1.4rem; white-space: nowrap; }
+    .end-cta p { font: 300 1.6rem/1.7 var(--font-sans); color: rgba(255,255,255,.55); margin-bottom: 3.2rem; }
+    .btn-row { display: flex; gap: 1.2rem; justify-content: center; flex-wrap: wrap; margin-top: 4.5rem; }
+    .btn-primary { font: 600 1.2rem/1 var(--font-sans); letter-spacing: .14em; text-transform: uppercase; padding: 1.4rem 3.2rem; background: linear-gradient(135deg, var(--teal), var(--ocean)); color: #fff; border-radius: 0; transition: box-shadow .25s, transform .2s; }
+    .btn-primary:hover { box-shadow: 0 8px 24px rgba(30,127,184,.5); transform: translateY(-2px); }
+    .btn-ghost { font: 600 1.2rem/1 var(--font-sans); letter-spacing: .14em; text-transform: uppercase; padding: 1.4rem 3.2rem; border: 1.5px solid rgba(255,255,255,.3); color: rgba(255,255,255,.8); border-radius: 0; transition: background .2s, border-color .2s; }
+    .btn-ghost:hover { background: rgba(255,255,255,.1); border-color: rgba(255,255,255,.6); }
+
+    /* ══ FOOTER ════════════════════════════════════════ */
+    .footer { background: #E3EFF5; padding: 48px 3.2rem 28px; color: rgba(19,49,95,.75); }
+    .footer .container { max-width: 122rem; margin: 0 auto; }
+    .footer__top { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 48px; margin-bottom: 36px; }
+    .footer__brand { display: none; }
+    .foot-logo { height: 7rem; width: auto; filter: none; opacity: 1; }
+    .footer__brand p { font: 300 14px/1.7 var(--font-sans); color: rgba(19,49,95,.55); margin-bottom: 28px; }
+    .footer__social { display: flex; gap: 12px; }
+    .footer__social a { width: 38px; height: 38px; border-radius: 50%; border: 1px solid rgba(19,49,95,.2); display: grid; place-items: center; color: rgba(19,49,95,.45); transition: border-color .3s, color .3s, background .3s; text-decoration: none; }
+    .footer__social a:hover { border-color: var(--teal); color: var(--teal); background: rgba(31,168,160,.08); }
+    .footer__col h4 { font: 600 13px/1 var(--font-sans); letter-spacing: .2em; text-transform: uppercase; color: var(--navy); margin-bottom: 20px; }
+    .footer__col ul { list-style: none; }
+    .footer__col ul li { margin-bottom: 12px; }
+    .footer__col ul a { font: 400 15px/1 var(--font-sans); color: rgba(19,49,95,.72); transition: color .3s; text-decoration: none; }
+    .footer__col ul a:hover { color: var(--teal); }
+    .footer__bottom { display: flex; align-items: center; justify-content: space-between; padding-top: 32px; border-top: 1px solid rgba(19,49,95,.12); flex-wrap: wrap; gap: 16px; }
+    .footer__bottom p { font: 400 13px/1 var(--font-sans); color: rgba(19,49,95,.4); }
+    .footer__bottom-links { display: flex; gap: 24px; }
+    .footer__bottom-links a { font: 400 13px/1 var(--font-sans); color: rgba(19,49,95,.4); transition: color .3s; text-decoration: none; }
+    .footer__bottom-links a:hover { color: var(--navy); }
+    @media (max-width: 900px) { .footer__top { grid-template-columns: 1fr 1fr; gap: 40px; } }
+    @media (max-width: 540px) { .footer__top { grid-template-columns: 1fr; } .footer__bottom { flex-direction: column; text-align: center; } }
+
+    /* ══ REVEAL ════════════════════════════════════════ */
+    .reveal { opacity: 0; transform: translateY(2.4rem); transition: opacity .75s var(--ease), transform .75s var(--ease); }
+    .reveal.visible { opacity: 1; transform: none; }
+    .d1{transition-delay:.1s} .d2{transition-delay:.2s} .d3{transition-delay:.3s}
+  </style>
+</head>
+<body>
+
+  <div class="progress-bar" id="progressBar"></div>
+
+  <!-- ══ NAVBAR ════════════════════════════════════════ -->
+  <nav class="nav" id="navbar">
+    <div class="nav__inner">
+      <a class="nav__logo" href="index.html">
+        <img src="brand asset/logo chính.png" alt="CARÉTTA" />
+      </a>
+      <ul class="nav__links" id="navLinks">
+        <li><a href="index.html">Home</a></li>
+        <li class="has-mega">
+          <a href="collections.html">Collections</a>
+          <div class="mega-drop">
+            <div>
+              <div class="mega-drop__title">Women</div>
+              <ul class="mega-drop__list">
+                <li><a href="women.html">So Hot</a></li>
+                <li><a href="women.html">Seaside Holidays</a></li>
+                <li><a href="women.html">Gorgeous</a></li>
+                <li><a href="women.html">Origin</a></li>
+                <li><a href="women.html">Call Summer</a></li>
+                <li><a href="women.html">Basic Style</a></li>
+                <li><a href="women.html">Floral</a></li>
+                <li><a href="women.html">Orchid</a></li>
+                <li><a href="women.html">Marine Life</a></li>
+                <li><a href="women.html">Chubby</a></li>
+              </ul>
+            </div>
+            <div>
+              <div class="mega-drop__title">Men</div>
+              <ul class="mega-drop__list">
+                <li><a href="men.html">LEO</a></li>
+                <li><a href="men.html">AQUA</a></li>
+              </ul>
+            </div>
+            <div>
+              <div class="mega-drop__title">Kids</div>
+              <ul class="mega-drop__list">
+                <li><a href="kids.html">Warmy Wetsuit Collection</a></li>
+                <li><a href="kids.html">Teen Collection</a></li>
+              </ul>
+            </div>
+          </div>
+        </li>
+        <li><a href="women.html">Women</a></li>
+        <li><a href="men.html">Men</a></li>
+        <li><a href="kids.html">Kids</a></li>
+        <li><a href="why-caretta.html" class="active">Why Carétta</a></li>
+      </ul>
+      <div class="nav__isearch" id="navIsearch">
+        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" id="searchInput" placeholder="Tìm kiếm sản phẩm..." autocomplete="off">
+        <button class="nav__isearch-close" id="searchClose">✕</button>
+      </div>
+      <div class="nav__actions">
+        <button class="nav__icon-btn" id="searchBtn" title="Tìm kiếm"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></button>
+        <button class="nav__icon-btn" id="loginBtn" title="Tài khoản"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></button>
+        <button class="nav__icon-btn" id="cartBtn" title="Giỏ hàng"><svg viewBox="0 0 24 24"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg><span class="cart-badge" id="cartBadge"></span></button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ══ HERO ════════════════════════════════════════════ -->
+  <section class="hero">
+    <img class="hero__bg" src="ảnh trang why.png" alt="">
+    <div class="hero__overlay"></div>
+    <div class="hero__content">
+      <h1 class="hero__title">Sinh ra từ <em>đại dương</em></h1>
+
+    </div>
+    <div class="hero__scroll">
+      <div class="hero__scroll-line"></div>
+      Cuộn xuống
+    </div>
+  </section>
+
+  <!-- ══ ARTICLE ════════════════════════════════════════ -->
+  <article class="article">
+
+    <!-- 01 — Vì sao chọn Carétta -->
+    <span class="s-kicker reveal">01 — Vì sao chọn Carétta</span>
+    <h2 class="reveal">Vì sao nên chọn Carétta?</h2>
+    <p class="reveal">Một bộ đồ bơi tốt phải làm được nhiều hơn là đẹp. Carétta được tạo ra để bạn <strong>thoải mái vận động, tự tin về dáng và yên tâm về chất lượng</strong> — dù bơi ở hồ, tắm biển hay đứng paddle board giữa nắng.</p>
+    <p class="reveal">Mỗi sản phẩm được may từ chất liệu co giãn bốn chiều, kháng clo và chống nắng UPF 50+, giữ form và lên màu bền qua từng mùa. Đường cắt được tính toán để ôm vừa vặn, giảm lực cản và tôn dáng người mặc.</p>
+    <p class="reveal">Và bạn mua một sản phẩm có trách nhiệm: phần lớn chất liệu đến từ nguồn tái chế, bao bì không nhựa. <strong>Đẹp, bền, thoải mái — và tử tế với đại dương.</strong></p>
+
+    <div class="pull-quote reveal">
+      <p>"Đồ bơi đẹp khiến bạn muốn mặc. Đồ bơi tốt khiến bạn quên rằng mình đang mặc."</p>
+      <cite>— Triết lý thiết kế CARÉTTA</cite>
+    </div>
+
+    <figure class="img-break reveal">
+      <img src="https://images.unsplash.com/photo-1505118380757-91f5f5632de0?w=1400&q=85" alt="CARÉTTA swimwear in the ocean" />
+      <figcaption>Bộ sưu tập Mùa Hè 2026 — chụp tại Phú Quốc</figcaption>
+    </figure>
+
+    <div class="divider reveal">
+      <svg class="divider__icon" viewBox="0 0 32 32" fill="none"><polygon points="16,2 28,9 28,23 16,30 4,23 4,9" stroke="#1FA8A0" stroke-width="1.5"/><polygon points="16,8 22,11.5 22,20.5 16,24 10,20.5 10,11.5" fill="#1FA8A0" opacity=".25"/></svg>
+    </div>
+
+    <!-- 02 — Ba giá trị -->
+    <span class="s-kicker reveal">02 — Giá trị cốt lõi</span>
+    <h2 class="reveal">Năng động · Đại dương · Tinh tế</h2>
+    <p class="reveal">Ba từ khóa này không phải khẩu hiệu marketing. Chúng là bộ lọc mà mỗi quyết định thiết kế, mỗi lựa chọn chất liệu, mỗi chi tiết hoàn thiện đều phải vượt qua trước khi có mặt trên sản phẩm.</p>
+
+    <div class="values-grid reveal">
+      <div class="val-card green">
+        <div class="val-card__icon">⚡</div>
+        <h3>Năng Động</h3>
+        <p>Thiết kế để chuyển động. Từ đường cắt giảm lực cản đến co giãn 4 chiều — mỗi chi tiết tối ưu hoá hiệu suất.</p>
+      </div>
+      <div class="val-card">
+        <div class="val-card__icon">🌊</div>
+        <h3>Đại Dương</h3>
+        <p>Nguồn cảm hứng và trách nhiệm. Màu sắc, hình dáng, chất liệu — tất cả kể câu chuyện của biển cả.</p>
+      </div>
+      <div class="val-card navy">
+        <div class="val-card__icon">✦</div>
+        <h3>Tinh Tế</h3>
+        <p>Cao cấp không cần la hét. Từ đường may kép ẩn bên trong đến bao bì không nhựa — vẻ đẹp nằm ở chi tiết.</p>
+      </div>
+    </div>
+
+    <div class="divider reveal">
+      <svg class="divider__icon" viewBox="0 0 32 32" fill="none"><polygon points="16,2 28,9 28,23 16,30 4,23 4,9" stroke="#1FA8A0" stroke-width="1.5"/><polygon points="16,8 22,11.5 22,20.5 16,24 10,20.5 10,11.5" fill="#1FA8A0" opacity=".25"/></svg>
+    </div>
+
+    <!-- 03 — Bền vững -->
+    <span class="s-kicker reveal">03 — Bền vững</span>
+    <h2 class="reveal">Đại dương cho đi — chúng tôi trả lại</h2>
+
+    <div class="duo reveal">
+      <div class="duo__img">
+        <img src="https://images.unsplash.com/photo-1530549387789-4c1017266635?w=700&q=80" alt="Sustainable materials" />
+      </div>
+      <div class="duo__text">
+        <span class="s-kicker">Chất liệu</span>
+        <h3>ECONYL® — Nylon tái sinh từ rác thải biển</h3>
+        <p>Lưới đánh cá bỏ đi, thảm công nghiệp phế thải, sợi nylon từ đáy biển — tất cả được tái chế thành sợi ECONYL® cao cấp không thua kém nylon nguyên sinh.</p>
+        <p>Mỗi bộ đồ bơi CARÉTTA sử dụng trung bình <strong>78% Nylon tái chế</strong>, phần còn lại là Lycra® đảm bảo độ đàn hồi vĩnh viễn.</p>
+      </div>
+    </div>
+
+    <div class="duo rev reveal">
+      <div class="duo__img">
+        <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=700&q=80" alt="Ocean conservation" />
+      </div>
+      <div class="duo__text">
+        <span class="s-kicker">Cam kết</span>
+        <h3>Đóng gói có trách nhiệm</h3>
+        <p>Không túi nhựa, không hộp xốp, không giấy chưa tái chế — toàn bộ bao bì của CARÉTTA đều có thể phân hủy hoặc tái sử dụng.</p>
+      </div>
+    </div>
+
+    <div class="stats reveal">
+      <div class="stat">
+        <span class="stat__num">78%</span>
+        <span class="stat__label">Sợi Nylon Tái Chế</span>
+      </div>
+      <div class="stat">
+        <span class="stat__num">0</span>
+        <span class="stat__label">Túi Nhựa Sử Dụng</span>
+      </div>
+      <div class="stat">
+        <span class="stat__num">200h+</span>
+        <span class="stat__label">Kháng Clo</span>
+      </div>
+    </div>
+
+    <div class="divider reveal">
+      <svg class="divider__icon" viewBox="0 0 32 32" fill="none"><polygon points="16,2 28,9 28,23 16,30 4,23 4,9" stroke="#1FA8A0" stroke-width="1.5"/><polygon points="16,8 22,11.5 22,20.5 16,24 10,20.5 10,11.5" fill="#1FA8A0" opacity=".25"/></svg>
+    </div>
+
+    <!-- 04 — Chứng nhận -->
+    <span class="s-kicker reveal">04 — Chứng nhận</span>
+    <h2 class="reveal">Không chỉ là lời hứa</h2>
+    <p class="reveal">Mỗi lô vải được kiểm định độc lập. Chúng tôi không tự chứng nhận — chúng tôi để bên thứ ba nói thay.</p>
+
+    <div class="tag-row reveal">
+      <span class="tag filled">Bluesign®</span>
+      <span class="tag filled">OEKO-TEX® Standard 100</span>
+      <span class="tag">ECONYL® Certified</span>
+      <span class="tag">UPF 50+</span>
+      <span class="tag">Kháng Clo 200h+</span>
+    </div>
+
+    <p class="reveal">Bluesign® là một trong những tiêu chuẩn khắt khe nhất của ngành dệt may thể thao — kiểm soát toàn bộ chuỗi sản xuất từ sợi đến thành phẩm, vừa đảm bảo an toàn cho người mặc, vừa giảm thiểu tác động tới môi trường.</p>
+
+    <div class="pull-quote reveal">
+      <p>"Bền vững không phải xu hướng — đó là điều kiện tồn tại của mọi thương hiệu thời trang trong thế kỷ 21."</p>
+      <cite>— Founders, CARÉTTA</cite>
+    </div>
+
+    <figure class="img-break reveal">
+      <img src="https://images.unsplash.com/photo-1519415943484-9fa1873496d4?w=1400&q=85" alt="CARÉTTA in action" />
+      <figcaption>Bộ sưu tập Active 2026 — năng động theo cách của bạn</figcaption>
+    </figure>
+
+    <div class="divider reveal">
+      <svg class="divider__icon" viewBox="0 0 32 32" fill="none"><polygon points="16,2 28,9 28,23 16,30 4,23 4,9" stroke="#1FA8A0" stroke-width="1.5"/><polygon points="16,8 22,11.5 22,20.5 16,24 10,20.5 10,11.5" fill="#1FA8A0" opacity=".25"/></svg>
+    </div>
+
+    <!-- 05 — Cho bạn -->
+    <span class="s-kicker reveal">05 — Dành cho bạn</span>
+    <h2 class="reveal">CARÉTTA dành cho ai?</h2>
+    <p class="reveal">Không phải vận động viên chuyên nghiệp. Không phải người mới bắt đầu. CARÉTTA dành cho người hiểu rằng <strong>cách bạn di chuyển phản ánh cách bạn sống</strong> — và bạn muốn cả hai đều đẹp.</p>
+    <p class="reveal">Dù bạn bơi lội mỗi sáng tại hồ bơi thành phố, đứng paddle board giữa biển Phú Quốc, hay chỉ đơn giản là muốn cảm thấy tự tin khi cởi áo ra ngoài bãi cát — CARÉTTA có mặt ở đó.</p>
+
+  </article>
+
+  <!-- ══ END CTA ════════════════════════════════════════ -->
+  <section class="end-cta">
+    <div class="end-cta__inner reveal">
+      <span class="s-kicker">Bắt Đầu Ngay</span>
+      <h2>Khám phá bộ sưu tập của chúng tôi</h2>
+<div class="btn-row">
+        <a href="collections.html" class="btn-primary">Xem Bộ Sưu Tập</a>
+        <a href="products.html" class="btn-ghost">Tất Cả Sản Phẩm</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ FOOTER ════════════════════════════════════════ -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__top">
+        <div class="footer__col">
+          <h4>Bộ Sưu Tập</h4>
+          <ul>
+            <li><a href="women.html">Đồ Bơi Nữ</a></li>
+            <li><a href="men.html">Đồ Bơi Nam</a></li>
+            <li><a href="kids.html">Trẻ Em</a></li>
+            <li><a href="products.html">Tất Cả Sản Phẩm</a></li>
+          </ul>
+        </div>
+
+        <div class="footer__col">
+          <h4>Về Chúng Tôi</h4>
+          <ul>
+            <li><a href="cau-chuyen.html">Câu Chuyện</a></li>
+            <li><a href="blog.html">Blog</a></li>
+            <li><a href="phat-trien-ben-vung.html">Phát Triển Bền Vững</a></li>
+            <li><a href="tuyen-dung.html">Tuyển Dụng</a></li>
+          </ul>
+        </div>
+
+        <div class="footer__col">
+          <h4>Hỗ Trợ</h4>
+          <ul>
+            <li><a href="huong-dan-size.html">Hướng Dẫn Size</a></li>
+            <li><a href="giao-hang-doi-tra.html">Giao Hàng &amp; Đổi Trả</a></li>
+            <li><a href="cau-hoi-thuong-gap.html">Câu Hỏi Thường Gặp</a></li>
+            <li><a href="huong-dan-bao-quan.html">Hướng Dẫn Bảo Quản</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer__bottom">
+        <p>© 2025 CARÉTTA. Tất cả quyền được bảo lưu.</p>
+        <div class="footer__bottom-links">
+          <a href="#">Chính Sách Bảo Mật</a>
+          <a href="#">Điều Khoản</a>
+          <a href="#">Cookie</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    /* ── Navbar scroll ── */
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      navbar.classList.toggle('scrolled', window.scrollY > 60);
+    }, { passive: true });
+
+    /* Reading progress */
+    const bar = document.getElementById('progressBar');
+    window.addEventListener('scroll', () => {
+      const h = document.documentElement;
+      const pct = (window.scrollY / (h.scrollHeight - h.clientHeight)) * 100;
+      bar.style.width = pct + '%';
+    });
+
+    /* Scroll reveal */
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+  </script>
+
+  <div class="nav__search-drop" id="searchResults"></div>
+  <div class="modal-bg" id="authOverlay"><div class="auth-modal"><button class="modal-x" id="authClose">✕</button><img class="auth-brand" src="brand asset/logo chính.png" alt="CARÉTTA"><div id="authContent"></div></div></div>
+  <div class="cart-bg" id="cartBg"></div>
+  <div class="cart-panel" id="cartPanel"><div class="cart-panel-head"><h3>Giỏ Hàng</h3><button class="cart-panel-close" id="cartClose">✕</button></div><div class="cart-list" id="cartList"></div><div class="cart-foot" id="cartFoot"></div></div>
+
+  <script>
+  const PRODUCTS_DB=[{id:1,name:'Velocity Pro One-Piece',cat:'Đồ Bơi · Nữ',price:1290000,img:'https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=80&q=70',href:'product_detail.html?id=1'},{id:2,name:'AquaFlex Bikini Set',cat:'Đồ Bơi · Nữ',price:890000,img:'https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=80&q=70',href:'product_detail.html?id=2'},{id:3,name:'ThermoStride Tights',cat:'Thể Thao · Nữ',price:750000,img:'https://images.unsplash.com/photo-1518611012118-696072aa579a?w=80&q=70',href:'product_detail.html?id=3'},{id:4,name:'OceanCore Sports Bra',cat:'Thể Thao · Nữ',price:490000,img:'https://images.unsplash.com/photo-1483721310020-03333e577078?w=80&q=70',href:'product_detail.html?id=4'},{id:5,name:'CoralBreeze Rash Guard',cat:'Đồ Bơi · UPF 50+',price:680000,img:'https://images.unsplash.com/photo-1530549387789-4c1017266635?w=80&q=70',href:'product_detail.html?id=5'},{id:6,name:'DeepDive Swim Trunk',cat:'Đồ Bơi · Nam',price:560000,img:'https://images.unsplash.com/photo-1509631179647-0177331693ae?w=80&q=70',href:'product_detail.html?id=6'},{id:7,name:'SunSurf Long Sleeve',cat:'Đồ Bơi · Unisex',price:620000,img:'https://images.unsplash.com/photo-1519415943484-9fa1873496d4?w=80&q=70',href:'product_detail.html?id=7'},{id:8,name:'PeakFlow Tank Top',cat:'Thể Thao · Nữ',price:420000,img:'https://images.unsplash.com/photo-1483721310020-03333e577078?w=80&q=70',href:'product_detail.html?id=8'},{id:9,name:'WaveRider Bikini Top',cat:'Đồ Bơi · Nữ',price:390000,img:'https://images.unsplash.com/photo-1571902943202-507ec2618e8f?w=80&q=70',href:'product_detail.html?id=9'},{id:10,name:'Abyss Board Short',cat:'Đồ Bơi · Nam',price:450000,img:'https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=80&q=70',href:'product_detail.html?id=10'},{id:11,name:'Seafoam Yoga Set',cat:'Thể Thao · Nữ',price:980000,img:'https://images.unsplash.com/photo-1518611012118-696072aa579a?w=80&q=70',href:'product_detail.html?id=11'},{id:12,name:'TidalFlow Shorts',cat:'Thể Thao · Unisex',price:350000,img:'https://images.unsplash.com/photo-1530549387789-4c1017266635?w=80&q=70',href:'product_detail.html?id=12'}];
+  function getCart(){try{return JSON.parse(localStorage.getItem('caretta_cart')||'[]')}catch(e){return[]}}
+  function saveCart(c){localStorage.setItem('caretta_cart',JSON.stringify(c))}
+  function getUser(){try{return JSON.parse(localStorage.getItem('caretta_user')||'null')}catch(e){return null}}
+  function updateBadge(){const n=getCart().reduce((s,i)=>s+i.qty,0);const b=document.getElementById('cartBadge');if(!b)return;b.textContent=n;b.classList.toggle('show',n>0)}
+  const navIsearch=document.getElementById('navIsearch');
+  const navLinks=document.getElementById('navLinks');
+  const searchDrop=document.getElementById('searchResults');
+  document.getElementById('searchBtn').addEventListener('click',()=>{navIsearch.classList.add('open');navLinks.classList.add('search-hidden');document.getElementById('searchInput').focus()});
+  document.getElementById('searchClose').addEventListener('click',closeSearch);
+  document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeSearch();closeAuth();closeCartP()}});
+  function closeSearch(){navIsearch.classList.remove('open');navLinks.classList.remove('search-hidden');document.getElementById('searchInput').value='';searchDrop.innerHTML='';searchDrop.classList.remove('open')}
+  document.getElementById('searchInput').addEventListener('input',function(){const q=this.value.trim().toLowerCase();if(!q){searchDrop.innerHTML='';searchDrop.classList.remove('open');return}const hits=PRODUCTS_DB.filter(p=>p.name.toLowerCase().includes(q)||p.cat.toLowerCase().includes(q));searchDrop.innerHTML=hits.length?hits.map(p=>`<a href="${p.href}" class="search-result-item"><img class="search-result-thumb" src="${p.img}" alt="${p.name}"><div><div class="search-result-name">${p.name}</div><div class="search-result-cat">${p.cat}</div></div><div class="search-result-price">${p.price.toLocaleString('vi-VN')}₫</div></a>`).join(''):'<div class="search-no-result">Không tìm thấy sản phẩm nào.</div>';searchDrop.classList.add('open')});
+  const ao=document.getElementById('authOverlay');
+  document.getElementById('loginBtn').addEventListener('click',openAuth);
+  document.getElementById('authClose').addEventListener('click',closeAuth);
+  ao.addEventListener('click',e=>{if(e.target===ao)closeAuth()});
+  function openAuth(){renderAuth();ao.classList.add('open')}
+  function closeAuth(){ao.classList.remove('open')}
+  function renderAuth(){const user=getUser();const box=document.getElementById('authContent');const btn=document.getElementById('loginBtn');if(user){btn.classList.add('logged-in');box.innerHTML=`<div class="auth-user-panel"><div class="auth-avatar">${user.name.charAt(0).toUpperCase()}</div><div><div class="auth-user-name">${user.name}</div><div class="auth-user-email">${user.email}</div></div><button class="auth-signout" onclick="signOut()">Đăng xuất</button></div><p style="font:400 1.2rem/1.5 var(--font-sans);color:rgba(19,49,95,.4);text-align:center">Chào mừng trở lại!</p>`}else{btn.classList.remove('logged-in');box.innerHTML=`<div class="auth-tabs"><button class="auth-tab active" onclick="switchTab('login',this)">Đăng Nhập</button><button class="auth-tab" onclick="switchTab('register',this)">Đăng Ký</button></div><form class="auth-form" id="loginForm" onsubmit="doLogin(event)"><div class="f-group"><label>Email</label><input type="email" name="email" required placeholder="email@example.com"></div><div class="f-group"><label>Mật khẩu</label><input type="password" name="password" required placeholder="••••••••"></div><div class="f-msg" id="loginMsg"></div><button type="submit" class="auth-btn">Đăng Nhập</button></form><form class="auth-form hidden" id="registerForm" onsubmit="doRegister(event)"><div class="f-group"><label>Họ tên</label><input type="text" name="name" required placeholder="Nguyễn Văn A"></div><div class="f-group"><label>Email</label><input type="email" name="email" required placeholder="email@example.com"></div><div class="f-group"><label>Mật khẩu</label><input type="password" name="password" required placeholder="Ít nhất 6 ký tự" minlength="6"></div><div class="f-msg" id="registerMsg"></div><button type="submit" class="auth-btn">Tạo Tài Khoản</button></form>`}}
+  function switchTab(tab,el){document.querySelectorAll('.auth-tab').forEach(t=>t.classList.remove('active'));el.classList.add('active');document.getElementById('loginForm').classList.toggle('hidden',tab!=='login');document.getElementById('registerForm').classList.toggle('hidden',tab!=='register')}
+  function doLogin(e){e.preventDefault();const f=e.target,email=f.email.value,pass=f.password.value;const users=JSON.parse(localStorage.getItem('caretta_users')||'[]');const u=users.find(u=>u.email===email&&u.password===pass);const msg=document.getElementById('loginMsg');if(u){localStorage.setItem('caretta_user',JSON.stringify(u));closeAuth();renderAuth()}else{msg.className='f-msg err';msg.textContent='Email hoặc mật khẩu không đúng.'}}
+  function doRegister(e){e.preventDefault();const f=e.target,name=f.name.value,email=f.email.value,pass=f.password.value;const users=JSON.parse(localStorage.getItem('caretta_users')||'[]');const msg=document.getElementById('registerMsg');if(users.find(u=>u.email===email)){msg.className='f-msg err';msg.textContent='Email này đã được sử dụng.';return}const nu={name,email,password:pass};users.push(nu);localStorage.setItem('caretta_users',JSON.stringify(users));localStorage.setItem('caretta_user',JSON.stringify(nu));closeAuth();renderAuth()}
+  function signOut(){localStorage.removeItem('caretta_user');closeAuth();renderAuth()}
+  const cp=document.getElementById('cartPanel');const cb=document.getElementById('cartBg');
+  document.getElementById('cartBtn').addEventListener('click',openCartP);
+  document.getElementById('cartClose').addEventListener('click',closeCartP);
+  cb.addEventListener('click',closeCartP);
+  function openCartP(){cp.classList.add('open');cb.classList.add('open');renderCartP()}
+  function closeCartP(){cp.classList.remove('open');cb.classList.remove('open')}
+  function renderCartP(){
+    const user=getUser();const cart=getCart();
+    const list=document.getElementById('cartList');const foot=document.getElementById('cartFoot');
+    if(!user){list.innerHTML=`<div class="cart-gate"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg><p>Vui lòng đăng nhập<br>để xem giỏ hàng của bạn</p><button class="cart-gate-btn" onclick="closeCartP();openAuth()">Đăng Nhập / Đăng Ký</button></div>`;foot.innerHTML='';return;}
+    if(!cart.length){list.innerHTML=`<div class="cart-empty-state"><p>Giỏ hàng của bạn đang trống.</p><a href="products.html">Khám Phá Sản Phẩm</a></div>`;foot.innerHTML='';return;}
+    list.innerHTML=cart.map((item,i)=>`<div class="c-item"><img src="${item.img}" alt="${item.name}"><div class="c-item-info"><div class="c-item-name">${item.name}</div><div class="c-item-meta">${item.color||''}${item.size?' · Size '+item.size:''}</div><div class="c-item-price">${(item.price*item.qty).toLocaleString('vi-VN')}₫</div><div class="c-item-row"><button class="c-qty-btn" onclick="chQty(${i},-1)">−</button><span class="c-qty-num">${item.qty}</span><button class="c-qty-btn" onclick="chQty(${i},1)">+</button><button class="c-remove" onclick="rmItem(${i})">✕</button></div></div></div>`).join('');
+    const sum=cart.reduce((s,i)=>s+i.price*i.qty,0);
+    foot.innerHTML=`<div class="cart-total-row"><span>Tạm tính</span><strong>${sum.toLocaleString('vi-VN')}₫</strong></div><button class="cart-checkout-btn" onclick="doCheckout()">Tiến Hành Mua Hàng</button><a href="products.html" class="cart-continue-link">← Tiếp tục mua sắm</a>`;
+  }
+  function doCheckout(){const u=getUser();const cart=getCart();if(!u||!cart.length)return;const sum=cart.reduce((s,i)=>s+i.price*i.qty,0);document.getElementById('cartList').innerHTML=`<div class="cart-success"><svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg><strong>Đặt hàng thành công!</strong><p>Cảm ơn ${u.name||u.email}!<br>Tổng đơn: ${sum.toLocaleString('vi-VN')}₫<br>Chúng tôi sẽ liên hệ xác nhận sớm.</p></div>`;document.getElementById('cartFoot').innerHTML='';saveCart([]);updateBadge();}
+  function rmItem(i){const c=getCart();c.splice(i,1);saveCart(c);renderCartP();updateBadge()}
+  updateBadge();renderAuth();
+  document.querySelectorAll('.has-mega').forEach(li=>{let t;li.addEventListener('mouseenter',()=>{clearTimeout(t);li.classList.add('open');});li.addEventListener('mouseleave',()=>{t=setTimeout(()=>li.classList.remove('open'),200);});});
+  </script>
+</body>
+</html>
+ 
