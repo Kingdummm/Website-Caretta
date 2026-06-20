@@ -189,9 +189,6 @@
     .hero__meta { display: flex; align-items: center; justify-content: center; gap: 2.4rem; font: 400 1.2rem/1 var(--font-sans); color: rgba(255,255,255,.35); letter-spacing: .08em; text-transform: uppercase; }
     .hero__meta span::before { content: '·'; margin-right: 2.4rem; }
     .hero__meta span:first-child::before { display: none; }
-    .hero__scroll { position: absolute; bottom: 3.2rem; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: 1rem; color: rgba(255,255,255,.3); font: 400 1.0rem/1 var(--font-sans); letter-spacing: .2em; text-transform: uppercase; }
-    .hero__scroll-line { width: 1px; height: 4rem; background: linear-gradient(to bottom, rgba(255,255,255,.3), transparent); animation: scrollLine 1.8s ease-in-out infinite; }
-    @keyframes scrollLine { 0%, 100% { opacity: 0.3; transform: scaleY(1); } 50% { opacity: 1; transform: scaleY(0.6); } }
 
     /* ══ ARTICLE LAYOUT ══════════════════════════════════ */
     .article { max-width: 96rem; margin-inline: auto; padding: 8rem 3.2rem; }
@@ -441,10 +438,6 @@
     <div class="hero__content">
       <h1 class="hero__title">Sinh ra từ <em>đại dương</em></h1>
 
-    </div>
-    <div class="hero__scroll">
-      <div class="hero__scroll-line"></div>
-      Cuộn xuống
     </div>
   </section>
 
