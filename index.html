@@ -286,19 +286,6 @@
     .cart-success strong { font: 600 15px/1 var(--font-sans); color: #13315F; }
     .cart-success p { font: 400 13px/1.5 var(--font-sans); color: rgba(19,49,95,.5); }
 
-    .nav__hamburger {
-      display: none;
-      flex-direction: column;
-      gap: 5px;
-      cursor: pointer;
-      padding: 4px;
-    }
-    .nav__hamburger span {
-      width: 24px; height: 2px;
-      background: #fff;
-      border-radius: 2px;
-      transition: transform .3s, opacity .3s;
-    }
 
     /* ═══════════════════════════════════════════════════
        HERO
@@ -308,7 +295,7 @@
       position: relative;
       overflow: hidden;
     }
-    .hero__bg { display: block; width: 100%; height: auto; }
+    .hero__bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center center; }
     .hero__overlay {
       position: absolute; inset: 0;
       background: linear-gradient(160deg, rgba(10,30,61,.72) 0%, rgba(19,49,95,.55) 50%, rgba(10,30,61,.45) 100%);
@@ -1037,34 +1024,16 @@
     /* ═══════════════════════════════════════════════════
        MOBILE NAV DRAWER
     ═══════════════════════════════════════════════════ */
-    .nav__drawer {
-      position: fixed;
-      inset: 0;
-      background: var(--navy);
-      z-index: 99;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 36px;
-      transform: translateX(100%);
-      transition: transform .4s var(--ease-out);
-    }
-    .nav__drawer.open { transform: none; }
-    .nav__drawer a {
-      font: 500 22px/1 var(--font-display);
-      letter-spacing: .2em;
-      color: rgba(255,255,255,.8);
-      text-transform: uppercase;
-      transition: color .2s;
-    }
-    .nav__drawer a:hover { color: var(--green); }
-    .nav__drawer-close {
-      position: absolute;
-      top: 24px; right: 24px;
-      cursor: pointer;
-      color: rgba(255,255,255,.6);
-    }
+    .nav__hamburger{display:none;position:fixed;top:1.6rem;right:1.8rem;z-index:990;flex-direction:column;gap:5px;cursor:pointer;background:rgba(19,49,95,.6);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.15);border-radius:.8rem;padding:.9rem .8rem}
+    .nav__hamburger span{display:block;width:22px;height:2px;background:#fff;border-radius:2px}
+    .nav__drawer{position:fixed;top:0;right:0;width:min(300px,82vw);height:100vh;background:var(--navy);z-index:1000;transform:translateX(100%);transition:transform .32s cubic-bezier(0.22,1,0.36,1);display:flex;flex-direction:column;padding:7.2rem 2.8rem 3.2rem;overflow-y:auto;box-shadow:-4px 0 40px rgba(0,0,0,.3)}
+    .nav__drawer.open{transform:translateX(0)}
+    .nav__drawer a{font:500 15px/1 var(--font-sans);letter-spacing:.12em;color:rgba(255,255,255,.8);text-transform:uppercase;padding:.8rem 0;border-bottom:1px solid rgba(255,255,255,.08);transition:color .2s}
+    .nav__drawer a:hover{color:var(--green)}
+    .nav__drawer-close{position:absolute;top:2rem;right:2rem;background:none;border:1px solid rgba(255,255,255,.2);border-radius:50%;width:2.4rem;height:2.4rem;color:#fff;cursor:pointer;font-size:1.4rem;display:grid;place-items:center;transition:background .2s}
+    .nav__drawer-close:hover{background:rgba(255,255,255,.1)}
+    .nav__overlay{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:989;opacity:0;pointer-events:none;transition:opacity .3s}
+    .nav__overlay.open{opacity:1;pointer-events:all}
 
     /* ═══════════════════════════════════════════════════
        RESPONSIVE
@@ -1087,7 +1056,7 @@
     }
 
     @media (max-width: 768px) {
-      .nav__links { display: none; }
+      .nav__links { display: none !important; }
       .nav__hamburger { display: flex; }
       /* Hero */
       .hero { min-height: 100svh; }
@@ -1132,19 +1101,6 @@
 </head>
 <body>
 
-  <!-- ══ MOBILE DRAWER ══════════════════════════════ -->
-  <nav class="nav__drawer" id="drawer">
-    <div class="nav__drawer-close" id="drawerClose" aria-label="Close menu">
-      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
-        <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
-      </svg>
-    </div>
-    <a href="#">Home</a>
-    <a href="collections.html">Collections</a>
-    <a href="why-caretta.html">Why Carétta</a>
-
-    <a href="#" class="btn btn-primary" style="font-size:13px;padding:14px 32px;">Shop Now</a>
-  </nav>
 
   <!-- ══ NAVBAR ════════════════════════════════════ -->
   <header class="nav" id="navbar">
@@ -1210,11 +1166,22 @@
           <span class="cart-badge" id="cartBadge"></span>
         </button>
       </div>
-      <div class="nav__hamburger" id="hamburger" aria-label="Open menu">
-        <span></span><span></span><span></span>
-      </div>
     </div>
   </header>
+
+  <div class="nav__overlay" id="navOverlay"></div>
+  <nav class="nav__drawer" id="mobileDrawer">
+    <button class="nav__drawer-close" id="drawerClose" aria-label="Đóng menu">&#x2715;</button>
+    <a href="index.html">Home</a>
+    <a href="collections.html">Collections</a>
+    <a href="women.html">Women</a>
+    <a href="men.html">Men</a>
+    <a href="kids.html">Kids</a>
+    <a href="why-caretta.html">Why Carétta</a>
+  </nav>
+  <button class="nav__hamburger" id="hamburger" aria-label="Mở menu">
+    <span></span><span></span><span></span>
+  </button>
 
   <!-- ══ HERO ══════════════════════════════════════ -->
   <section class="hero">
@@ -1618,14 +1585,18 @@
     }, { passive: true });
 
     // ── Mobile drawer
-    const hamburger = document.getElementById('hamburger');
-    const drawer    = document.getElementById('drawer');
-    const drawerClose = document.getElementById('drawerClose');
-    hamburger.addEventListener('click', () => drawer.classList.add('open'));
-    drawerClose.addEventListener('click', () => drawer.classList.remove('open'));
-    drawer.querySelectorAll('a').forEach(a => {
-      a.addEventListener('click', () => drawer.classList.remove('open'));
-    });
+    (function(){
+      var btn=document.getElementById('hamburger');
+      var drawer=document.getElementById('mobileDrawer');
+      var closeBtn=document.getElementById('drawerClose');
+      var overlay=document.getElementById('navOverlay');
+      function openDrawer(){drawer.classList.add('open');overlay.classList.add('open');document.body.style.overflow='hidden';}
+      function closeDrawer(){drawer.classList.remove('open');overlay.classList.remove('open');document.body.style.overflow='';}
+      btn.addEventListener('click',openDrawer);
+      closeBtn.addEventListener('click',closeDrawer);
+      overlay.addEventListener('click',closeDrawer);
+      drawer.querySelectorAll('a').forEach(function(a){a.addEventListener('click',closeDrawer);});
+    })();
 
     // ── Reveal on scroll
     const reveals = document.querySelectorAll('.reveal');
