@@ -292,14 +292,20 @@
     ═══════════════════════════════════════════════════ */
     .hero {
       min-height: 100vh;
+      min-height: 100svh;
+      background: url('ảnh bìa.png') 60% center / cover no-repeat;
       position: relative;
       overflow: hidden;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      padding-bottom: 80px;
     }
-    .hero__bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center center; }
+    .hero__bg { display: none; }
     .hero__overlay {
       position: absolute; inset: 0;
-      background: linear-gradient(160deg, rgba(10,30,61,.72) 0%, rgba(19,49,95,.55) 50%, rgba(10,30,61,.45) 100%);
-      z-index: 1;
+      background: linear-gradient(180deg, rgba(10,30,61,.3) 0%, rgba(10,30,61,.55) 60%, rgba(10,30,61,.82) 100%);
+      z-index: 0;
     }
 
     /* Orbs hidden — photo background */
@@ -314,11 +320,8 @@
     }
 
     .hero__content {
-      position: absolute;
-      bottom: 80px;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 2;
+      position: relative;
+      z-index: 1;
       text-align: center;
       color: #fff;
       max-width: 720px;
@@ -1060,10 +1063,9 @@
       .nav__hamburger { display: flex; }
       .nav__actions { margin-right: 3.8rem; }
       /* Hero */
-      .hero { min-height: 100svh; }
-      .hero__bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 60% center; }
-      .hero__overlay { background: linear-gradient(to top, rgba(10,25,55,.92) 0%, rgba(10,25,55,.4) 55%, rgba(10,25,55,.15) 100%); }
-      .hero__content { position: absolute; bottom: 8%; top: auto; left: 50%; transform: translateX(-50%); padding: 0 24px; width: 100%; }
+      .hero { background-position: 60% center; padding-bottom: 8%; }
+      .hero__overlay { background: linear-gradient(180deg, rgba(10,25,55,.2) 0%, rgba(10,25,55,.55) 55%, rgba(10,25,55,.9) 100%); }
+      .hero__content { padding: 0 20px; }
       .hero__ctas { flex-direction: column; gap: 12px; align-items: center; }
       .hero__ctas .btn { width: min(300px, 100%); justify-content: center; padding: 15px 24px; font-size: 12px; letter-spacing: .1em; }
       .hero__wave { display: none; }
@@ -1187,7 +1189,7 @@
 
   <!-- ══ HERO ══════════════════════════════════════ -->
   <section class="hero">
-    <img class="hero__bg" src="ảnh bìa.png" alt="">
+
     <div class="hero__overlay"></div>
 
     <div class="hero__content">
