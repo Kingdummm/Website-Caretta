@@ -1162,13 +1162,6 @@
         <button class="nav__icon-btn" id="searchBtn" title="Tìm kiếm">
           <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
         </button>
-        <button class="nav__icon-btn" id="loginBtn" title="Tài khoản">
-          <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-        </button>
-        <button class="nav__icon-btn" id="cartBtn" title="Giỏ hàng">
-          <svg viewBox="0 0 24 24"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
-          <span class="cart-badge" id="cartBadge"></span>
-        </button>
       </div>
     </div>
   </header>
@@ -1636,25 +1629,6 @@
 
   <!-- ══ SEARCH RESULTS DROPDOWN ══════════════════════ -->
   <div class="nav__search-drop" id="searchResults"></div>
-
-  <!-- ══ AUTH MODAL ═══════════════════════════════════ -->
-  <div class="modal-bg" id="authOverlay">
-    <div class="auth-modal">
-      <button class="modal-x" id="authClose">✕</button>
-      <img class="auth-brand" src="brand asset/logo chính.png" alt="CARÉTTA">
-      <div id="authContent"></div>
-    </div>
-  </div>
-
-  <!-- ══ CART ═════════════════════════════════════════ -->
-  <div class="cart-bg" id="cartBg"></div>
-  <div class="cart-panel" id="cartPanel">
-    <div class="cart-panel-head">
-      <h3>Giỏ Hàng</h3>
-      <button class="cart-panel-close" id="cartClose">✕</button>
-    </div>
-    <div class="cart-list" id="cartList"></div>
-    <div class="cart-foot" id="cartFoot"></div>
   </div>
 
   <script>
@@ -1717,15 +1691,15 @@
 
   // ══ AUTH ══════════════════════════════════════════
   const authOverlay = document.getElementById('authOverlay');
-  document.getElementById('loginBtn').addEventListener('click', openAuth);
-  document.getElementById('authClose').addEventListener('click', closeAuth);
+  document.getElementById('loginBtn')?.addEventListener('click', openAuth);
+  document.getElementById('authClose')?.addEventListener('click', closeAuth);
   authOverlay.addEventListener('click', e=>{ if(e.target===authOverlay) closeAuth(); });
 
   function openAuth(){
     renderAuth();
-    authOverlay.classList.add('open');
+    authOverlay?.classList.add('open');
   }
-  function closeAuth(){ authOverlay.classList.remove('open'); }
+  function closeAuth(){ authOverlay?.classList.remove('open'); }
 
   function renderAuth(){
     const user = getUser();
@@ -1798,8 +1772,8 @@
   // ══ CART ══════════════════════════════════════════
   const cartPanel = document.getElementById('cartPanel');
   const cartBg = document.getElementById('cartBg');
-  document.getElementById('cartBtn').addEventListener('click', openCart);
-  document.getElementById('cartClose').addEventListener('click', closeCart);
+  document.getElementById('cartBtn')?.addEventListener('click', openCart);
+  document.getElementById('cartClose')?.addEventListener('click', closeCart);
   cartBg.addEventListener('click', closeCart);
 
   function openCart(){ cartPanel.classList.add('open'); cartBg.classList.add('open'); renderCartPanel(); }
