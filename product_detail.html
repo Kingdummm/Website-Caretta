@@ -456,8 +456,6 @@
       </div>
       <div class="nav__actions">
         <button class="nav__icon-btn" id="searchBtn" title="Tìm kiếm"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></button>
-        <button class="nav__icon-btn" id="loginBtn" title="Tài khoản"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></button>
-        <button class="nav__icon-btn" id="cartBtn" title="Giỏ hàng"><svg viewBox="0 0 24 24"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg><span class="cart-badge" id="cartBadge"></span></button>
       </div>
     </div>
   </nav>
@@ -553,17 +551,6 @@
             <button class="sbtn">XXL</button>
           </div>
           <span class="size-guide" id="sizeGuide">Hướng dẫn chọn size →</span>
-
-          <div class="cta-block">
-            <button class="btn-add" id="addBtn">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
-              Thêm Vào Giỏ Hàng
-            </button>
-            <button class="btn-wish">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-              Lưu Yêu Thích
-            </button>
-          </div>
 
           <div class="perks-grid">
             <div class="perk">
@@ -945,22 +932,22 @@
   function closeSearch(){navIsearch.classList.remove('open');navLinks.classList.remove('search-hidden');document.getElementById('searchInput').value='';searchDrop.innerHTML='';searchDrop.classList.remove('open')}
   document.getElementById('searchInput').addEventListener('input',function(){const q=this.value.trim().toLowerCase();if(!q){searchDrop.innerHTML='';searchDrop.classList.remove('open');return}const hits=PRODUCTS_DB.filter(p=>p.name.toLowerCase().includes(q)||p.cat.toLowerCase().includes(q));searchDrop.innerHTML=hits.length?hits.map(p=>`<a href="${p.href}" class="search-result-item"><img class="search-result-thumb" src="${p.img}" alt="${p.name}"><div><div class="search-result-name">${p.name}</div><div class="search-result-cat">${p.cat}</div></div><div class="search-result-price">${p.price.toLocaleString('vi-VN')}₫</div></a>`).join(''):'<div class="search-no-result">Không tìm thấy sản phẩm nào.</div>';searchDrop.classList.add('open')});
   const ao=document.getElementById('authOverlay');
-  document.getElementById('loginBtn').addEventListener('click',openAuth);
-  document.getElementById('authClose').addEventListener('click',closeAuth);
-  ao.addEventListener('click',e=>{if(e.target===ao)closeAuth()});
-  function openAuth(){renderAuth();ao.classList.add('open')}
-  function closeAuth(){ao.classList.remove('open')}
-  function renderAuth(){const user=getUser();const box=document.getElementById('authContent');const btn=document.getElementById('loginBtn');if(user){btn.classList.add('logged-in');box.innerHTML=`<div class="auth-user-panel"><div class="auth-avatar">${user.name.charAt(0).toUpperCase()}</div><div><div class="auth-user-name">${user.name}</div><div class="auth-user-email">${user.email}</div></div><button class="auth-signout" onclick="signOut()">Đăng xuất</button></div><p style="font:400 1.2rem/1.5 var(--font-sans);color:rgba(19,49,95,.4);text-align:center">Chào mừng trở lại!</p>`}else{btn.classList.remove('logged-in');box.innerHTML=`<div class="auth-tabs"><button class="auth-tab active" onclick="switchTab('login',this)">Đăng Nhập</button><button class="auth-tab" onclick="switchTab('register',this)">Đăng Ký</button></div><form class="auth-form" id="loginForm" onsubmit="doLogin(event)"><div class="f-group"><label>Email</label><input type="email" name="email" required placeholder="email@example.com"></div><div class="f-group"><label>Mật khẩu</label><input type="password" name="password" required placeholder="••••••••"></div><div class="f-msg" id="loginMsg"></div><button type="submit" class="auth-btn">Đăng Nhập</button></form><form class="auth-form hidden" id="registerForm" onsubmit="doRegister(event)"><div class="f-group"><label>Họ tên</label><input type="text" name="name" required placeholder="Nguyễn Văn A"></div><div class="f-group"><label>Email</label><input type="email" name="email" required placeholder="email@example.com"></div><div class="f-group"><label>Mật khẩu</label><input type="password" name="password" required placeholder="Ít nhất 6 ký tự" minlength="6"></div><div class="f-msg" id="registerMsg"></div><button type="submit" class="auth-btn">Tạo Tài Khoản</button></form>`}}
+  document.getElementById('loginBtn')?.addEventListener('click',openAuth);
+  document.getElementById('authClose')?.addEventListener('click',closeAuth);
+  ao?.addEventListener('click',e=>{if(e.target===ao)closeAuth()});
+  function openAuth(){renderAuth();ao?.classList.add('open')}
+  function closeAuth(){ao?.classList.remove('open')}
+  function renderAuth(){const user=getUser();const box=document.getElementById('authContent');const btn=document.getElementById('loginBtn');if(!btn)return;if(user){btn.classList.add('logged-in');box.innerHTML=`<div class="auth-user-panel"><div class="auth-avatar">${user.name.charAt(0).toUpperCase()}</div><div><div class="auth-user-name">${user.name}</div><div class="auth-user-email">${user.email}</div></div><button class="auth-signout" onclick="signOut()">Đăng xuất</button></div><p style="font:400 1.2rem/1.5 var(--font-sans);color:rgba(19,49,95,.4);text-align:center">Chào mừng trở lại!</p>`}else{btn.classList.remove('logged-in');box.innerHTML=`<div class="auth-tabs"><button class="auth-tab active" onclick="switchTab('login',this)">Đăng Nhập</button><button class="auth-tab" onclick="switchTab('register',this)">Đăng Ký</button></div><form class="auth-form" id="loginForm" onsubmit="doLogin(event)"><div class="f-group"><label>Email</label><input type="email" name="email" required placeholder="email@example.com"></div><div class="f-group"><label>Mật khẩu</label><input type="password" name="password" required placeholder="••••••••"></div><div class="f-msg" id="loginMsg"></div><button type="submit" class="auth-btn">Đăng Nhập</button></form><form class="auth-form hidden" id="registerForm" onsubmit="doRegister(event)"><div class="f-group"><label>Họ tên</label><input type="text" name="name" required placeholder="Nguyễn Văn A"></div><div class="f-group"><label>Email</label><input type="email" name="email" required placeholder="email@example.com"></div><div class="f-group"><label>Mật khẩu</label><input type="password" name="password" required placeholder="Ít nhất 6 ký tự" minlength="6"></div><div class="f-msg" id="registerMsg"></div><button type="submit" class="auth-btn">Tạo Tài Khoản</button></form>`}}
   function switchTab(tab,el){document.querySelectorAll('.auth-tab').forEach(t=>t.classList.remove('active'));el.classList.add('active');document.getElementById('loginForm').classList.toggle('hidden',tab!=='login');document.getElementById('registerForm').classList.toggle('hidden',tab!=='register')}
   function doLogin(e){e.preventDefault();const f=e.target,email=f.email.value,pass=f.password.value;const users=JSON.parse(localStorage.getItem('caretta_users')||'[]');const u=users.find(u=>u.email===email&&u.password===pass);const msg=document.getElementById('loginMsg');if(u){localStorage.setItem('caretta_user',JSON.stringify(u));closeAuth();renderAuth()}else{msg.className='f-msg err';msg.textContent='Email hoặc mật khẩu không đúng.'}}
   function doRegister(e){e.preventDefault();const f=e.target,name=f.name.value,email=f.email.value,pass=f.password.value;const users=JSON.parse(localStorage.getItem('caretta_users')||'[]');const msg=document.getElementById('registerMsg');if(users.find(u=>u.email===email)){msg.className='f-msg err';msg.textContent='Email này đã được sử dụng.';return}const nu={name,email,password:pass};users.push(nu);localStorage.setItem('caretta_users',JSON.stringify(users));localStorage.setItem('caretta_user',JSON.stringify(nu));closeAuth();renderAuth()}
   function signOut(){localStorage.removeItem('caretta_user');closeAuth();renderAuth()}
   const cp=document.getElementById('cartPanel');const cb=document.getElementById('cartBg');
-  document.getElementById('cartBtn').addEventListener('click',openCartP);
-  document.getElementById('cartClose').addEventListener('click',closeCartP);
+  document.getElementById('cartBtn')?.addEventListener('click',openCartP);
+  document.getElementById('cartClose')?.addEventListener('click',closeCartP);
   cb.addEventListener('click',closeCartP);
-  function openCartP(){cp.classList.add('open');cb.classList.add('open');renderCartP()}
-  function closeCartP(){cp.classList.remove('open');cb.classList.remove('open')}
+  function openCartP(){cp?.classList.add('open');cb?.classList.add('open');renderCartP()}
+  function closeCartP(){cp?.classList.remove('open');cb?.classList.remove('open')}
   function renderCartP(){
     const user=getUser();const cart=getCart();
     const list=document.getElementById('cartList');const foot=document.getElementById('cartFoot');
