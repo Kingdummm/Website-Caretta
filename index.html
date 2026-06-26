@@ -290,6 +290,7 @@
     /* ═══════════════════════════════════════════════════
        HERO
     ═══════════════════════════════════════════════════ */
+    /* ══ HERO ══════════════════════════════════════════ */
     .hero {
       min-height: 100vh;
       min-height: 100svh;
@@ -299,153 +300,17 @@
       display: flex;
       align-items: flex-end;
       justify-content: center;
-      padding-bottom: 80px;
+      padding-bottom: 48px;
     }
     .hero__bg { display: none; }
     .hero__overlay {
       position: absolute; inset: 0;
-      background: linear-gradient(180deg, rgba(10,30,61,.3) 0%, rgba(10,30,61,.55) 60%, rgba(10,30,61,.82) 100%);
+      background: rgba(10,25,55,.06);
       z-index: 0;
     }
-
-    /* Orbs hidden — photo background */
-    .hero__orb { display: none; }
-
-    /* Wave SVG at bottom */
-    .hero__wave {
-      position: absolute;
-      bottom: 0; left: 0; right: 0;
-      line-height: 0;
-      z-index: 2;
-    }
-
-    .hero__content {
-      position: relative;
-      z-index: 1;
-      text-align: center;
-      color: #fff;
-      max-width: 720px;
-      padding: 0 24px;
-      width: 100%;
-    }
-
-    .hero__logo {
-      width: clamp(100px, 14vw, 150px);
-      aspect-ratio: 1 / 0.6;
-      overflow: hidden;
-      margin: 0 auto 36px;
-      animation: float 5s ease-in-out infinite;
-      line-height: 0;
-    }
-    .hero__logo img {
-      width: 100%;
-      display: block;
-    }
-    @keyframes float {
-      0%, 100% { transform: translateY(0); }
-      50%       { transform: translateY(-10px); }
-    }
-
-    .hero__eyebrow {
-      font: 500 11px/1 var(--font-sans);
-      letter-spacing: .5em;
-      text-transform: uppercase;
-      color: var(--green);
-      margin-bottom: 20px;
-      text-indent: .5em;
-    }
-
-    .hero__title {
-      font-family: var(--font-display);
-      font-size: clamp(36px, 6vw, 68px);
-      font-weight: 500;
-      letter-spacing: .25em;
-      text-indent: .25em;
-      line-height: 1;
-      margin-bottom: 12px;
-      background: linear-gradient(135deg, #fff 30%, rgba(255,255,255,.6));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-
-    .hero__accent {
-      font-family: var(--font-serif);
-      font-style: italic;
-      font-size: clamp(14px, 1.8vw, 20px);
-      color: rgba(255,255,255,.85);
-      margin-bottom: 28px;
-      font-weight: 400;
-    }
-
-    .hero__tagline {
-      font: 300 14px/1.75 var(--font-sans);
-      letter-spacing: .06em;
-      color: rgba(255,255,255,.7);
-      max-width: 460px;
-      margin: 0 auto 44px;
-    }
-
-    .hero__ctas {
-      display: flex;
-      gap: 16px;
-      justify-content: center;
-      flex-wrap: nowrap;
-      align-items: center;
-    }
-
-    .hero__scroll {
-      position: absolute;
-      bottom: 36px; left: 50%;
-      transform: translateX(-50%);
-      z-index: 2;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 8px;
-      color: rgba(255,255,255,.45);
-      font: 400 11px/1 var(--font-sans);
-      letter-spacing: .2em;
-      text-transform: uppercase;
-      animation: scrollBounce 2s ease-in-out infinite;
-    }
-    .hero__scroll svg { width: 20px; height: 20px; }
-    @keyframes scrollBounce {
-      0%, 100% { transform: translateX(-50%) translateY(0); }
-      50%       { transform: translateX(-50%) translateY(6px); }
-    }
-
-    /* ═══════════════════════════════════════════════════
-       MARQUEE STRIP
-    ═══════════════════════════════════════════════════ */
-    .marquee-strip {
-      background: var(--navy);
-      padding: 16px 0;
-      overflow: hidden;
-      border-top: 1px solid rgba(255,255,255,.06);
-    }
-    .marquee-track {
-      display: flex;
-      gap: 0;
-      white-space: nowrap;
-      animation: marquee 28s linear infinite;
-    }
-    .marquee-track span {
-      font: 500 11px/1 var(--font-sans);
-      letter-spacing: .3em;
-      text-transform: uppercase;
-      color: rgba(255,255,255,.45);
-      padding: 0 40px;
-    }
-    .marquee-track span.dot {
-      color: var(--teal);
-      padding: 0;
-      letter-spacing: 0;
-    }
-    @keyframes marquee {
-      from { transform: translateX(0); }
-      to   { transform: translateX(-50%); }
-    }
+    /* hide old hero elements */
+    .hero__content { display: flex; }
+    .hero__ctas    { display: flex; }
 
     /* ═══════════════════════════════════════════════════
        BRAND STORY
@@ -1091,8 +956,6 @@
       .lookbook__header { flex-direction: column; align-items: flex-start; gap: 16px; }
     }
     @media (max-width: 480px) {
-      .hero__title { font-size: clamp(28px, 10vw, 42px); letter-spacing: .06em; }
-      .hero__eyebrow { font-size: 10px; letter-spacing: .3em; }
       .nav__inner { padding-inline: 16px; }
       .nav__logo .site-logo { height: 56px; }
       .nav__hamburger { top: 0.9rem; }
@@ -1101,6 +964,163 @@
       .footer__inner { padding-inline: 20px; }
       .footer__legal { flex-wrap: wrap; justify-content: center; }
     }
+
+    /* ══ BENEFIT CARDS (light) ══════════════════════ */
+    .benefits { padding: 40px 0; background: #F7FBFD; }
+    .benefits__grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 20px; }
+    .benefit-card {
+      background: #fff;
+      border: 1px solid rgba(10,92,143,.1);
+      border-radius: 14px;
+      padding: 28px 24px 30px;
+      display: flex; align-items: flex-start; gap: 18px;
+    }
+    .benefit-card__icon {
+      width: 54px; height: 54px; flex-shrink: 0;
+      border-radius: 50%;
+      border: 1.5px solid rgba(10,92,143,.18);
+      display: grid; place-items: center;
+      color: #0A5C8F;
+    }
+    .benefit-card__icon svg { width: 22px; height: 22px; }
+    .benefit-card__body { flex: 1; }
+    .benefit-card__title {
+      font: 700 10.5px/1 var(--font-sans);
+      letter-spacing: .12em; text-transform: uppercase;
+      color: #12344D; margin-bottom: 8px;
+      white-space: nowrap;
+    }
+    .benefit-card__dash { width: 24px; height: 2px; background: #0A5C8F; margin-bottom: 10px; }
+    .benefit-card__desc {
+      font: 400 13.5px/1.6 var(--font-sans);
+      color: #4a6070; margin-bottom: 14px;
+    }
+    .benefit-card__desc strong { color: #0A5C8F; font-weight: 600; }
+    .benefit-card__link {
+      font: 600 11px/1 var(--font-sans);
+      letter-spacing: .15em; text-transform: uppercase;
+      color: #12344D; text-decoration: none;
+      display: inline-flex; align-items: center; gap: 7px;
+      transition: gap .2s, color .2s;
+    }
+    .benefit-card__link:hover { gap: 11px; color: #0A5C8F; }
+    .benefit-card__link svg { width: 13px; height: 13px; }
+    @media (max-width: 900px) { .benefits__grid { grid-template-columns: repeat(2,1fr); gap: 14px; } }
+    @media (max-width: 480px) { .benefits__grid { grid-template-columns: 1fr; gap: 12px; } .benefits { padding: 28px 0; } }
+
+    /* ══ PROMOTION RESORT ════════════════════════════ */
+    .promo-section {
+      position: relative;
+      padding: 96px 0;
+      background: url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1920&q=80') center/cover no-repeat fixed;
+      overflow: hidden;
+    }
+    .promo-section::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(160deg, rgba(8,20,48,.86) 0%, rgba(10,92,143,.75) 55%, rgba(8,20,48,.9) 100%);
+      z-index: 0;
+    }
+    .promo-inner {
+      position: relative; z-index: 1;
+      max-width: 1200px; margin: 0 auto; padding: 0 32px;
+    }
+    .promo-header { text-align: center; margin-bottom: 56px; }
+    .promo-header__eyebrow {
+      font: 600 11px/1 var(--font-sans);
+      letter-spacing: .35em; text-transform: uppercase;
+      color: #7DD3FC; margin-bottom: 14px;
+    }
+    .promo-header__title {
+      font: 500 44px/1.2 var(--font-serif);
+      color: #fff; letter-spacing: .02em; margin-bottom: 12px;
+    }
+    .promo-header__sub {
+      font: 400 15px/1.6 var(--font-sans);
+      color: rgba(255,255,255,.65);
+    }
+    .promo-grid {
+      display: grid;
+      grid-template-columns: repeat(4,1fr);
+      gap: 20px;
+    }
+    .promo-card {
+      background: rgba(255,255,255,.1);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid rgba(255,255,255,.18);
+      border-radius: 18px;
+      padding: 36px 24px 32px;
+      text-align: center;
+      transition: transform .35s ease, box-shadow .35s ease, background .35s;
+      opacity: 0;
+      animation: promoCardIn .7s ease-out forwards;
+    }
+    .promo-card:hover {
+      transform: scale(1.03);
+      background: rgba(255,255,255,.16);
+      box-shadow: 0 24px 48px rgba(0,0,0,.3);
+    }
+    .promo-card:nth-child(1) { animation-delay: .1s; }
+    .promo-card:nth-child(2) { animation-delay: .22s; }
+    .promo-card:nth-child(3) { animation-delay: .34s; }
+    .promo-card:nth-child(4) { animation-delay: .46s; }
+    @keyframes promoCardIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .promo-card__icon {
+      width: 54px; height: 54px;
+      background: rgba(125,211,252,.12);
+      border: 1px solid rgba(125,211,252,.28);
+      border-radius: 50%;
+      display: grid; place-items: center;
+      margin: 0 auto 18px;
+      color: #7DD3FC;
+    }
+    .promo-card__icon svg { width: 22px; height: 22px; }
+    .promo-card__title {
+      font: 700 11px/1 var(--font-sans);
+      letter-spacing: .22em; text-transform: uppercase;
+      color: #7DD3FC; margin-bottom: 14px;
+    }
+    .promo-card__desc {
+      font: 400 14px/1.65 var(--font-sans);
+      color: rgba(255,255,255,.78);
+      margin-bottom: 20px;
+    }
+    .promo-card__desc strong { color: #fff; font-weight: 600; }
+    .promo-card__link {
+      font: 600 11px/1 var(--font-sans);
+      letter-spacing: .15em; text-transform: uppercase;
+      color: rgba(255,255,255,.55);
+      text-decoration: none;
+      display: inline-flex; align-items: center; gap: 6px;
+      border-bottom: 1px solid rgba(255,255,255,.25);
+      padding-bottom: 3px;
+      transition: color .2s, border-color .2s, gap .2s;
+    }
+    .promo-card__link:hover { color: #7DD3FC; border-color: #7DD3FC; gap: 10px; }
+    .promo-card__link svg { width: 13px; height: 13px; }
+
+    /* Hero glass responsive */
+    @media (max-width: 768px) {
+      .hero__glass { padding: 40px 32px; }
+      .hero__title  { font-size: 36px; }
+      .hero__pct    { font-size: 76px; }
+      .promo-section { padding: 64px 0; background-attachment: scroll; }
+      .promo-grid { grid-template-columns: repeat(2,1fr); }
+      .promo-header__title { font-size: 32px; }
+      .promo-inner { padding: 0 20px; }
+    }
+    @media (max-width: 480px) {
+      .hero__glass { padding: 28px 20px; width: 92%; }
+      .hero__title  { font-size: 30px; }
+      .hero__pct    { font-size: 64px; }
+      .promo-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
+      .promo-card { padding: 24px 16px 20px; }
+    }
+
   </style>
 </head>
 <body>
@@ -1182,8 +1202,8 @@
 
   <!-- ══ HERO ══════════════════════════════════════ -->
   <section class="hero">
-
     <div class="hero__overlay"></div>
+
 
     <div class="hero__content">
       <div class="hero__ctas">
@@ -1194,33 +1214,64 @@
         <a href="#story" class="btn btn-outline">Câu Chuyện Của Chúng Tôi</a>
       </div>
     </div>
-
   </section>
 
-  <!-- ══ MARQUEE STRIP ═════════════════════════════ -->
-  <div class="marquee-strip" aria-hidden="true">
-    <div class="marquee-track">
-      <!-- duplicated for seamless loop -->
-      <span>Đồ Bơi</span><span class="dot">◆</span>
-      <span>Thể Thao</span><span class="dot">◆</span>
-      <span>Cảm Hứng Đại Dương</span><span class="dot">◆</span>
-      <span>Hiệu Năng</span><span class="dot">◆</span>
-      <span>Bền Vững</span><span class="dot">◆</span>
-      <span>Phong Cách</span><span class="dot">◆</span>
-      <span>Đồ Bơi</span><span class="dot">◆</span>
-      <span>Thể Thao</span><span class="dot">◆</span>
-      <span>Cảm Hứng Đại Dương</span><span class="dot">◆</span>
-      <span>Hiệu Năng</span><span class="dot">◆</span>
-      <span>Bền Vững</span><span class="dot">◆</span>
-      <span>Phong Cách</span><span class="dot">◆</span>
-      <span>Đồ Bơi</span><span class="dot">◆</span>
-      <span>Thể Thao</span><span class="dot">◆</span>
-      <span>Cảm Hứng Đại Dương</span><span class="dot">◆</span>
-      <span>Hiệu Năng</span><span class="dot">◆</span>
-      <span>Bền Vững</span><span class="dot">◆</span>
-      <span>Phong Cách</span><span class="dot">◆</span>
+  <!-- ══ BENEFIT CARDS ════════════════════════════ -->
+  <section class="benefits">
+    <div class="container">
+      <div class="benefits__grid">
+
+        <div class="benefit-card">
+          <div class="benefit-card__icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3"/><path d="M6 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><path d="M3 12c2-2 4-2 5 0M21 12c-2-2-4-2-5 0"/></svg>
+          </div>
+          <div class="benefit-card__body">
+            <p class="benefit-card__title">Ưu Đãi Hè</p>
+            <div class="benefit-card__dash"></div>
+            <p class="benefit-card__desc">Mua 2 sản phẩm đồ bơi, giảm ngay <strong>10%</strong> cho đơn hàng.</p>
+            <a href="collections.html" class="benefit-card__link">MUA NGAY <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+          </div>
+        </div>
+
+        <div class="benefit-card">
+          <div class="benefit-card__icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13" rx="1"/><path d="M16 8h4l3 5v3h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+          </div>
+          <div class="benefit-card__body">
+            <p class="benefit-card__title">Ship Miễn Phí</p>
+            <div class="benefit-card__dash"></div>
+            <p class="benefit-card__desc">Giao hàng miễn phí cho đơn từ <strong>500.000đ</strong> toàn quốc.</p>
+            <a href="collections.html" class="benefit-card__link">MUA NGAY <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+          </div>
+        </div>
+
+        <div class="benefit-card">
+          <div class="benefit-card__icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 4l3 12h14l3-12"/><path d="M12 4v12M8 8h8"/></svg>
+          </div>
+          <div class="benefit-card__body">
+            <p class="benefit-card__title">Thành Viên VIP</p>
+            <div class="benefit-card__dash"></div>
+            <p class="benefit-card__desc">Trở thành thành viên Carétta, nhận ưu đãi và cập nhật bộ sưu tập sớm nhất.</p>
+            <a href="why-caretta.html" class="benefit-card__link">THAM GIA NGAY <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+          </div>
+        </div>
+
+        <div class="benefit-card">
+          <div class="benefit-card__icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"/><polyline points="23 20 23 14 17 14"/><path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10M23 14l-4.64 4.36A9 9 0 0 1 3.51 15"/></svg>
+          </div>
+          <div class="benefit-card__body">
+            <p class="benefit-card__title">Đổi Trả Thoải Mái</p>
+            <div class="benefit-card__dash"></div>
+            <p class="benefit-card__desc">Đổi trả miễn phí trong <strong>30 ngày</strong> kể từ ngày nhận hàng.</p>
+            <a href="why-caretta.html" class="benefit-card__link">XEM THÊM <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+          </div>
+        </div>
+
+      </div>
     </div>
-  </div>
+  </section>
 
   <!-- ══ BRAND STORY ═══════════════════════════════ -->
 
@@ -1327,6 +1378,56 @@
     </div>
   </section>
 
+  <!-- ══ PROMOTION ════════════════════════════════ -->
+  <section class="promo-section">
+    <div class="promo-inner">
+      <div class="promo-header">
+        <p class="promo-header__eyebrow">Đặc Quyền Mùa Hè</p>
+        <h2 class="promo-header__title">Exclusive Summer Privileges</h2>
+        <p class="promo-header__sub">Những ưu đãi được thiết kế riêng cho trải nghiệm bơi lội đẳng cấp</p>
+      </div>
+      <div class="promo-grid">
+
+        <div class="promo-card">
+          <div class="promo-card__icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10"/><path d="M12 6v6l4 2"/><path d="M18 2l4 4-4 4"/></svg>
+          </div>
+          <p class="promo-card__title">Summer Escape</p>
+          <p class="promo-card__desc">Giảm thêm <strong>10% OFF</strong> khi mua bất kỳ 2 sản phẩm đồ bơi trong cùng đơn.</p>
+          <a href="collections.html" class="promo-card__link">KHÁM PHÁ <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+        </div>
+
+        <div class="promo-card">
+          <div class="promo-card__icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13" rx="1"/><path d="M16 8h4l3 5v3h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+          </div>
+          <p class="promo-card__title">Free Shipping</p>
+          <p class="promo-card__desc">Miễn phí giao hàng cho tất cả đơn từ <strong>999.000₫</strong> trên toàn quốc.</p>
+          <a href="collections.html" class="promo-card__link">MUA NGAY <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+        </div>
+
+        <div class="promo-card">
+          <div class="promo-card__icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          </div>
+          <p class="promo-card__title">Member Benefit</p>
+          <p class="promo-card__desc">Trở thành thành viên Carétta — nhận quyền truy cập sớm các bộ sưu tập mới nhất.</p>
+          <a href="why-caretta.html" class="promo-card__link">TÌM HIỂU <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+        </div>
+
+        <div class="promo-card">
+          <div class="promo-card__icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12V22H4V12"/><path d="M22 7H2v5h20V7z"/><path d="M12 22V7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>
+          </div>
+          <p class="promo-card__title">First Order</p>
+          <p class="promo-card__desc">Chào mừng đến Carétta — nhận ngay <strong>10% OFF</strong> cho lần mua hàng đầu tiên.</p>
+          <a href="collections.html" class="promo-card__link">ĐẶT NGAY <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
   <!-- ══ VALUES ═════════════════════════════════════ -->
   <section class="values" id="values">
     <div class="container">
@@ -1373,6 +1474,7 @@
               <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/>
               <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
             </svg>
+
           </div>
           <h3>Tinh Thần Đại Dương Toàn Cầu</h3>
           <p>Từ bể bơi ven biển đến các rạn san hô nhiệt đới, trang phục CARÉTTA được tạo ra để đồng hành cùng bạn đến bất cứ nơi nào sóng nước dẫn lối.</p>
@@ -1842,7 +1944,8 @@
   updateBadge();
   renderAuth();
   document.querySelectorAll('.has-mega').forEach(li=>{let t;li.addEventListener('mouseenter',()=>{clearTimeout(t);li.classList.add('open');});li.addEventListener('mouseleave',()=>{t=setTimeout(()=>li.classList.remove('open'),200);});});
-  </script>
+
+</script>
 </body>
 </html>
 
